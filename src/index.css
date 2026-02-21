@@ -1,13 +1,20 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap');
 
 @theme {
-  --color-brand: #7c3aed;
-  --color-brand-light: #a78bfa;
-  --color-surface: #0f0f1a;
-  --color-surface-2: #16162a;
-  --color-surface-3: #1e1e35;
-  --color-border: #2d2d4e;
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --color-brand: #FF6B35;
+  --color-brand-light: #FF8A5C;
+  --color-brand-dim: rgba(255,107,53,0.12);
+  --color-surface: #0C0C0C;
+  --color-surface-2: #141414;
+  --color-surface-3: #1C1C1C;
+  --color-border: #252525;
+  --color-text: #F0EDE8;
+  --color-text-2: #8A847C;
+  --color-text-3: #4A4640;
+  --font-sans: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+  --font-display: 'Playfair Display', Georgia, serif;
 }
 
 * {
@@ -20,12 +27,39 @@ html {
 
 body {
   background-color: var(--color-surface);
-  color: #e8e8f0;
+  color: var(--color-text);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 4px; height: 4px; }
+/* Scrollbar — invisible until hover */
+::-webkit-scrollbar { width: 3px; height: 3px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 0; }
+
+/* Selection */
+::selection {
+  background: rgba(255, 107, 53, 0.2);
+  color: var(--color-text);
+}
+
+/* Safe area for iOS bottom nav */
+.safe-pb {
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+}
+
+/* Horizontal scroll — no scrollbar */
+.scroll-x-hide {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scroll-x-hide::-webkit-scrollbar { display: none; }
+
+/* Arc sweep animation */
+@keyframes arcSweep {
+  from { stroke-dashoffset: var(--arc-length); }
+  to { stroke-dashoffset: var(--arc-target); }
+}

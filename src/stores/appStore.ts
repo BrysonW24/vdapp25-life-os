@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { LifeSeason, ReflectionType } from '@/types'
+import type { LifeSeason, ReflectionType, MindsetMode, CompassMapping } from '@/types'
 
 interface AppStore {
   // Onboarding
@@ -10,6 +10,14 @@ interface AppStore {
   // Season
   currentSeason: LifeSeason
   setSeason: (season: LifeSeason) => void
+
+  // Mindset Mode
+  mindsetMode: MindsetMode
+  setMindsetMode: (mode: MindsetMode) => void
+
+  // Compass
+  compassMappings: CompassMapping[]
+  setCompassMappings: (mappings: CompassMapping[]) => void
 
   // UI
   activeReflectionType: ReflectionType
@@ -24,6 +32,12 @@ export const useAppStore = create<AppStore>()(
 
       currentSeason: 'foundation',
       setSeason: (season) => set({ currentSeason: season }),
+
+      mindsetMode: 'arena',
+      setMindsetMode: (mode) => set({ mindsetMode: mode }),
+
+      compassMappings: [],
+      setCompassMappings: (mappings) => set({ compassMappings: mappings }),
 
       activeReflectionType: 'daily-am',
       setActiveReflectionType: (type) => set({ activeReflectionType: type }),

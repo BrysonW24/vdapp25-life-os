@@ -1,26 +1,21 @@
-import { Card } from '@/components/ui/Card'
-import { PillarDonut } from '@/components/visualizations/PillarDonut'
+import { useState, useEffect } from 'react'
+import { CompoundingIndex } from '@/components/visualizations/CompoundingIndex'
+import { StructuralIntegrity } from '@/components/visualizations/StructuralIntegrity'
+import { AlignmentCompass } from '@/components/visualizations/AlignmentCompass'
+import { TimeAllocationSankey } from '@/components/visualizations/TimeAllocationSankey'
+import { CompassSetup } from '@/components/CompassSetup'
 import { useIdentity, usePillars } from '@/hooks/useIdentity'
 import { useActiveHabits, useTodayLogs } from '@/hooks/useHabits'
 import { useTodayReflection } from '@/hooks/useReflections'
 import { useActiveAlerts } from '@/hooks/useAdvisory'
 import { useActiveGoals } from '@/hooks/useGoals'
-import { useAlignments, useOverallScore } from '@/hooks/useIntelligence'
 import { useAllHabitLogs } from '@/hooks/useHabits'
 import { useAppStore } from '@/stores/appStore'
 import { calcStreak } from '@/lib/streaks'
-import { Sparkles, Target, Repeat2, BookOpen, TrendingUp, Zap, Flame, CheckCircle2, Sun, Moon, AlertTriangle } from 'lucide-react'
+import { AlertTriangle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { clsx } from 'clsx'
-
-const SEASON_LABELS: Record<string, string> = {
-  foundation: 'Foundation',
-  expansion: 'Expansion',
-  domination: 'Domination',
-  exploration: 'Exploration',
-  recovery: 'Recovery',
-  reinvention: 'Reinvention',
-}
+import { CHART_COLORS } from '@/components/visualizations/theme'
 
 export function HubPage() {
   const identity = useIdentity()
@@ -32,12 +27,15 @@ export function HubPage() {
   const pmDone = useTodayReflection('daily-pm')
   const activeAlerts = useActiveAlerts()
   const activeGoals = useActiveGoals()
-  const alignments = useAlignments()
-  const overallScore = useOverallScore()
-  const { currentSeason } = useAppStore()
+  const { compassMappings } = useAppStore()
 
-  const hour = new Date().getHours()
-  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
+  const [compassSetupOpen, setCompassSetupOpen] = useState(false)
+
+  useEffect(() => {
+    if (pillars.length > 0 && compassMappings.length === 0) {
+      setCompassSetupOpen(true)
+    }
+  }, [pillars.length, compassMappings.length])
 
   const completedToday = todayLogs.filter(l => l.completed).length
 
@@ -48,196 +46,222 @@ export function HubPage() {
     .sort((a, b) => b.streak - a.streak)
     .slice(0, 3)
 
-  // Top 3 alerts
-  const topAlerts = activeAlerts.slice(0, 3)
+  // Top streak for stat bar
+  const topStreak = streaks.length > 0 ? streaks[0].streak : 0
 
-  // No identity — show setup prompt
+  // Highest-severity alert
+  const severityOrder: Record<string, number> = { challenge: 0, warning: 1, opportunity: 2, insight: 3 }
+  const topAlert = [...activeAlerts]
+    .sort((a, b) => (severityOrder[a.severity] ?? 4) - (severityOrder[b.severity] ?? 4))
+    [0]
+
+  // Today's agenda items
+  const agendaItems: { label: string; done: boolean; to: string; color?: string }[] = []
+  if (!amDone) agendaItems.push({ label: 'Morning Reflection', done: false, to: '/reflect' })
+  else agendaItems.push({ label: 'Morning Reflection', done: true, to: '/reflect' })
+
+  habits.forEach(h => {
+    const log = todayLogs.find(l => l.habitId === h.id)
+    agendaItems.push({ label: h.title, done: !!log?.completed, to: '/habits', color: h.color })
+  })
+
+  if (!pmDone) agendaItems.push({ label: 'Evening Reflection', done: false, to: '/reflect' })
+  else agendaItems.push({ label: 'Evening Reflection', done: true, to: '/reflect' })
+
+  // No identity — cold start
   if (!identity) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-8">
         <div>
-          <p className="text-[#606080] text-sm">{greeting}</p>
-          <h1 className="text-2xl font-bold text-[#e8e8f0] mt-0.5">Your Operating System</h1>
-          <p className="text-[#606080] text-xs mt-1">Identity · Execution · Intelligence · Advisory</p>
+          <h1 className="text-xl font-semibold tracking-tight" style={{ color: CHART_COLORS.textPrimary }}>Command Deck</h1>
+          <p className="text-xs mt-1" style={{ fontFamily: 'var(--font-mono)', color: CHART_COLORS.textMuted }}>
+            SOVEREIGN PERFORMANCE INTELLIGENCE
+          </p>
         </div>
 
-        <Card className="border-amber-500/20 bg-amber-500/5">
-          <p className="text-xs font-semibold text-amber-400 uppercase tracking-wider mb-2">Get Started</p>
-          <p className="text-sm text-[#c0c0e0]">
-            Begin by declaring your identity — who you are, who you want to become, and what standards you hold yourself to.
+        <div className="border border-[#252525] bg-[#141414] p-6 rounded-sm" style={{ borderLeft: `2px solid ${CHART_COLORS.brand}` }}>
+          <p className="text-[10px] font-medium tracking-[0.15em] uppercase mb-3" style={{ fontFamily: 'var(--font-mono)', color: CHART_COLORS.brand }}>
+            Initialize
+          </p>
+          <p className="text-sm leading-relaxed" style={{ color: CHART_COLORS.textSecondary }}>
+            Declare your identity. Who you are. What you stand for. The standards you hold.
           </p>
           <Link to="/identity">
-            <button className="mt-3 text-xs font-semibold text-amber-400 hover:text-amber-300 transition-colors">
-              Declare your identity →
+            <button className="mt-4 text-[11px] font-medium transition-colors duration-200" style={{ fontFamily: 'var(--font-mono)', color: CHART_COLORS.brand }}>
+              Begin declaration &rarr;
             </button>
           </Link>
-        </Card>
-
-        <Card className="border-violet-500/20 bg-violet-500/5">
-          <p className="text-xs font-semibold text-violet-400 uppercase tracking-wider mb-2">Core Philosophy</p>
-          <p className="text-sm text-[#c0c0e0] leading-relaxed">
-            Most apps optimize <span className="text-[#e8e8f0] font-medium">convenience</span>.
-            This optimizes <span className="text-violet-400 font-semibold">character</span>.
-          </p>
-        </Card>
+        </div>
       </div>
     )
   }
 
+  const severityColor = (severity: string) => {
+    switch (severity) {
+      case 'challenge': return CHART_COLORS.brand
+      case 'warning': return CHART_COLORS.drifting
+      case 'opportunity': return CHART_COLORS.improving
+      default: return '#8b5cf6'
+    }
+  }
+
   return (
-    <div className="space-y-6">
-      {/* Header with score */}
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-[#606080] text-sm">{greeting}</p>
-          <h1 className="text-2xl font-bold text-[#e8e8f0] mt-0.5">Command Centre</h1>
-          <p className="text-[#606080] text-xs mt-1">
-            {SEASON_LABELS[currentSeason]} Season · {pillars.length} pillar{pillars.length !== 1 ? 's' : ''}
-          </p>
-        </div>
+    <div className="space-y-3">
+      {/* Zone 1: Hero Score Ring */}
+      <CompoundingIndex />
 
-        {/* Mini alignment donut */}
-        {alignments.length > 0 && (
-          <Link to="/intelligence" className="flex-shrink-0">
-            <PillarDonut alignments={alignments} overallScore={overallScore} />
-          </Link>
-        )}
+      {/* Zone 2: Stat Bar */}
+      <div className="border-y border-[#252525] bg-[#141414] py-3 px-4 -mx-4">
+        <div className="flex items-center justify-around">
+          <StatMetric
+            label="HABITS"
+            value={`${completedToday}/${habits.length}`}
+            done={completedToday === habits.length && habits.length > 0}
+            to="/habits"
+          />
+          <div className="w-px h-8" style={{ background: CHART_COLORS.border }} />
+          <StatMetric
+            label="AM"
+            value={amDone ? '\u2713' : '\u2014'}
+            done={!!amDone}
+            to="/reflect"
+          />
+          <div className="w-px h-8" style={{ background: CHART_COLORS.border }} />
+          <StatMetric
+            label="PM"
+            value={pmDone ? '\u2713' : '\u2014'}
+            done={!!pmDone}
+            to="/reflect"
+          />
+          <div className="w-px h-8" style={{ background: CHART_COLORS.border }} />
+          <StatMetric
+            label="STREAK"
+            value={topStreak > 0 ? `${topStreak}d` : '\u2014'}
+            done={false}
+            to="/habits"
+          />
+        </div>
       </div>
 
-      {/* Today's Focus */}
-      <Card>
-        <p className="text-xs font-semibold text-[#606080] uppercase tracking-wider mb-3">Today's Focus</p>
-        <div className="grid grid-cols-3 gap-3">
-          {/* Habits progress */}
-          <Link to="/habits" className="text-center">
-            <div className={clsx(
-              'rounded-xl p-2 mx-auto w-10 h-10 flex items-center justify-center mb-1',
-              completedToday === habits.length && habits.length > 0
-                ? 'bg-emerald-500/20'
-                : 'bg-[#1e1e35]',
-            )}>
-              <Repeat2 size={16} className={completedToday === habits.length && habits.length > 0 ? 'text-emerald-400' : 'text-[#606080]'} />
-            </div>
-            <p className="text-sm font-bold text-[#e8e8f0]">{completedToday}/{habits.length}</p>
-            <p className="text-[10px] text-[#606080]">Habits</p>
-          </Link>
+      {/* Zone 3: Pillar Health Bars */}
+      <StructuralIntegrity />
 
-          {/* AM Reflection */}
-          <Link to="/reflect" className="text-center">
-            <div className={clsx(
-              'rounded-xl p-2 mx-auto w-10 h-10 flex items-center justify-center mb-1',
-              amDone ? 'bg-amber-500/20' : 'bg-[#1e1e35]',
-            )}>
-              {amDone
-                ? <CheckCircle2 size={16} className="text-amber-400" />
-                : <Sun size={16} className="text-[#606080]" />
-              }
-            </div>
-            <p className="text-sm font-bold text-[#e8e8f0]">{amDone ? 'Done' : '—'}</p>
-            <p className="text-[10px] text-[#606080]">Morning</p>
-          </Link>
+      {/* Zone 4: Compass + Time Allocation */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <AlignmentCompass onEditMappings={() => setCompassSetupOpen(true)} />
+        <TimeAllocationSankey />
+      </div>
 
-          {/* PM Reflection */}
-          <Link to="/reflect" className="text-center">
-            <div className={clsx(
-              'rounded-xl p-2 mx-auto w-10 h-10 flex items-center justify-center mb-1',
-              pmDone ? 'bg-violet-500/20' : 'bg-[#1e1e35]',
-            )}>
-              {pmDone
-                ? <CheckCircle2 size={16} className="text-violet-400" />
-                : <Moon size={16} className="text-[#606080]" />
-              }
-            </div>
-            <p className="text-sm font-bold text-[#e8e8f0]">{pmDone ? 'Done' : '—'}</p>
-            <p className="text-[10px] text-[#606080]">Evening</p>
-          </Link>
-        </div>
-      </Card>
-
-      {/* Active Challenges */}
-      {topAlerts.length > 0 && (
-        <div>
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-xs font-semibold text-[#606080] uppercase tracking-wider">Active Challenges</p>
-            <Link to="/advisory" className="text-[10px] text-violet-400">{activeAlerts.length} total →</Link>
-          </div>
-          <div className="space-y-2">
-            {topAlerts.map(alert => (
-              <Link key={alert.id} to="/advisory">
-                <Card className="!p-3">
-                  <div className="flex items-center gap-2">
-                    <AlertTriangle size={12} className={
-                      alert.severity === 'challenge' ? 'text-red-400'
-                      : alert.severity === 'warning' ? 'text-amber-400'
-                      : alert.severity === 'opportunity' ? 'text-blue-400'
-                      : 'text-violet-400'
-                    } />
-                    <p className="text-xs font-medium text-[#e8e8f0] truncate flex-1">{alert.title}</p>
-                  </div>
-                </Card>
-              </Link>
-            ))}
-          </div>
+      {/* Zone 5: Today's Agenda — horizontal scroll */}
+      {agendaItems.length > 0 && (
+        <div className="scroll-x-hide flex gap-2 -mx-4 px-4 py-1">
+          {agendaItems.map((item, i) => (
+            <Link key={i} to={item.to} className="flex-shrink-0" style={{ width: 140 }}>
+              <div
+                className="bg-[#141414] p-3 h-full transition-colors duration-200"
+                style={{ borderLeft: `2px solid ${item.done ? CHART_COLORS.aligned : CHART_COLORS.brand}` }}
+              >
+                <p className="text-[11px] leading-tight truncate" style={{ color: CHART_COLORS.textSecondary }}>
+                  {item.label}
+                </p>
+                <p className="text-[8px] mt-1.5 uppercase tracking-wider" style={{
+                  fontFamily: 'var(--font-mono)',
+                  color: item.done ? CHART_COLORS.aligned : CHART_COLORS.textMuted,
+                }}>
+                  {item.done ? '\u2713 DONE' : 'PENDING'}
+                </p>
+              </div>
+            </Link>
+          ))}
         </div>
       )}
 
-      {/* Streak Leaders */}
+      {/* Zone 6: System Alert */}
+      {topAlert && (
+        <Link to="/advisory">
+          <div
+            className="bg-[#141414] p-3 rounded-sm transition-colors duration-200"
+            style={{ borderLeft: `2px solid ${severityColor(topAlert.severity)}` }}
+          >
+            <div className="flex items-start gap-3">
+              <AlertTriangle size={12} strokeWidth={1.5} className="mt-0.5 flex-shrink-0" style={{ color: severityColor(topAlert.severity) }} />
+              <div className="flex-1 min-w-0">
+                <p className="text-[8px] uppercase tracking-widest mb-1" style={{ fontFamily: 'var(--font-mono)', color: CHART_COLORS.textMuted }}>Alert</p>
+                <p className="text-[13px] leading-relaxed" style={{ color: CHART_COLORS.textSecondary }}>{topAlert.message}</p>
+              </div>
+            </div>
+          </div>
+        </Link>
+      )}
+
+      {/* Zone 7: Active Streaks */}
       {streaks.length > 0 && (
-        <div>
-          <p className="text-xs font-semibold text-[#606080] uppercase tracking-wider mb-2">Streak Leaders</p>
-          <Card>
-            <div className="space-y-2">
-              {streaks.map(({ habit, streak }) => (
-                <div key={habit.id} className="flex items-center gap-3">
-                  <div className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: habit.color }} />
-                  <p className="text-xs text-[#e8e8f0] flex-1 truncate">{habit.title}</p>
-                  <div className="flex items-center gap-1 text-amber-400">
-                    <Flame size={12} />
-                    <span className="text-xs font-bold">{streak}</span>
-                  </div>
-                </div>
-              ))}
+        <div className="py-1">
+          {streaks.map(({ habit, streak }, i) => (
+            <div
+              key={habit.id}
+              className="flex items-center gap-3 py-2"
+              style={{ borderBottom: i < streaks.length - 1 ? `1px solid ${CHART_COLORS.border}` : 'none' }}
+            >
+              <div className="w-[3px] h-[3px] flex-shrink-0" style={{ background: habit.color }} />
+              <p className="text-[13px] flex-1 truncate" style={{ color: CHART_COLORS.textSecondary }}>{habit.title}</p>
+              <span
+                className="text-xs font-bold flex-shrink-0"
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  color: streak > 7 ? CHART_COLORS.brand : CHART_COLORS.textPrimary,
+                }}
+              >
+                {streak}d
+              </span>
             </div>
-          </Card>
+          ))}
         </div>
       )}
 
-      {/* Quick Actions */}
-      <div>
-        <p className="text-xs font-semibold text-[#606080] uppercase tracking-wider mb-2">Quick Actions</p>
-        <div className="grid grid-cols-2 gap-3">
-          <QuickAction to="/identity" label="Identity" icon={Zap} color="#7c3aed" badge={pillars.length > 0 ? `${pillars.length}` : undefined} />
-          <QuickAction to="/goals" label="Goals" icon={Target} color="#2563eb" badge={activeGoals.length > 0 ? `${activeGoals.length}` : undefined} />
-          <QuickAction to="/habits" label="Habits" icon={Repeat2} color="#059669" badge={habits.length > 0 ? `${completedToday}/${habits.length}` : undefined} />
-          <QuickAction to="/reflect" label="Reflect" icon={BookOpen} color="#d97706" />
-          <QuickAction to="/advisory" label="Advisory" icon={Sparkles} color="#dc2626" badge={activeAlerts.length > 0 ? `${activeAlerts.length}` : undefined} />
-          <QuickAction to="/intelligence" label="Intel" icon={TrendingUp} color="#0891b2" badge={alignments.length > 0 ? `${overallScore}%` : undefined} />
-        </div>
+      {/* Zone 8: Navigation Grid — 2x3 panels */}
+      <div className="grid grid-cols-3 gap-[2px] rounded-sm overflow-hidden">
+        <NavPanel to="/identity" label="Identity" count={pillars.length} />
+        <NavPanel to="/goals" label="Goals" count={activeGoals.length} />
+        <NavPanel to="/habits" label="Habits" count={habits.length} />
+        <NavPanel to="/reflect" label="Reflect" />
+        <NavPanel to="/advisory" label="Advisory" count={activeAlerts.length} />
+        <NavPanel to="/intelligence" label="Intel" />
       </div>
+
+      {/* Compass Setup Modal */}
+      <CompassSetup open={compassSetupOpen} onClose={() => setCompassSetupOpen(false)} />
     </div>
   )
 }
 
-function QuickAction({ to, label, icon: Icon, color, badge }: {
-  to: string
-  label: string
-  icon: typeof Zap
-  color: string
-  badge?: string
-}) {
+function StatMetric({ label, value, done, to }: { label: string; value: string; done: boolean; to: string }) {
   return (
-    <Link to={to}>
-      <Card className="h-full hover:border-[#4d4d7e] transition-colors">
-        <div className="flex items-start gap-3">
-          <div className="rounded-xl p-2 flex-shrink-0" style={{ background: `${color}20` }}>
-            <Icon size={16} style={{ color }} />
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-semibold text-[#e8e8f0]">{label}</p>
-            {badge && <p className="text-[10px] text-[#606080] mt-0.5">{badge}</p>}
-          </div>
-        </div>
-      </Card>
+    <Link to={to} className="flex-1 text-center">
+      <p className="text-[8px] tracking-widest mb-1" style={{ fontFamily: 'var(--font-mono)', color: CHART_COLORS.textMuted }}>{label}</p>
+      <p className={clsx(
+        'text-base font-semibold',
+      )} style={{
+        fontFamily: 'var(--font-sans)',
+        color: done ? CHART_COLORS.aligned : CHART_COLORS.textPrimary,
+      }}>{value}</p>
+    </Link>
+  )
+}
+
+function NavPanel({ to, label, count }: { to: string; label: string; count?: number }) {
+  return (
+    <Link
+      to={to}
+      className="bg-[#141414] p-3 flex items-center justify-between transition-all duration-200 group"
+      style={{ borderLeft: '2px solid transparent' }}
+      onMouseEnter={e => (e.currentTarget.style.borderLeftColor = CHART_COLORS.brand)}
+      onMouseLeave={e => (e.currentTarget.style.borderLeftColor = 'transparent')}
+    >
+      <span className="text-[10px]" style={{ fontFamily: 'var(--font-mono)', color: CHART_COLORS.textSecondary }}>{label}</span>
+      {count !== undefined && count > 0 && (
+        <span className="text-[9px]" style={{ fontFamily: 'var(--font-mono)', color: CHART_COLORS.textMuted }}>{count}</span>
+      )}
     </Link>
   )
 }

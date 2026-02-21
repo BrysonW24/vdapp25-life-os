@@ -1,3 +1,13 @@
+// ─── System ──────────────────────────────────────────────────────────────────
+
+export type MindsetMode = 'terminal' | 'alignment' | 'arena' | 'command-center'
+
+export interface CompassMapping {
+  axis: 'B' | 'E' | 'S' | 'W'
+  label: string        // e.g. "Builder", "Energy", "Social", "Wealth"
+  pillarIds: number[]  // which pillars map to this axis
+}
+
 // ─── Identity ─────────────────────────────────────────────────────────────────
 
 export type AlignmentState = 'aligned' | 'drifting' | 'avoiding' | 'improving' | 'regressing'
