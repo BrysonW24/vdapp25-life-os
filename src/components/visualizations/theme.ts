@@ -1,34 +1,39 @@
 export const CHART_COLORS = {
-  bg: '#0C0C0C',
-  surface: '#141414',
-  surfaceLight: '#1C1C1C',
-  border: '#252525',
+  bg: '#0f0f1a',
+  surface: '#16162a',
+  surfaceLight: '#1e1e35',
+  border: '#2d2d4e',
 
-  textPrimary: '#F0EDE8',
-  textSecondary: '#8A847C',
-  textMuted: '#4A4640',
-  textDim: '#2A2622',
+  textPrimary: '#e8e8f0',
+  textSecondary: '#808090',
+  textMuted: '#606080',
+  textDim: '#404060',
 
-  brand: '#FF6B35',
-  brandLight: '#FF8A5C',
-  brandDim: 'rgba(255,107,53,0.12)',
+  brand: '#7c3aed',
+  brandLight: '#8b5cf6',
+  brandDim: 'rgba(124,58,237,0.12)',
+
+  // VD orange — reserved for hero score ring + max 2-3 accent moments
+  accent: '#FF6B35',
+  accentLight: '#FF8A5C',
+  accentDim: 'rgba(255,107,53,0.12)',
 
   // Semantic — alignment states
   aligned: '#22c55e',
   improving: '#3b82f6',
   drifting: '#eab308',
-  avoiding: '#FF6B35',
-  regressing: '#FF6B35',
+  avoiding: '#ef4444',
+  regressing: '#ef4444',
 
   // Severity
-  challenge: '#FF6B35',
+  challenge: '#ef4444',
   warning: '#eab308',
   opportunity: '#3b82f6',
   insight: '#8b5cf6',
 
   // Chart structure
-  gridLine: '#1A1816',
-  axisLine: '#252525',
-  tooltip: '#141414',
-  tooltipBorder: '#2A2622',
+  gridLine: '#1a1a30',
+  axisLine: '#2d2d4e',
+  tooltip: '#16162a',
+  tooltipBorder: '#2d2d4e',
 } as const

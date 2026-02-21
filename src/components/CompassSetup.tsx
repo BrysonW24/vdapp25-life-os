@@ -84,14 +84,14 @@ export function CompassSetup({ open, onClose }: CompassSetupProps) {
   return (
     <Modal open={open} onClose={onClose} title="Configure Compass">
       <div className="space-y-5">
-        <p className="text-xs" style={{ fontFamily: 'var(--font-mono)', color: '#4A4640' }}>
+        <p className="text-xs text-[#606080]" style={{ fontFamily: 'var(--font-mono)' }}>
           Map pillars to B.E.S.W. axes.
         </p>
 
         {mappings.map(m => (
           <div key={m.axis} className="space-y-2">
             <div className="flex items-center gap-2">
-              <span className="text-base font-bold w-5" style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', color: '#FF6B35' }}>{m.axis}</span>
+              <span className="text-base font-bold w-5 text-violet-500" style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic' }}>{m.axis}</span>
               <Input
                 value={m.label}
                 onChange={e => updateLabel(m.axis, e.target.value)}
@@ -106,10 +106,10 @@ export function CompassSetup({ open, onClose }: CompassSetupProps) {
                   <button
                     key={p.id}
                     onClick={() => togglePillar(m.axis, p.id)}
-                    className={`text-[10px] px-2.5 py-1 rounded-none border transition-colors duration-200 ${
+                    className={`text-[10px] px-2.5 py-1 rounded-lg border transition-colors duration-200 ${
                       active
-                        ? 'border-[#FF6B35]/40 bg-[#FF6B35]/10 text-[#FF8A5C]'
-                        : 'border-[#252525] bg-[#141414] text-[#4A4640] hover:text-[#8A847C]'
+                        ? 'border-violet-500/40 bg-violet-500/10 text-violet-400'
+                        : 'border-[#2d2d4e] bg-[#0f0f1a] text-[#606080] hover:text-[#808090]'
                     }`}
                     style={{ fontFamily: 'var(--font-mono)' }}
                   >

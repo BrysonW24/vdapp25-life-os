@@ -28,7 +28,23 @@ export function AlignmentCompass({ onEditMappings }: AlignmentCompassProps) {
     const cy = size / 2
     const maxR = size / 2 - 28
 
+    const defs = svg.append('defs')
     const g = svg.append('g')
+
+    // Glow filter for polygon
+    const glowFilter = defs.append('filter')
+      .attr('id', 'compass-glow')
+      .attr('x', '-50%').attr('y', '-50%')
+      .attr('width', '200%').attr('height', '200%')
+    glowFilter.append('feGaussianBlur')
+      .attr('in', 'SourceGraphic')
+      .attr('stdDeviation', '3')
+      .attr('result', 'blur')
+    glowFilter.append('feMerge')
+      .selectAll('feMergeNode')
+      .data(['blur', 'SourceGraphic'])
+      .enter().append('feMergeNode')
+      .attr('in', (d: string) => d)
 
     const axisOrder: Array<'B' | 'E' | 'S' | 'W'> = ['B', 'E', 'S', 'W']
     const angles: Record<string, number> = { B: -Math.PI / 2, E: Math.PI, S: 0, W: Math.PI / 2 }
@@ -44,7 +60,7 @@ export function AlignmentCompass({ onEditMappings }: AlignmentCompassProps) {
       axisLabels[m.axis] = m.label
     })
 
-    // Diamond grid lines (rotated 45° squares) instead of circles
+    // Diamond grid lines
     ;[25, 50, 75, 100].forEach((pct, i) => {
       const r = maxR * pct / 100
       const points = axisOrder.map(axis => {
@@ -72,40 +88,59 @@ export function AlignmentCompass({ onEditMappings }: AlignmentCompassProps) {
         .attr('stroke-width', 0.5)
     })
 
-    // Score polygon
+    // Score polygon with glow
     const points = axisOrder.map(axis => {
       const angle = angles[axis]
       const r = maxR * (axisScores[axis] / 100)
       return [cx + Math.cos(angle) * r, cy + Math.sin(angle) * r] as [number, number]
     })
 
+    // Glow layer
     g.append('polygon')
       .attr('points', points.map(p => p.join(',')).join(' '))
       .attr('fill', CHART_COLORS.brand)
-      .attr('fill-opacity', 0.06)
+      .attr('fill-opacity', 0.15)
+      .attr('stroke', CHART_COLORS.brand)
+      .attr('stroke-width', 1.5)
+      .attr('filter', 'url(#compass-glow)')
+      .attr('opacity', 0.5)
+
+    // Main polygon
+    g.append('polygon')
+      .attr('points', points.map(p => p.join(',')).join(' '))
+      .attr('fill', CHART_COLORS.brand)
+      .attr('fill-opacity', 0.08)
       .attr('stroke', CHART_COLORS.brand)
       .attr('stroke-width', 1)
 
-    // Score dots — small squares
+    // Score dots
     axisOrder.forEach(axis => {
       const angle = angles[axis]
       const r = maxR * (axisScores[axis] / 100)
-      g.append('rect')
-        .attr('x', cx + Math.cos(angle) * r - 2.5)
-        .attr('y', cy + Math.sin(angle) * r - 2.5)
-        .attr('width', 5)
-        .attr('height', 5)
+      const dx = cx + Math.cos(angle) * r
+      const dy = cy + Math.sin(angle) * r
+
+      // Glow
+      g.append('circle')
+        .attr('cx', dx).attr('cy', dy)
+        .attr('r', 6)
+        .attr('fill', CHART_COLORS.brand)
+        .attr('opacity', 0.15)
+
+      // Dot
+      g.append('circle')
+        .attr('cx', dx).attr('cy', dy)
+        .attr('r', 3)
         .attr('fill', CHART_COLORS.brand)
     })
 
-    // Center dot
+    // Center dot — orange accent
     const avgX = points.reduce((s, p) => s + p[0], 0) / 4
     const avgY = points.reduce((s, p) => s + p[1], 0) / 4
-    g.append('rect')
-      .attr('x', avgX - 2).attr('y', avgY - 2)
-      .attr('width', 4).attr('height', 4)
-      .attr('fill', CHART_COLORS.textPrimary)
-      .attr('opacity', 0.8)
+    g.append('circle')
+      .attr('cx', avgX).attr('cy', avgY)
+      .attr('r', 3)
+      .attr('fill', CHART_COLORS.accent)
 
     // Axis labels
     const labelOffset = 16
@@ -119,19 +154,17 @@ export function AlignmentCompass({ onEditMappings }: AlignmentCompassProps) {
     axisOrder.forEach(axis => {
       const pos = labelPositions[axis]
 
-      // Letter — Playfair italic orange
       g.append('text')
         .attr('x', pos.x)
         .attr('y', pos.y - 5)
         .attr('text-anchor', pos.anchor)
-        .attr('fill', CHART_COLORS.brand)
+        .attr('fill', CHART_COLORS.brandLight)
         .attr('font-size', 12)
         .attr('font-weight', 700)
         .attr('font-family', 'var(--font-display)')
         .attr('font-style', 'italic')
         .text(axis)
 
-      // Label
       g.append('text')
         .attr('x', pos.x)
         .attr('y', pos.y + 6)
@@ -141,7 +174,6 @@ export function AlignmentCompass({ onEditMappings }: AlignmentCompassProps) {
         .attr('font-family', 'var(--font-mono)')
         .text(axisLabels[axis].toUpperCase())
 
-      // Score
       g.append('text')
         .attr('x', pos.x)
         .attr('y', pos.y + 15)
@@ -156,16 +188,16 @@ export function AlignmentCompass({ onEditMappings }: AlignmentCompassProps) {
 
   if (compassMappings.length !== 4) {
     return (
-      <div className="border border-[#252525] bg-[#141414] p-4 rounded-sm">
-        <p className="text-[9px] font-medium tracking-[0.15em] text-[#4A4640] uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
+      <div className="rounded-xl border border-[#2d2d4e] bg-[#16162a] p-4">
+        <p className="text-[10px] font-medium tracking-[0.15em] text-[#606080] uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
           B.E.S.W. Compass
         </p>
-        <p className="text-xs mt-2" style={{ color: CHART_COLORS.textMuted }}>Map your pillars to activate.</p>
+        <p className="text-xs text-[#606080] mt-2">Map your pillars to activate.</p>
         {onEditMappings && (
           <button
             onClick={onEditMappings}
-            className="mt-3 text-[10px] font-medium transition-colors duration-200"
-            style={{ fontFamily: 'var(--font-mono)', color: CHART_COLORS.brand }}
+            className="mt-3 text-[10px] font-medium text-violet-500 hover:text-violet-400 transition-colors duration-200"
+            style={{ fontFamily: 'var(--font-mono)' }}
           >
             Configure compass &rarr;
           </button>
@@ -175,13 +207,13 @@ export function AlignmentCompass({ onEditMappings }: AlignmentCompassProps) {
   }
 
   return (
-    <div className="border border-[#252525] bg-[#141414] p-4 rounded-sm">
+    <div className="rounded-xl border border-[#2d2d4e] bg-[#16162a] p-4">
       <div className="flex items-center justify-between mb-2">
-        <p className="text-[9px] font-medium tracking-[0.15em] text-[#4A4640] uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
+        <p className="text-[10px] font-medium tracking-[0.15em] text-[#606080] uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
           B.E.S.W. Compass
         </p>
         {onEditMappings && (
-          <button onClick={onEditMappings} className="p-1 transition-colors duration-200" style={{ color: CHART_COLORS.textMuted }}>
+          <button onClick={onEditMappings} className="p-1 text-[#606080] hover:text-[#808090] transition-colors duration-200">
             <Settings2 size={12} strokeWidth={1.5} />
           </button>
         )}

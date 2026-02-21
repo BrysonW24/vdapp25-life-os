@@ -64,7 +64,6 @@ export function TimeAllocationSankey() {
     const ribbonStartX = leftX + leftW
     const ribbonEndX = rightX
 
-    // Right-side nodes
     const rightNodes: { label: string; hours: number; color: string }[] = []
     data.pillarHours.forEach(p => rightNodes.push({ label: p.name, hours: p.hours, color: p.color }))
     if (data.unassignedHours > 0) {
@@ -75,10 +74,11 @@ export function TimeAllocationSankey() {
     const totalHours = data.totalWeekHours
     const nodeGap = 2
 
-    // Left node — sharp rect, no radius
+    // Left node
     g.append('rect')
       .attr('x', leftX).attr('y', 0)
       .attr('width', leftW).attr('height', innerH)
+      .attr('rx', 4)
       .attr('fill', CHART_COLORS.surfaceLight)
 
     g.append('text')
@@ -107,14 +107,14 @@ export function TimeAllocationSankey() {
       const nodeH = Math.max(10, (node.hours / totalHours) * availH)
       const nodeY = yOffset
 
-      // Sharp rects — no border-radius
       g.append('rect')
         .attr('x', rightX).attr('y', nodeY)
         .attr('width', rightW).attr('height', nodeH)
+        .attr('rx', 3)
         .attr('fill', node.label === 'Drift' ? CHART_COLORS.surface : node.color)
         .attr('opacity', node.label === 'Drift' ? 0.3 : 0.6)
 
-      // Ribbon — 8% opacity
+      // Ribbon
       const leftY0 = yOffset
       const leftY1 = yOffset + nodeH
 
@@ -129,7 +129,7 @@ export function TimeAllocationSankey() {
       g.append('path')
         .attr('d', path.toString())
         .attr('fill', node.label === 'Drift' ? CHART_COLORS.textDim : node.color)
-        .attr('opacity', node.label === 'Drift' ? 0.03 : 0.08)
+        .attr('opacity', node.label === 'Drift' ? 0.03 : 0.1)
 
       // Label
       if (nodeH > 12) {
@@ -160,19 +160,19 @@ export function TimeAllocationSankey() {
 
   if (data.totalTracked === 0) {
     return (
-      <div className="border border-[#252525] bg-[#141414] p-4 rounded-sm">
-        <p className="text-[9px] font-medium tracking-[0.15em] text-[#4A4640] uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
+      <div className="rounded-xl border border-[#2d2d4e] bg-[#16162a] p-4">
+        <p className="text-[10px] font-medium tracking-[0.15em] text-[#606080] uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
           Time Allocation
         </p>
-        <p className="text-xs mt-2" style={{ color: CHART_COLORS.textMuted }}>Log habits this week to see your time flow.</p>
+        <p className="text-xs text-[#606080] mt-2">Log habits this week to see your time flow.</p>
       </div>
     )
   }
 
   return (
-    <div className="border border-[#252525] bg-[#141414] p-4 rounded-sm">
+    <div className="rounded-xl border border-[#2d2d4e] bg-[#16162a] p-4">
       <div className="mb-2">
-        <p className="text-[9px] font-medium tracking-[0.15em] text-[#4A4640] uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
+        <p className="text-[10px] font-medium tracking-[0.15em] text-[#606080] uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
           Time Allocation
         </p>
       </div>
