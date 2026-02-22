@@ -103,6 +103,28 @@ import { IntegrityIndex } from '@/components/visualizations/IntegrityIndex'
 import { CommitmentDebtLedger } from '@/components/visualizations/CommitmentDebtLedger'
 // Opportunity
 import { OpportunityPipeline } from '@/components/visualizations/OpportunityPipeline'
+// Parenting
+import { ParentingCostProjection } from '@/components/visualizations/ParentingCostProjection'
+import { DevelopmentalMilestoneTracker } from '@/components/visualizations/DevelopmentalMilestoneTracker'
+import { PresenceQualityIndex } from '@/components/visualizations/PresenceQualityIndex'
+import { ParentingReadinessRadar } from '@/components/visualizations/ParentingReadinessRadar'
+import { ChildhoodCapitalAllocation } from '@/components/visualizations/ChildhoodCapitalAllocation'
+import { FatherIntegrityModel } from '@/components/visualizations/FatherIntegrityModel'
+import { PatienceReserveGauge } from '@/components/visualizations/PatienceReserveGauge'
+import { CharacterInvestmentCurve } from '@/components/visualizations/CharacterInvestmentCurve'
+// Charity & Impact
+import { ImpactAllocationMap } from '@/components/visualizations/ImpactAllocationMap'
+import { GivingTrajectory } from '@/components/visualizations/GivingTrajectory'
+import { LivesImpactedCounter } from '@/components/visualizations/LivesImpactedCounter'
+import { ImpactTimeAllocation } from '@/components/visualizations/ImpactTimeAllocation'
+import { MoralAlignmentRadar } from '@/components/visualizations/MoralAlignmentRadar'
+import { ImpactEfficiencyScore } from '@/components/visualizations/ImpactEfficiencyScore'
+// Self-Mastery
+import { PurposeAlignmentHeatmap } from '@/components/visualizations/PurposeAlignmentHeatmap'
+import { EmotionalStabilityIndex } from '@/components/visualizations/EmotionalStabilityIndex'
+import { ContributionImpactFunnel } from '@/components/visualizations/ContributionImpactFunnel'
+import { AssumptionTracker } from '@/components/visualizations/AssumptionTracker'
+import { LongHorizonProjection } from '@/components/visualizations/LongHorizonProjection'
 import { useAlignments, useOverallScore } from '@/hooks/useIntelligence'
 import { useIdentity, usePillars } from '@/hooks/useIdentity'
 import { useGoals } from '@/hooks/useGoals'
@@ -421,6 +443,40 @@ const GALLERY_SECTIONS = [
       { name: 'Opportunity Pipeline', desc: 'Kanban funnel — identified → evaluating → acting → captured' },
     ],
   },
+  {
+    label: 'Parenting',
+    charts: [
+      { name: 'Parenting Cost Projection', desc: '0–18yr stacked cost bars by category — childcare, education, health, food, activities' },
+      { name: 'Developmental Milestone Tracker', desc: 'Horizontal timeline — physical, cognitive, language, social windows with current age cursor' },
+      { name: 'Presence Quality Index', desc: '7-day × 3-block grid — presence hours × quality score vs work displacement' },
+      { name: 'Parenting Readiness Radar', desc: 'Spider — financial runway, time, emotional bandwidth, stability, environment, support, health' },
+      { name: 'Childhood Capital Allocation', desc: 'Time + financial capital split across Foundation / Building / Launch stages' },
+      { name: 'Father Integrity Model', desc: 'Values modeled in action vs spoken about — the character architecture gap' },
+      { name: 'Patience Reserve Gauge', desc: 'Composite gauge — sleep, stress, relationship, health → capacity to parent well' },
+      { name: 'Character Investment Curve', desc: 'Deliberate vs passive parenting compound curves over 18 years' },
+    ],
+  },
+  {
+    label: 'Charity & Impact',
+    charts: [
+      { name: 'Impact Allocation Map', desc: 'Double donut — giving by cause (Education, Health, Climate) and geography (Local/National/Global)' },
+      { name: 'Giving Trajectory', desc: '20-year net worth vs giving curves — 2% vs 10% giving scenario comparison' },
+      { name: 'Lives Impacted Counter', desc: 'KPI grid — meals funded, education years, health interventions, trees planted' },
+      { name: 'Impact Time Allocation', desc: 'Monthly volunteer + mentorship + pro bono + content hours vs wealth hours' },
+      { name: 'Moral Alignment Radar', desc: '7-domain spider — Family, Wealth, Health, Community, Philanthropy, Spiritual Depth, Civilisation' },
+      { name: 'Impact Efficiency Score', desc: 'Impact per hour, per $1, per system built — with generational projection' },
+    ],
+  },
+  {
+    label: 'Self-Mastery',
+    charts: [
+      { name: 'Purpose Alignment Heatmap', desc: 'Weekly time blocks colored by category — mission vs noise density' },
+      { name: 'Emotional Stability Index', desc: 'Rolling 30-day volatility line — stress variance, impulse spikes, sleep' },
+      { name: 'Contribution Impact Funnel', desc: 'Time → Skill → Output → People → Multiplier flow diagram' },
+      { name: 'Assumption Tracker', desc: 'Hypothesis board — beliefs vs evidence for/against + confidence score' },
+      { name: '5-Year Domain Projection', desc: 'Current vs deliberate path divergence across Income, Skill, Health, Network, Impact' },
+    ],
+  },
 ]
 
 export function VisualizationsPage() {
@@ -455,7 +511,7 @@ export function VisualizationsPage() {
               className="text-[10px] text-[#606080] tracking-widest uppercase"
               style={{ fontFamily: 'var(--font-mono)' }}
             >
-              Life intelligence gallery · 75 charts
+              Life intelligence gallery · 94 charts
             </p>
           </div>
         </div>
@@ -493,7 +549,7 @@ export function VisualizationsPage() {
               className="text-[10px] tracking-[0.15em] uppercase text-[#808090] font-medium"
               style={{ fontFamily: 'var(--font-mono)' }}
             >
-              Gallery Guide — 25 sections · 75 visualizations
+              Gallery Guide — 28 sections · 94 visualizations
             </span>
           </div>
           <ChevronDown
@@ -840,6 +896,59 @@ export function VisualizationsPage() {
             <CommitmentDebtLedger />
           </div>
           <OpportunityPipeline />
+        </div>
+      </section>
+
+      {/* ═══ PARENTING ═══ */}
+      <section>
+        <SectionLabel label="Parenting" />
+        <div className="space-y-4">
+          {/* Financial layer */}
+          <ParentingCostProjection />
+          <ChildhoodCapitalAllocation />
+          {/* Readiness + preparation */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ParentingReadinessRadar />
+            <PatienceReserveGauge />
+          </div>
+          {/* Presence + engagement */}
+          <PresenceQualityIndex />
+          {/* Father quality layer */}
+          <CharacterInvestmentCurve />
+          <FatherIntegrityModel />
+          {/* Milestones */}
+          <DevelopmentalMilestoneTracker />
+        </div>
+      </section>
+
+      {/* ═══ CHARITY & IMPACT ═══ */}
+      <section>
+        <SectionLabel label="Charity & Impact" />
+        <div className="space-y-4">
+          <LivesImpactedCounter />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ImpactAllocationMap />
+            <MoralAlignmentRadar />
+          </div>
+          <GivingTrajectory />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ImpactTimeAllocation />
+            <ImpactEfficiencyScore />
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ SELF-MASTERY ═══ */}
+      <section>
+        <SectionLabel label="Self-Mastery" />
+        <div className="space-y-4">
+          <PurposeAlignmentHeatmap />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <EmotionalStabilityIndex />
+            <ContributionImpactFunnel />
+          </div>
+          <AssumptionTracker />
+          <LongHorizonProjection />
         </div>
       </section>
     </div>
