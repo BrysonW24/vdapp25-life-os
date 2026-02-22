@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Domain {
   label: string
@@ -39,7 +39,7 @@ export function FreshnessHalo({ domains = DEFAULT_DOMAINS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -86,7 +86,7 @@ export function FreshnessHalo({ domains = DEFAULT_DOMAINS }: Props) {
       const labelR = maxR + 14
       const lx = cx + Math.cos(midAngle) * labelR
       const ly = cy + Math.sin(midAngle) * labelR
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = domain.color
       ctx.textAlign = 'center'
       ctx.fillText(domain.label, lx, ly + 2)
@@ -105,11 +105,11 @@ export function FreshnessHalo({ domains = DEFAULT_DOMAINS }: Props) {
     ctx.lineWidth = 1
     ctx.stroke()
 
-    ctx.font = `700 14px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(14, width)}px 'Inter', sans-serif`
     ctx.fillStyle = avgColor
     ctx.textAlign = 'center'
     ctx.fillText(`${avg}`, cx, cy + 4)
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('FRESH', cx, cy + 12)
 

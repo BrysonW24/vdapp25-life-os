@@ -22,6 +22,7 @@
 }
 
 html {
+  overscroll-behavior: none;
   font-size: 16px;
 }
 
@@ -58,6 +59,66 @@ body {
 }
 .scroll-x-hide::-webkit-scrollbar { display: none; }
 
+/* ─── Theme overrides ──────────────────────────────────────────────────────── */
+
+/* Light theme */
+[data-theme="light"] {
+  --color-surface: #f4f4fa;
+  --color-surface-2: #eaeaf5;
+  --color-surface-3: #ddddf0;
+  --color-border: #c8c8e0;
+  --color-text: #1a1a2e;
+  --color-text-2: #4a4a6a;
+  --color-text-3: #6a6a8a;
+}
+
+[data-theme="light"] body {
+  background-color: #f4f4fa;
+  color: #1a1a2e;
+}
+
+/* Midnight theme */
+[data-theme="midnight"] {
+  --color-surface: #050510;
+  --color-surface-2: #0a0a1a;
+  --color-surface-3: #0f0f22;
+  --color-border: #1a1a35;
+  --color-text: #c8c8f0;
+  --color-text-2: #6060a0;
+  --color-text-3: #404070;
+}
+
+[data-theme="midnight"] body {
+  background-color: #050510;
+  color: #c8c8f0;
+}
+
+/* SVG hero animations */
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heroPulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+@keyframes heroOrbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes heroFlow {
+  from { stroke-dashoffset: 200; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes coachSlideIn {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0); opacity: 1; }
+}
+
 /* Glow pulse animation */
 @keyframes glowPulse {
   0%, 100% { opacity: 0.4; }
@@ -74,4 +135,13 @@ body {
 @keyframes arcSweep {
   from { stroke-dashoffset: var(--arc-length); }
   to { stroke-dashoffset: var(--arc-target); }
+}
+
+/* Horizontal scroll with snap — for agenda strips */
+.scroll-snap-x {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.scroll-snap-x > * {
+  scroll-snap-align: start;
 }

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Interaction {
   label: string
@@ -46,7 +46,7 @@ export function EnergyAfterInteraction({ interactions }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -84,7 +84,7 @@ export function EnergyAfterInteraction({ interactions }: Props) {
     }
 
     // Axis labels
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.fillText('Energy Before →', ml + chartW / 2, mt + chartH + 12)
@@ -95,7 +95,7 @@ export function EnergyAfterInteraction({ interactions }: Props) {
     ctx.restore()
 
     // Quadrant labels
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.globalAlpha = 0.3
     ctx.fillStyle = '#22c55e'
     ctx.textAlign = 'left'
@@ -126,7 +126,7 @@ export function EnergyAfterInteraction({ interactions }: Props) {
 
       // Label (only for larger dots)
       if (r > 4) {
-        ctx.font = `400 5px 'JetBrains Mono', monospace`
+        ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
         ctx.fillStyle = color
         ctx.textAlign = 'center'
         ctx.fillText(d.label, x, y - r - 3)

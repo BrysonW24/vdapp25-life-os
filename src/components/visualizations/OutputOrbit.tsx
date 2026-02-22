@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Output Orbit — every project/pursuit rendered as orbiting bodies
@@ -198,7 +198,7 @@ export function OutputOrbit({ projects = DEFAULT_PROJECTS }: Props) {
         ctx.shadowBlur = 0
 
         // Label
-        ctx.font = `500 7px 'JetBrains Mono', monospace`
+        ctx.font = `500 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
         ctx.fillStyle = body.color
         ctx.globalAlpha = Math.min(body.opacity + 0.15, 0.8)
         ctx.textAlign = 'center'
@@ -207,7 +207,7 @@ export function OutputOrbit({ projects = DEFAULT_PROJECTS }: Props) {
       })
 
       // Title
-      ctx.font = `500 8px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'center'
       ctx.letterSpacing = '2px'

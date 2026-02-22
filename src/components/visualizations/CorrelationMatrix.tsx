@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Correlation Matrix — five pillar nodes arranged as a pentagon.
@@ -146,7 +146,7 @@ export function CorrelationMatrix({ correlations = DEFAULT_CORRELATIONS }: Props
         if (corr.strength.startsWith('strong') && corr.note) {
           const mx = (fromNode.x + toNode.x) / 2
           const my = (fromNode.y + toNode.y) / 2
-          ctx.font = `400 5px 'JetBrains Mono', monospace`
+          ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
           ctx.fillStyle = config.color
           ctx.globalAlpha = 0.4
           ctx.textAlign = 'center'
@@ -179,13 +179,13 @@ export function CorrelationMatrix({ correlations = DEFAULT_CORRELATIONS }: Props
         ctx.globalAlpha = 1
 
         // Icon
-        ctx.font = `500 12px 'Inter', sans-serif`
+        ctx.font = `500 ${chartFontSize(12, width)}px 'Inter', sans-serif`
         ctx.fillStyle = node.color
         ctx.textAlign = 'center'
         ctx.fillText(node.icon, node.x, node.y + 5)
 
         // Label below
-        ctx.font = `600 8px 'JetBrains Mono', monospace`
+        ctx.font = `600 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
         ctx.fillStyle = node.color
         ctx.globalAlpha = 0.7
         ctx.fillText(node.label, node.x, node.y + 28)
@@ -193,7 +193,7 @@ export function CorrelationMatrix({ correlations = DEFAULT_CORRELATIONS }: Props
       })
 
       // Title
-      ctx.font = `500 8px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'center'
       ctx.letterSpacing = '2px'

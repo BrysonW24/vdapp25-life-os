@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Skill {
   label: string
@@ -42,7 +42,7 @@ export function SkillTreeProgression({ skills = DEFAULT_SKILLS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -61,7 +61,7 @@ export function SkillTreeProgression({ skills = DEFAULT_SKILLS }: Props) {
       const y = mt + i * (barH + gap)
 
       // Label
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textMuted
       ctx.textAlign = 'right'
       ctx.fillText(skill.label, ml - 6, y + barH / 2 + 2)
@@ -94,7 +94,7 @@ export function SkillTreeProgression({ skills = DEFAULT_SKILLS }: Props) {
       }
 
       // Level text
-      ctx.font = `500 5px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = skill.color
       ctx.textAlign = 'left'
       ctx.fillText(`${skill.level}`, ml + barWidth + 4, y + barH / 2 + 2)

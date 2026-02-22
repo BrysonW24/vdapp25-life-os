@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Props {
   data?: number[] // 12 months of rate-of-change values (-10 to 10)
@@ -31,7 +31,7 @@ export function TrajectoryDelta({ data }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -54,7 +54,7 @@ export function TrajectoryDelta({ data }: Props) {
     ctx.stroke()
 
     // Zone labels
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.globalAlpha = 0.3
     ctx.fillStyle = '#22c55e'
     ctx.textAlign = 'left'
@@ -108,11 +108,11 @@ export function TrajectoryDelta({ data }: Props) {
     // Current value
     const currentColor = current >= 2 ? '#22c55e' : current >= -2 ? '#eab308' : '#ef4444'
     const label = current >= 2 ? 'COMPOUNDING' : current >= -2 ? 'STAGNANT' : 'ERODING'
-    ctx.font = `700 12px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(12, width)}px 'Inter', sans-serif`
     ctx.fillStyle = currentColor
     ctx.textAlign = 'right'
     ctx.fillText(`${current >= 0 ? '+' : ''}${current.toFixed(1)}`, width - 12, mt + 12)
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText(label, width - 12, mt + 22)
 

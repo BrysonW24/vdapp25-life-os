@@ -37,3 +37,15 @@ export const CHART_COLORS = {
   tooltip: '#16162a',
   tooltipBorder: '#2d2d4e',
 } as const
+
+/**
+ * Scale canvas font sizes for mobile.
+ * base: the intended size at full width (desktop).
+ * width: container width from useContainerSize.
+ * Returns a clamped size that stays legible on small screens.
+ */
+export function chartFontSize(base: number, width: number): number {
+  if (width < 320) return Math.max(base * 0.82, 5)
+  if (width < 480) return Math.max(base * 0.90, 5)
+  return base
+}

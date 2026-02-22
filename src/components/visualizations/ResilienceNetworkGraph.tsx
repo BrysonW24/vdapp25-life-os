@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface PersonNode {
   name: string
@@ -58,7 +58,7 @@ export function ResilienceNetworkGraph({ people = DEFAULT_PEOPLE, edges = DEFAUL
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -130,7 +130,7 @@ export function ResilienceNetworkGraph({ people = DEFAULT_PEOPLE, edges = DEFAUL
         ctx.setLineDash([])
       }
 
-      ctx.font = `500 6px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = color
       ctx.textAlign = 'center'
       ctx.fillText(p.name, pos.x, pos.y + nodeR + 10)
@@ -141,7 +141,7 @@ export function ResilienceNetworkGraph({ people = DEFAULT_PEOPLE, edges = DEFAUL
     ctx.arc(cx, cy, 6, 0, Math.PI * 2)
     ctx.fillStyle = CHART_COLORS.brand
     ctx.fill()
-    ctx.font = `600 6px 'JetBrains Mono', monospace`
+    ctx.font = `600 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textPrimary
     ctx.textAlign = 'center'
     ctx.fillText('YOU', cx, cy + 14)

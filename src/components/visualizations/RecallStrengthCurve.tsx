@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface KnowledgeItem {
   label: string
@@ -40,7 +40,7 @@ export function RecallStrengthCurve({ items }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -71,7 +71,7 @@ export function RecallStrengthCurve({ items }: Props) {
     // Danger zone
     ctx.fillStyle = '#ef444408'
     ctx.fillRect(ml, mt + chartH * 0.7, chartW, chartH * 0.3)
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = '#ef4444'
     ctx.globalAlpha = 0.3
     ctx.textAlign = 'right'
@@ -99,7 +99,7 @@ export function RecallStrengthCurve({ items }: Props) {
       ctx.stroke()
 
       // Label
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = item.color
       ctx.textAlign = 'center'
       ctx.fillText(item.label, x, y - 10)
@@ -108,7 +108,7 @@ export function RecallStrengthCurve({ items }: Props) {
     })
 
     // Axis labels
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.fillText('Days since review →', ml + chartW / 2, mt + chartH + 14)

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Variable {
   label: string
@@ -58,7 +58,7 @@ export function UpstreamDownstreamView({ variables = DEFAULT_VARS, flows = DEFAU
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -70,7 +70,7 @@ export function UpstreamDownstreamView({ variables = DEFAULT_VARS, flows = DEFAU
 
     // Layer labels
     Object.entries(layers).forEach(([key, y]) => {
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'left'
       ctx.fillText(layerLabels[key as keyof typeof layerLabels], 8, y - 12)
@@ -118,7 +118,7 @@ export function UpstreamDownstreamView({ variables = DEFAULT_VARS, flows = DEFAU
       ctx.lineWidth = 1
       ctx.stroke()
 
-      ctx.font = `500 7px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = v.color
       ctx.textAlign = 'center'
       ctx.fillText(v.label, pos.x, pos.y + 3)

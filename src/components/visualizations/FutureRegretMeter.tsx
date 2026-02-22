@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Future Regret Meter — "If I repeat this week 52 times, am I proud?"
@@ -56,7 +56,7 @@ export function FutureRegretMeter({
       ctx.clearRect(0, 0, size, height)
 
       // Title
-      ctx.font = `500 8px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'center'
       ctx.letterSpacing = '2px'
@@ -130,7 +130,7 @@ export function FutureRegretMeter({
       ctx.fill()
 
       // Score
-      ctx.font = `700 28px 'Inter', sans-serif`
+      ctx.font = `700 ${chartFontSize(28, width)}px 'Inter', sans-serif`
       ctx.fillStyle = needleColor
       ctx.textAlign = 'center'
       ctx.fillText(`${weekScore}`, cx, cy - 24)
@@ -141,14 +141,14 @@ export function FutureRegretMeter({
         : weekScore > 30 ? 'CONCERN'
         : 'REGRET'
 
-      ctx.font = `600 9px 'JetBrains Mono', monospace`
+      ctx.font = `600 ${chartFontSize(9, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = needleColor
       ctx.globalAlpha = 0.7
       ctx.fillText(label, cx, cy - 10)
       ctx.globalAlpha = 1
 
       // Min/Max
-      ctx.font = `400 7px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       const minX = cx + Math.cos(startAngle) * (outerR + 14)
       const minY = cy + Math.sin(startAngle) * (outerR + 14)

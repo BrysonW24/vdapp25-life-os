@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Window of Tolerance — vertical gauge showing current arousal state.
@@ -69,7 +69,7 @@ export function WindowOfTolerance({
     const gaugeH = gaugeBottom - gaugeTop
 
     // Title
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -130,7 +130,7 @@ export function WindowOfTolerance({
     ctx.stroke()
 
     // Zone labels (left side)
-    ctx.font = `600 7px 'JetBrains Mono', monospace`
+    ctx.font = `600 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.textAlign = 'right'
 
     ctx.fillStyle = '#ef4444'
@@ -182,7 +182,7 @@ export function WindowOfTolerance({
     ctx.stroke()
 
     // Position value label
-    ctx.font = `700 10px 'JetBrains Mono', monospace`
+    ctx.font = `700 ${chartFontSize(10, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = markerColor
     ctx.textAlign = 'left'
     ctx.fillText(`${currentPosition}`, gaugeLeft + gaugeWidth + 8, posY + 4)
@@ -190,7 +190,7 @@ export function WindowOfTolerance({
     // === SPARKLINE (30-day history) ===
     if (sparkWidth > 40 && history.length > 1) {
       // Sparkline label
-      ctx.font = `500 6px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'center'
       ctx.fillText('30-DAY HISTORY', sparkLeft + sparkWidth / 2, gaugeTop - 2)

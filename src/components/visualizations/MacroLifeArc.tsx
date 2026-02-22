@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo } from 'react'
 import * as d3 from 'd3'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Macro Life Arc — age 20-80 timeline showing projected curves for

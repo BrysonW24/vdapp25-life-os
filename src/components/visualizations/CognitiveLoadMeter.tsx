@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface LoadSource {
   label: string
@@ -39,7 +39,7 @@ export function CognitiveLoadMeter({ sources = DEFAULT_SOURCES, capacity = 80 }:
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -87,18 +87,18 @@ export function CognitiveLoadMeter({ sources = DEFAULT_SOURCES, capacity = 80 }:
     ctx.lineCap = 'round'
     ctx.stroke()
 
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = '#ef4444'
     ctx.textAlign = 'center'
     ctx.fillText('CAP', cx + Math.cos(capAngle) * (markerR + 8), cy + Math.sin(capAngle) * (markerR + 8) + 2)
 
     // Center text
     const loadColor = totalLoad > capacity ? '#ef4444' : totalLoad > capacity * 0.8 ? '#eab308' : '#22c55e'
-    ctx.font = `700 18px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(18, width)}px 'Inter', sans-serif`
     ctx.fillStyle = loadColor
     ctx.textAlign = 'center'
     ctx.fillText(`${totalLoad}%`, cx, cy + 4)
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('UTILIZATION', cx, cy + 14)
 
@@ -114,7 +114,7 @@ export function CognitiveLoadMeter({ sources = DEFAULT_SOURCES, capacity = 80 }:
 
       ctx.fillStyle = src.color
       ctx.fillRect(lx, ly - 3, 6, 6)
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textMuted
       ctx.textAlign = 'left'
       ctx.fillText(`${src.label} (${src.load}%)`, lx + 10, ly + 2)

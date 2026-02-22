@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface DomainContribution {
   domain: string
@@ -44,7 +44,7 @@ export function MomentumVectorDial({
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -116,11 +116,11 @@ export function MomentumVectorDial({
     ctx.fill()
 
     // Speed value
-    ctx.font = `700 14px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(14, width)}px 'Inter', sans-serif`
     ctx.fillStyle = speedColor
     ctx.textAlign = 'center'
     ctx.fillText(`${speed}`, cx, cy + outerR + 24)
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText(`SPEED · ${direction}°`, cx, cy + outerR + 34)
 

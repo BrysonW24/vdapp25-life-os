@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Commitment {
   label: string
@@ -42,7 +42,7 @@ export function CommitmentDebtLedger({ commitments = DEFAULT_COMMITMENTS }: Prop
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -75,22 +75,22 @@ export function CommitmentDebtLedger({ commitments = DEFAULT_COMMITMENTS }: Prop
       ctx.fillRect(ml + 1, y + 1, barW, cardH - 2)
 
       // Label + domain
-      ctx.font = `500 6px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = c.color
       ctx.textAlign = 'left'
       ctx.fillText(c.label, ml + 8, y + 12)
 
       // Promised vs actual
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.fillText(`${c.promisedFreq} → ${c.actualFreq}`, ml + 8, y + 24)
 
       // Debt score + weeks
-      ctx.font = `700 8px 'Inter', sans-serif`
+      ctx.font = `700 ${chartFontSize(8, width)}px 'Inter', sans-serif`
       ctx.fillStyle = debtColor
       ctx.textAlign = 'right'
       ctx.fillText(`${c.debtScore}`, ml + cardW - 8, y + 14)
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.fillText(`${c.weeksMissing}w`, ml + cardW - 8, y + 24)
     })
@@ -98,11 +98,11 @@ export function CommitmentDebtLedger({ commitments = DEFAULT_COMMITMENTS }: Prop
     // Total debt
     const totalDebt = Math.round(sorted.reduce((s, c) => s + c.debtScore, 0) / sorted.length)
     const totalColor = totalDebt >= 60 ? '#ef4444' : totalDebt >= 35 ? '#eab308' : '#22c55e'
-    ctx.font = `700 10px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(10, width)}px 'Inter', sans-serif`
     ctx.fillStyle = totalColor
     ctx.textAlign = 'right'
     ctx.fillText(`${totalDebt}`, width - 12, 24)
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('AVG DEBT', width - 12, 32)
 

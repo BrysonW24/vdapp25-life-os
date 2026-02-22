@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface StressEvent {
   label: string
@@ -37,7 +37,7 @@ export function RecoveryHalfLife({ avgRecoveryDays = 4.4, events = DEFAULT_EVENT
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -70,12 +70,12 @@ export function RecoveryHalfLife({ avgRecoveryDays = 4.4, events = DEFAULT_EVENT
     ctx.stroke()
 
     // Value
-    ctx.font = `700 18px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(18, width)}px 'Inter', sans-serif`
     ctx.fillStyle = gaugeColor
     ctx.textAlign = 'center'
     ctx.fillText(`${avgRecoveryDays.toFixed(1)}`, gaugeCx, gaugeCy + 5)
 
-    ctx.font = `400 7px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('days avg recovery', gaugeCx, gaugeCy + 16)
 
@@ -89,7 +89,7 @@ export function RecoveryHalfLife({ avgRecoveryDays = 4.4, events = DEFAULT_EVENT
       const evColor = ev.recoveryDays <= 3 ? '#22c55e' : ev.recoveryDays <= 5 ? '#eab308' : '#ef4444'
 
       // Label
-      ctx.font = `500 7px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textSecondary
       ctx.textAlign = 'left'
       ctx.fillText(ev.label, 12, y + 6)
@@ -112,7 +112,7 @@ export function RecoveryHalfLife({ avgRecoveryDays = 4.4, events = DEFAULT_EVENT
       ctx.globalAlpha = 1
 
       // Recovery days
-      ctx.font = `600 7px 'JetBrains Mono', monospace`
+      ctx.font = `600 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = evColor
       ctx.textAlign = 'right'
       ctx.fillText(`${ev.recoveryDays}d`, width - 12, y + 14)

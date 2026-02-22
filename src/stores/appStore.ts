@@ -2,6 +2,8 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { LifeSeason, ReflectionType, MindsetMode, CompassMapping } from '@/types'
 
+export type Theme = 'dark' | 'light' | 'midnight'
+
 interface AppStore {
   // Onboarding
   onboardingComplete: boolean
@@ -22,6 +24,14 @@ interface AppStore {
   // UI
   activeReflectionType: ReflectionType
   setActiveReflectionType: (type: ReflectionType) => void
+
+  // Profile
+  userName: string
+  setUserName: (name: string) => void
+
+  // Theme
+  theme: Theme
+  setTheme: (theme: Theme) => void
 }
 
 export const useAppStore = create<AppStore>()(
@@ -41,6 +51,12 @@ export const useAppStore = create<AppStore>()(
 
       activeReflectionType: 'daily-am',
       setActiveReflectionType: (type) => set({ activeReflectionType: type }),
+
+      userName: '',
+      setUserName: (name) => set({ userName: name }),
+
+      theme: 'dark',
+      setTheme: (theme) => set({ theme }),
     }),
     {
       name: 'life-os-store',

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Stage {
   label: string
@@ -39,7 +39,7 @@ export function KnowledgeFlywheel({ stages = DEFAULT_STAGES, rpm = 58 }: Props) 
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -79,7 +79,7 @@ export function KnowledgeFlywheel({ stages = DEFAULT_STAGES, rpm = 58 }: Props) 
       const labelR = outerR + 14
       const lx = cx + Math.cos(midAngle) * labelR
       const ly = cy + Math.sin(midAngle) * labelR
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = stage.color
       ctx.textAlign = 'center'
       ctx.fillText(stage.label, lx, ly + 2)
@@ -107,11 +107,11 @@ export function KnowledgeFlywheel({ stages = DEFAULT_STAGES, rpm = 58 }: Props) 
     ctx.stroke()
 
     const rpmColor = rpm >= 60 ? '#22c55e' : rpm >= 35 ? '#eab308' : '#ef4444'
-    ctx.font = `700 14px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(14, width)}px 'Inter', sans-serif`
     ctx.fillStyle = rpmColor
     ctx.textAlign = 'center'
     ctx.fillText(`${rpm}`, cx, cy + 4)
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('RPM', cx, cy + 12)
 

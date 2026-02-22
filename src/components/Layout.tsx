@@ -194,7 +194,7 @@ export function Layout() {
         </header>
 
         {/* Main content */}
-        <main className="flex-1 px-4 py-6 max-w-2xl mx-auto w-full pb-24 lg:pb-8">
+        <main className="flex-1 px-3 sm:px-4 py-5 sm:py-6 max-w-2xl mx-auto w-full pb-24 lg:pb-8">
           <Outlet />
         </main>
       </div>
@@ -210,7 +210,7 @@ export function Layout() {
             end={to === '/'}
             className={({ isActive }) =>
               clsx(
-                'flex flex-col items-center gap-0.5 px-2 py-1 text-[9px] font-medium transition-colors duration-200',
+                'flex flex-col items-center gap-0.5 px-2 py-2 text-[9px] font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] justify-center',
                 isActive
                   ? 'text-violet-500'
                   : 'text-[#606080] hover:text-[#808090]',
@@ -218,7 +218,7 @@ export function Layout() {
             }
             style={{ fontFamily: 'var(--font-mono)' }}
           >
-            <Icon size={16} strokeWidth={1.5} />
+            <Icon size={18} strokeWidth={1.5} />
             {label}
           </NavLink>
         ))}

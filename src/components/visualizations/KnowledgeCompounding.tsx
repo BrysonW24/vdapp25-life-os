@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Props {
   data?: number[] // weekly knowledge accumulation scores
@@ -33,7 +33,7 @@ export function KnowledgeCompounding({ data }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -87,16 +87,16 @@ export function KnowledgeCompounding({ data }: Props) {
     // Current value
     const current = values[n - 1]
     const growth = ((current / values[0] - 1) * 100).toFixed(0)
-    ctx.font = `700 14px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(14, width)}px 'Inter', sans-serif`
     ctx.fillStyle = '#8b5cf6'
     ctx.textAlign = 'right'
     ctx.fillText(`+${growth}%`, width - 12, mt + 10)
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('COMPOUND GROWTH', width - 12, mt + 20)
 
     // Labels
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.textAlign = 'left'
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('LINEAR', toX(n - 1) - 40, toY(linearEnd) - 4)

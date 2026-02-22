@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Nutrition x Output Scatter — correlates diet quality with cognitive output.
@@ -94,7 +94,7 @@ export function NutritionOutputScatter({ data }: Props) {
     const yScale = (v: number) => margin.top + plotH - (v / 100) * plotH
 
     // Title
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -130,7 +130,7 @@ export function NutritionOutputScatter({ data }: Props) {
     ctx.stroke()
 
     // Axis labels
-    ctx.font = `400 7px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     for (let v = 0; v <= 100; v += 25) {
@@ -142,7 +142,7 @@ export function NutritionOutputScatter({ data }: Props) {
     }
 
     // Axis titles
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textMuted
     ctx.textAlign = 'center'
     ctx.fillText('DIET QUALITY', margin.left + plotW / 2, height - 4)
@@ -191,12 +191,12 @@ export function NutritionOutputScatter({ data }: Props) {
     // Correlation badge — top right
     const corrColor = correlation > 0.5 ? '#22c55e' : correlation > 0.2 ? '#eab308' : '#ef4444'
     const corrLabel = `r = ${correlation.toFixed(2)}`
-    ctx.font = `600 9px 'JetBrains Mono', monospace`
+    ctx.font = `600 ${chartFontSize(9, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = corrColor
     ctx.textAlign = 'right'
     ctx.fillText(corrLabel, width - margin.right, margin.top + 12)
 
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textMuted
     ctx.fillText('CORRELATION', width - margin.right, margin.top + 22)
   }, [width, height, points, correlation, trend, margin.top, margin.right, margin.bottom, margin.left])

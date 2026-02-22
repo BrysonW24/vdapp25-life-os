@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Props {
   temperature?: number // 0-100
@@ -32,7 +32,7 @@ export function BurnoutThermometer({ temperature = 58, zones = DEFAULT_ZONES }: 
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -54,7 +54,7 @@ export function BurnoutThermometer({ temperature = 58, zones = DEFAULT_ZONES }: 
       ctx.fillRect(barX, y1, barW, y2 - y1)
 
       // Zone label
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = zone.color
       ctx.globalAlpha = 0.5
       ctx.textAlign = 'left'
@@ -97,7 +97,7 @@ export function BurnoutThermometer({ temperature = 58, zones = DEFAULT_ZONES }: 
     ctx.fill()
 
     // Temperature reading
-    ctx.font = `700 16px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(16, width)}px 'Inter', sans-serif`
     ctx.fillStyle = mercuryColor
     ctx.textAlign = 'center'
     ctx.fillText(`${temperature}°`, barX + barW / 2, bulbCY + 5)

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Momentum Vector — a prominent arrow on canvas.
@@ -65,7 +65,7 @@ export function MomentumVector({
     const goalRad = ((goalDeg - 90) * Math.PI) / 180
 
     // Title
-    ctx.font = "500 8px 'JetBrains Mono', monospace"
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -101,7 +101,7 @@ export function MomentumVector({
     // Goal label
     const goalLabelX = cx + Math.cos(goalRad) * (maxLen + 20)
     const goalLabelY = cy + Math.sin(goalRad) * (maxLen + 20)
-    ctx.font = "400 7px 'JetBrains Mono', monospace"
+    ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.textBaseline = 'middle'
@@ -135,7 +135,7 @@ export function MomentumVector({
       const labelR = arcRadius + 12
       const labelX = cx + Math.cos(midAngle) * labelR
       const labelY = cy + Math.sin(midAngle) * labelR
-      ctx.font = "600 9px 'JetBrains Mono', monospace"
+      ctx.font = `600 ${chartFontSize(9, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = ctx.strokeStyle
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
@@ -204,23 +204,23 @@ export function MomentumVector({
           : CHART_COLORS.avoiding
 
     // Bottom left: domain + magnitude
-    ctx.font = "600 11px 'JetBrains Mono', monospace"
+    ctx.font = `600 ${chartFontSize(11, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = arrowColor
     ctx.textAlign = 'left'
     ctx.textBaseline = 'alphabetic'
     ctx.fillText(dominantDomain.toUpperCase(), 12, height - 24)
 
-    ctx.font = "400 8px 'JetBrains Mono', monospace"
+    ctx.font = `400 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textSecondary
     ctx.fillText(`Magnitude: ${magnitude}`, 12, height - 10)
 
     // Bottom right: alignment status
-    ctx.font = "600 10px 'JetBrains Mono', monospace"
+    ctx.font = `600 ${chartFontSize(10, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = statusColor
     ctx.textAlign = 'right'
     ctx.fillText(statusText, width - 12, height - 24)
 
-    ctx.font = "400 8px 'JetBrains Mono', monospace"
+    ctx.font = `400 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textSecondary
     ctx.fillText(
       `${Math.round(misalignment)}° off goal`,

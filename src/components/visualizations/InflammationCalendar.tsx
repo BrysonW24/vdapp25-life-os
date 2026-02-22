@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Inflammation Calendar — 90-day contribution-graph-style heatmap.
@@ -120,7 +120,7 @@ export function InflammationCalendar({ data }: Props) {
     ctx.clearRect(0, 0, width, canvasHeight)
 
     // Title
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -128,7 +128,7 @@ export function InflammationCalendar({ data }: Props) {
     ctx.letterSpacing = '0px'
 
     // Month labels along top
-    ctx.font = `400 7px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textMuted
     ctx.textAlign = 'left'
     for (const ml of grid.monthLabels) {
@@ -138,7 +138,7 @@ export function InflammationCalendar({ data }: Props) {
 
     // Day labels (Mon, Wed, Fri)
     const dayLabels = ['M', '', 'W', '', 'F', '', 'S']
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'right'
     dayLabels.forEach((label, i) => {
@@ -180,7 +180,7 @@ export function InflammationCalendar({ data }: Props) {
     ctx.fill()
     ctx.globalAlpha = 1
 
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'left'
     ctx.fillText('Inflammatory', legendX, legendY + legendH + 10)

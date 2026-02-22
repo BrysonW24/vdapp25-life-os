@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Life Ecosystem — system health panel showing all 5 pillars as a
@@ -84,7 +84,7 @@ export function LifeEcosystem({ scores = DEFAULT_SCORES }: Props) {
     const barMaxW = width - marginLeft - marginRight - connAreaW
 
     // Title
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -95,10 +95,10 @@ export function LifeEcosystem({ scores = DEFAULT_SCORES }: Props) {
     const overallColor = overallScore >= 70 ? CHART_COLORS.aligned
       : overallScore >= 50 ? CHART_COLORS.drifting
       : CHART_COLORS.avoiding
-    ctx.font = `700 16px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(16, width)}px 'Inter', sans-serif`
     ctx.fillStyle = overallColor
     ctx.fillText(`${overallScore}`, width / 2, 36)
-    ctx.font = `400 7px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('SYSTEM HEALTH', width / 2, 46)
 
@@ -120,7 +120,7 @@ export function LifeEcosystem({ scores = DEFAULT_SCORES }: Props) {
       }
 
       // Icon
-      ctx.font = `500 12px 'Inter', sans-serif`
+      ctx.font = `500 ${chartFontSize(12, width)}px 'Inter', sans-serif`
       ctx.fillStyle = pillar.color
       ctx.textAlign = 'center'
       ctx.globalAlpha = 0.7
@@ -128,19 +128,19 @@ export function LifeEcosystem({ scores = DEFAULT_SCORES }: Props) {
       ctx.globalAlpha = 1
 
       // Label
-      ctx.font = `600 9px 'JetBrains Mono', monospace`
+      ctx.font = `600 ${chartFontSize(9, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = pillar.color
       ctx.textAlign = 'left'
       ctx.fillText(pillar.label, 28, y + rowH / 2 - 2)
 
       // Score
-      ctx.font = `700 9px 'JetBrains Mono', monospace`
+      ctx.font = `700 ${chartFontSize(9, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = statusColor
       ctx.fillText(`${val}`, 28, y + rowH / 2 + 10)
 
       // Status word
       const statusLabel = val >= 70 ? 'HEALTHY' : val >= 50 ? 'DRIFTING' : 'CRITICAL'
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = statusColor
       ctx.globalAlpha = 0.6
       ctx.fillText(statusLabel, 52, y + rowH / 2 + 10)
@@ -183,7 +183,7 @@ export function LifeEcosystem({ scores = DEFAULT_SCORES }: Props) {
       }
 
       // Score at end of bar
-      ctx.font = `600 8px 'JetBrains Mono', monospace`
+      ctx.font = `600 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = pillar.color
       ctx.textAlign = 'left'
       ctx.globalAlpha = 0.5

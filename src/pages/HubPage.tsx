@@ -391,7 +391,7 @@ export function HubPage() {
           <p className="text-[10px] font-medium tracking-[0.15em] text-[#606080] uppercase mb-2 px-1" style={{ fontFamily: 'var(--font-mono)' }}>
             Today
           </p>
-          <div className="scroll-x-hide flex gap-2 -mx-4 px-4 py-1">
+          <div className="scroll-x-hide scroll-snap-x flex gap-2 -mx-4 px-4 py-1">
             {agendaItems.map((item, i) => (
               <Link key={i} to={item.to} className="flex-shrink-0" style={{ width: 140 }}>
                 <div

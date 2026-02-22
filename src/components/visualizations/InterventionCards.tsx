@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface DomainDelta {
   domain: string
@@ -51,7 +51,7 @@ export function InterventionCards({ interventions = DEFAULT_INTERVENTIONS }: Pro
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -73,12 +73,12 @@ export function InterventionCards({ interventions = DEFAULT_INTERVENTIONS }: Pro
       ctx.stroke()
 
       // Name + duration
-      ctx.font = `600 8px 'JetBrains Mono', monospace`
+      ctx.font = `600 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textPrimary
       ctx.textAlign = 'left'
       ctx.fillText(intv.name, 16, y + 16)
 
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'right'
       ctx.fillText(intv.duration, width - 16, y + 16)
@@ -97,7 +97,7 @@ export function InterventionCards({ interventions = DEFAULT_INTERVENTIONS }: Pro
         const isPositive = d.delta >= 0
 
         // Label
-        ctx.font = `400 6px 'JetBrains Mono', monospace`
+        ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
         ctx.fillStyle = CHART_COLORS.textDim
         ctx.textAlign = 'right'
         ctx.fillText(d.domain, 74, by + barH / 2 + 2)
@@ -110,7 +110,7 @@ export function InterventionCards({ interventions = DEFAULT_INTERVENTIONS }: Pro
         ctx.fill()
 
         // Value
-        ctx.font = `600 6px 'JetBrains Mono', monospace`
+        ctx.font = `600 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
         ctx.fillStyle = isPositive ? '#22c55e' : '#ef4444'
         ctx.textAlign = isPositive ? 'left' : 'right'
         const vx = isPositive ? centerX + barW + 3 : centerX - barW - 3

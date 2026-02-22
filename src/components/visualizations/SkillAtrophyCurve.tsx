@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Skill {
   label: string
@@ -40,7 +40,7 @@ export function SkillAtrophyCurve({ skills = DEFAULT_SKILLS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -83,7 +83,7 @@ export function SkillAtrophyCurve({ skills = DEFAULT_SKILLS }: Props) {
       ctx.stroke()
 
       // Label at current position
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = skill.color
       ctx.textAlign = 'left'
       ctx.fillText(`${skill.label} ${Math.round(currentLevel)}%`, cx + 6, cy + 3)
@@ -101,7 +101,7 @@ export function SkillAtrophyCurve({ skills = DEFAULT_SKILLS }: Props) {
     ctx.stroke()
     ctx.setLineDash([])
     ctx.globalAlpha = 1
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = '#ef4444'
     ctx.textAlign = 'right'
     ctx.fillText('ATROPHIED', ml + chartW, dangerY - 4)

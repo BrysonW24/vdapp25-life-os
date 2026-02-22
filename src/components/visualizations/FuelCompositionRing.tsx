@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Fuel Composition Ring — concentric arcs showing macro breakdown.
@@ -86,7 +86,7 @@ export function FuelCompositionRing({
     ctx.clearRect(0, 0, size, height)
 
     // Title
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -134,7 +134,7 @@ export function FuelCompositionRing({
     }
 
     // Calorie label on outer ring
-    ctx.font = `600 7px 'JetBrains Mono', monospace`
+    ctx.font = `600 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.accent
     ctx.textAlign = 'right'
     ctx.fillText(`${calories} / ${calorieTarget} kcal`, cx + maxR - 2, cy - maxR - 10)
@@ -185,7 +185,7 @@ export function FuelCompositionRing({
       const lx = cx + Math.cos(labelAngle) * labelR
       const ly = cy + Math.sin(labelAngle) * labelR
 
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = macro.color
       ctx.globalAlpha = 0.6
       ctx.textAlign = 'center'
@@ -200,18 +200,18 @@ export function FuelCompositionRing({
     const centerValue = Math.abs(deficit)
     const centerColor = isDeficit ? '#ef4444' : deficit < 0 ? '#22c55e' : CHART_COLORS.textPrimary
 
-    ctx.font = `700 22px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(22, width)}px 'Inter', sans-serif`
     ctx.fillStyle = centerColor
     ctx.textAlign = 'center'
     ctx.globalAlpha = 0.9
     ctx.fillText(`${centerValue}`, cx, cy - 2)
     ctx.globalAlpha = 1
 
-    ctx.font = `400 7px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textMuted
     ctx.fillText(centerLabel, cx, cy + 14)
 
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('kcal', cx, cy + 24)
   }, [size, height, calories, calorieTarget, deficit, calorieRatio, macroRatios])

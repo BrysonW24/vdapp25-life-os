@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Psychological Weather Map — topographic-style mental health terrain
@@ -125,7 +125,7 @@ export function PsychWeatherMap({
     ctx.clearRect(0, 0, width, height)
 
     // Title
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -239,7 +239,7 @@ export function PsychWeatherMap({
       ctx.stroke()
 
       // Label
-      ctx.font = `500 6px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = markerColor
       ctx.globalAlpha = 0.8
       ctx.textAlign = 'center'
@@ -248,7 +248,7 @@ export function PsychWeatherMap({
     })
 
     // X-axis month labels
-    ctx.font = `400 7px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     data.forEach((d, i) => {
@@ -258,7 +258,7 @@ export function PsychWeatherMap({
 
     // Y-axis labels (score ranges)
     ctx.textAlign = 'right'
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.globalAlpha = 0.6
     const yLabels = [

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Props {
   data?: number[][] // 12 months × 4 weeks
@@ -35,7 +35,7 @@ export function SeasonalityView({ data }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -53,7 +53,7 @@ export function SeasonalityView({ data }: Props) {
 
     // Month labels
     MONTHS.forEach((m, i) => {
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'center'
       ctx.fillText(m, ml + i * cellW + cellW / 2, mt + chartH + 12)
@@ -61,7 +61,7 @@ export function SeasonalityView({ data }: Props) {
 
     // Week labels
     for (let w = 0; w < rows; w++) {
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'right'
       ctx.fillText(`W${w + 1}`, ml - 4, mt + w * cellH + cellH / 2 + 2)
@@ -99,7 +99,7 @@ export function SeasonalityView({ data }: Props) {
       return avg > best.avg ? { i, avg } : best
     }, { i: 0, avg: 0 })
 
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = '#22c55e'
     ctx.textAlign = 'right'
     ctx.fillText(`PEAK: ${MONTHS[peakMonth.i]}`, width - 12, mt + 8)

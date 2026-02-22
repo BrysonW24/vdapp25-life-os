@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Cognitive Distortion Patterns — heatmap showing frequency of
@@ -92,7 +92,7 @@ export function CognitiveDistortionMap({ data }: Props) {
     const cellGap = 2
 
     // Title
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -104,7 +104,7 @@ export function CognitiveDistortionMap({ data }: Props) {
       const yBase = marginTop + ri * rowH
 
       // Row label
-      ctx.font = `500 7px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = distortion.color
       ctx.globalAlpha = 0.7
       ctx.textAlign = 'right'
@@ -127,7 +127,7 @@ export function CognitiveDistortionMap({ data }: Props) {
 
         // Value text in cell (only if cell is wide enough)
         if (cellW > 16 && val > 0) {
-          ctx.font = `600 7px 'JetBrains Mono', monospace`
+          ctx.font = `600 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
           ctx.fillStyle = CHART_COLORS.textPrimary
           ctx.globalAlpha = intensity > 0.5 ? 0.8 : 0.4
           ctx.textAlign = 'center'
@@ -148,7 +148,7 @@ export function CognitiveDistortionMap({ data }: Props) {
     })
 
     // Column (week) labels
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     weeks.forEach((week, ci) => {
@@ -163,7 +163,7 @@ export function CognitiveDistortionMap({ data }: Props) {
       const avg = vals.reduce((s, v) => s + v, 0) / vals.length
 
       // Average badge
-      ctx.font = `600 7px 'JetBrains Mono', monospace`
+      ctx.font = `600 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = distortion.color
       ctx.globalAlpha = 0.6
       ctx.textAlign = 'left'

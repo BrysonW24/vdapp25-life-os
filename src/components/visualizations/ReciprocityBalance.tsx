@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface RelBalance {
   name: string
@@ -39,7 +39,7 @@ export function ReciprocityBalance({ relationships = DEFAULT_RELS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -56,7 +56,7 @@ export function ReciprocityBalance({ relationships = DEFAULT_RELS }: Props) {
       const y = mt + i * rowH
 
       // Name
-      ctx.font = `500 7px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textSecondary
       ctx.textAlign = 'right'
       ctx.fillText(rel.name, ml - 8, y + rowH / 2 + 3)
@@ -104,7 +104,7 @@ export function ReciprocityBalance({ relationships = DEFAULT_RELS }: Props) {
     ctx.stroke()
 
     // Labels
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = '#3b82f6'
     ctx.textAlign = 'right'
     ctx.fillText('GIVEN', centerX - 4, mt - 4)

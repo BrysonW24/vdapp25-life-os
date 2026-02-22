@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Props {
   inputs?: string[]
@@ -41,7 +41,7 @@ export function CausalImpactMatrix({
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -55,7 +55,7 @@ export function CausalImpactMatrix({
     const cellH = (height - mt - mb) / rows
 
     // Column headers (rotated)
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textSecondary
     outcomes.forEach((o, i) => {
       ctx.save()
@@ -68,7 +68,7 @@ export function CausalImpactMatrix({
 
     // Row labels + cells
     inputs.forEach((inp, r) => {
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textSecondary
       ctx.textAlign = 'right'
       ctx.fillText(inp, ml - 4, mt + r * cellH + cellH / 2 + 2)
@@ -93,7 +93,7 @@ export function CausalImpactMatrix({
 
         // Value
         if (intensity > 0.1) {
-          ctx.font = `500 6px 'JetBrains Mono', monospace`
+          ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
           ctx.fillStyle = effect > 0 ? '#22c55e' : '#ef4444'
           ctx.textAlign = 'center'
           ctx.globalAlpha = 0.7

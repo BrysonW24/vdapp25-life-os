@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Body Energy Reactor — arc-reactor-style health visualization.
@@ -135,7 +135,7 @@ export function BodyEnergyReactor({
         const lx = cx + Math.cos(labelAngle) * labelR
         const ly = cy + Math.sin(labelAngle) * labelR
 
-        ctx.font = `400 6px 'JetBrains Mono', monospace`
+        ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
         ctx.fillStyle = ring.color
         ctx.globalAlpha = 0.5
         ctx.textAlign = 'center'
@@ -164,19 +164,19 @@ export function BodyEnergyReactor({
       ctx.fill()
 
       // Core percentage
-      ctx.font = `700 20px 'Inter', sans-serif`
+      ctx.font = `700 ${chartFontSize(20, width)}px 'Inter', sans-serif`
       ctx.fillStyle = CHART_COLORS.textPrimary
       ctx.globalAlpha = 0.9
       ctx.textAlign = 'center'
       ctx.fillText(`${Math.round(coreIntensity * 100)}`, cx, cy - 2)
       ctx.globalAlpha = 1
 
-      ctx.font = `400 7px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textMuted
       ctx.fillText('REACTOR', cx, cy + 12)
 
       // Title
-      ctx.font = `500 8px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.letterSpacing = '2px'
       ctx.fillText('BODY ENERGY', size / 2, 14)

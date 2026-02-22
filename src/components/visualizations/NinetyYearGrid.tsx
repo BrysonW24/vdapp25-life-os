@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo } from 'react'
 import * as d3 from 'd3'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * 90-Year Grid (Memento Mori) — 90 rows × 52 columns = 4,680 weeks of life.
@@ -60,7 +60,7 @@ export function NinetyYearGrid({ birthYear = 1997, birthMonth = 2 }: Props) {
     ctx.clearRect(0, 0, width, totalH)
 
     // Title
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -68,13 +68,13 @@ export function NinetyYearGrid({ birthYear = 1997, birthMonth = 2 }: Props) {
     ctx.letterSpacing = '0px'
 
     // Weeks lived label
-    ctx.font = `400 7px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textMuted
     ctx.textAlign = 'right'
     ctx.fillText(`${weeksLived.toLocaleString()} weeks lived`, width - marginRight, 10)
 
     // Age labels on left (every 10 years)
-    ctx.font = `400 7px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'right'
     for (let y = 0; y <= TOTAL_YEARS; y += 10) {

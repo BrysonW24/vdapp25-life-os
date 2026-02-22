@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface PressureSource {
   label: string
@@ -39,7 +39,7 @@ export function BurnoutPressureSystem({ sources = DEFAULT_SOURCES, threshold = 6
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -115,11 +115,11 @@ export function BurnoutPressureSystem({ sources = DEFAULT_SOURCES, threshold = 6
     ctx.fillStyle = CHART_COLORS.surface
     ctx.fill()
 
-    ctx.font = `700 14px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(14, width)}px 'Inter', sans-serif`
     ctx.fillStyle = pressColor
     ctx.textAlign = 'center'
     ctx.fillText(`${Math.round(totalPressure)}`, cx, cy + 4)
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('PSI', cx, cy + 12)
 
@@ -130,7 +130,7 @@ export function BurnoutPressureSystem({ sources = DEFAULT_SOURCES, threshold = 6
       const ly = legendY + Math.floor(i / 3) * 12
       ctx.fillStyle = src.color
       ctx.fillRect(lx, ly - 3, 6, 6)
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textMuted
       ctx.textAlign = 'left'
       ctx.fillText(`${src.label} ${src.pressure}`, lx + 10, ly + 2)

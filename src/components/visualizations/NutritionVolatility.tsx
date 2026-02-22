@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Props {
   calories?: number[]
@@ -44,7 +44,7 @@ export function NutritionVolatility({ calories, protein, fiber }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -67,7 +67,7 @@ export function NutritionVolatility({ calories, protein, fiber }: Props) {
       const maxVar = Math.max(...s.data, 1)
 
       // Label
-      ctx.font = `600 8px 'JetBrains Mono', monospace`
+      ctx.font = `600 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = s.color
       ctx.textAlign = 'right'
       ctx.fillText(s.label, marginLeft - 8, baseY + rowH / 2 + 3)
@@ -103,7 +103,7 @@ export function NutritionVolatility({ calories, protein, fiber }: Props) {
 
       // Current variance value
       const currentVar = s.data[s.data.length - 1]
-      ctx.font = `700 9px 'JetBrains Mono', monospace`
+      ctx.font = `700 ${chartFontSize(9, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = s.color
       ctx.textAlign = 'left'
       ctx.fillText(`σ ${currentVar.toFixed(0)}`, marginLeft + sparkW + 6, baseY + rowH / 2 + 3)

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Causal Chain Renderer — directed graph showing causal chains between
@@ -182,7 +182,7 @@ export function CausalChainRenderer({
       ctx.fillRect(0, 0, size, height)
 
       // Title
-      ctx.font = `500 8px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'center'
       ctx.letterSpacing = '2px'
@@ -253,7 +253,7 @@ export function CausalChainRenderer({
         ctx.stroke()
 
         // Icon
-        ctx.font = '12px sans-serif'
+        ctx.font = `${chartFontSize(12, width)}px sans-serif`
         ctx.fillStyle = CHART_COLORS.textPrimary
         ctx.textAlign = 'center'
         ctx.textBaseline = 'middle'
@@ -261,7 +261,7 @@ export function CausalChainRenderer({
         ctx.textBaseline = 'alphabetic'
 
         // Label
-        ctx.font = `600 7px 'JetBrains Mono', monospace`
+        ctx.font = `600 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
         ctx.fillStyle = CHART_COLORS.textSecondary
         ctx.globalAlpha = 0.8
         ctx.fillText(node.label, node.x, node.y + nodeRadius + 12)

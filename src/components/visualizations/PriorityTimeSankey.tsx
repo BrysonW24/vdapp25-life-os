@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Flow {
   priority: string
@@ -40,7 +40,7 @@ export function PriorityTimeSankey({ flows = DEFAULT_FLOWS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -78,7 +78,7 @@ export function PriorityTimeSankey({ flows = DEFAULT_FLOWS }: Props) {
       ctx.lineWidth = 1
       ctx.stroke()
 
-      ctx.font = `500 5px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = f.color
       ctx.textAlign = 'center'
       ctx.fillText(`#${f.priorityRank} ${f.priority}`, leftX + colW / 2, y + barH / 2 + 2)
@@ -100,7 +100,7 @@ export function PriorityTimeSankey({ flows = DEFAULT_FLOWS }: Props) {
       ctx.lineWidth = 1
       ctx.stroke()
 
-      ctx.font = `500 5px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = f.color
       ctx.textAlign = 'center'
       if (h > 14) ctx.fillText(`${f.timePercent}%`, rightX + colW / 2, rightY + h / 2 + 2)
@@ -137,7 +137,7 @@ export function PriorityTimeSankey({ flows = DEFAULT_FLOWS }: Props) {
     })
 
     // Column headers
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.fillText('PRIORITY', leftX + colW / 2, mt - 8)

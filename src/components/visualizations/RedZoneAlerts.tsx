@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Alert {
   domain: string
@@ -40,7 +40,7 @@ export function RedZoneAlerts({ alerts = DEFAULT_ALERTS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -72,21 +72,21 @@ export function RedZoneAlerts({ alerts = DEFAULT_ALERTS }: Props) {
       ctx.fill()
 
       // Domain + metric
-      ctx.font = `500 7px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textPrimary
       ctx.textAlign = 'left'
       ctx.fillText(alert.domain.toUpperCase(), ml + 22, y + 13)
 
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textMuted
       ctx.fillText(`${alert.metric}: ${alert.value} (threshold: ${alert.threshold})`, ml + 22, y + 24)
 
       // Days in zone badge
-      ctx.font = `500 6px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = color
       ctx.textAlign = 'right'
       ctx.fillText(`${alert.daysInZone}d`, ml + cardW - 10, y + 13)
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.fillText('in zone', ml + cardW - 10, y + 22)
     })
@@ -95,7 +95,7 @@ export function RedZoneAlerts({ alerts = DEFAULT_ALERTS }: Props) {
     const critical = alerts.filter(a => a.severity === 'critical').length
     const warnings = alerts.filter(a => a.severity === 'warning').length
     const summaryY = mt + alerts.length * (cardH + gap) + 8
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.textAlign = 'center'
     ctx.fillStyle = critical > 0 ? '#ef4444' : '#eab308'
     ctx.fillText(`${critical} CRITICAL · ${warnings} WARNING`, width / 2, summaryY)

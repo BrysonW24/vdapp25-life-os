@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * One Lever Analysis — identifies the single highest-leverage change
@@ -54,7 +54,7 @@ export function OneLeverAnalysis({ levers = DEFAULT_LEVERS }: Props) {
     const maxImpact = topLever.impactCoefficient
 
     // Title
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -75,7 +75,7 @@ export function OneLeverAnalysis({ levers = DEFAULT_LEVERS }: Props) {
       const isTop = i === 0
 
       // Label
-      ctx.font = `${isTop ? 700 : 500} 8px 'JetBrains Mono', monospace`
+      ctx.font = `${isTop ? 700 : 500} ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = lever.color
       ctx.textAlign = 'right'
       ctx.globalAlpha = isTop ? 1 : 0.6
@@ -101,7 +101,7 @@ export function OneLeverAnalysis({ levers = DEFAULT_LEVERS }: Props) {
       ctx.globalAlpha = 1
 
       // Impact value
-      ctx.font = `${isTop ? 700 : 500} 9px 'JetBrains Mono', monospace`
+      ctx.font = `${isTop ? 700 : 500} ${chartFontSize(9, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = lever.color
       ctx.textAlign = 'left'
       ctx.globalAlpha = isTop ? 1 : 0.5
@@ -109,7 +109,7 @@ export function OneLeverAnalysis({ levers = DEFAULT_LEVERS }: Props) {
       ctx.globalAlpha = 1
 
       // Current score (small)
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'right'
       ctx.fillText(`${lever.currentScore}`, labelW - ctx.measureText(lever.domain).width - 8, y + barHeight / 2 + 3)
@@ -129,12 +129,12 @@ export function OneLeverAnalysis({ levers = DEFAULT_LEVERS }: Props) {
     ctx.roundRect(12, calloutY, width - 24, 36, 6)
     ctx.stroke()
 
-    ctx.font = `600 7px 'JetBrains Mono', monospace`
+    ctx.font = `600 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = topLever.color
     ctx.textAlign = 'center'
     ctx.fillText('THIS WEEK\'S LEVER', width / 2, calloutY + 14)
 
-    ctx.font = `400 8px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textSecondary
     ctx.fillText(
       `Improve ${topLever.domain} by 10% → total score +${topLever.impactCoefficient.toFixed(1)}%`,

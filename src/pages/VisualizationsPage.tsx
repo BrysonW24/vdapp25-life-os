@@ -460,6 +460,25 @@ export function VisualizationsPage() {
         </div>
       </div>
 
+      {/* Mobile section jump bar — horizontal pill scroller */}
+      <div className="lg:hidden -mx-3 sm:-mx-4">
+        <div className="scroll-x-hide flex gap-2 px-3 sm:px-4 pb-1">
+          {GALLERY_SECTIONS.map(({ label }) => (
+            <button
+              key={label}
+              onClick={() => {
+                const el = document.getElementById(`section-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`)
+                el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }}
+              className="flex-shrink-0 px-3 py-1.5 rounded-full text-[9px] font-medium tracking-[0.1em] uppercase border border-[#2d2d4e] text-[#606080] hover:text-[#e8e8f0] hover:border-violet-500/40 transition-colors whitespace-nowrap"
+              style={{ fontFamily: 'var(--font-mono)' }}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Gallery Guide */}
       <div className="rounded-xl border border-[#2d2d4e] bg-[#16162a] overflow-hidden">
         <button
@@ -827,8 +846,9 @@ export function VisualizationsPage() {
 }
 
 function SectionLabel({ label }: { label: string }) {
+  const id = `section-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
   return (
-    <div className="flex items-center gap-3 mb-3">
+    <div id={id} className="flex items-center gap-3 mb-3 scroll-mt-16">
       <p
         className="text-[9px] tracking-[0.2em] uppercase text-[#404060] font-medium"
         style={{ fontFamily: 'var(--font-mono)' }}

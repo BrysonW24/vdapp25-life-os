@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Reserve {
   label: string
@@ -38,7 +38,7 @@ export function ReservesGauge({ reserves = DEFAULT_RESERVES }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -99,13 +99,13 @@ export function ReservesGauge({ reserves = DEFAULT_RESERVES }: Props) {
       }
 
       // Level %
-      ctx.font = `700 8px 'Inter', sans-serif`
+      ctx.font = `700 ${chartFontSize(8, width)}px 'Inter', sans-serif`
       ctx.fillStyle = levelColor
       ctx.textAlign = 'center'
       ctx.fillText(`${res.level}`, x + gaugeW / 2, fillY - 6)
 
       // Label
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textMuted
       ctx.fillText(res.label.slice(0, 5), x + gaugeW / 2, mt + gaugeH + 10)
     })
@@ -113,11 +113,11 @@ export function ReservesGauge({ reserves = DEFAULT_RESERVES }: Props) {
     // Overall composite
     const avg = Math.round(reserves.reduce((s, r) => s + r.level, 0) / reserves.length)
     const avgColor = avg < 30 ? '#ef4444' : avg < 50 ? '#eab308' : '#22c55e'
-    ctx.font = `700 10px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(10, width)}px 'Inter', sans-serif`
     ctx.fillStyle = avgColor
     ctx.textAlign = 'right'
     ctx.fillText(`${avg}%`, width - 12, 24)
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('AVG', width - 12, 32)
 

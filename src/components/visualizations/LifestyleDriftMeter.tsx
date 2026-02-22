@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Lifestyle Drift Meter — a gauge showing the gap between

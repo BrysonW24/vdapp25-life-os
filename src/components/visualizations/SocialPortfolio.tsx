@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Social Portfolio — concentric donut chart showing relationship allocation.
@@ -77,7 +77,7 @@ export function SocialPortfolio({
     const innerThickness = 18
 
     // Title
-    ctx.font = "500 8px 'JetBrains Mono', monospace"
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -132,7 +132,7 @@ export function SocialPortfolio({
     drawRing(innerR, innerThickness, desireds, totalDesired, colors, 0.35)
 
     // Ring labels
-    ctx.font = "400 6px 'JetBrains Mono', monospace"
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'left'
     ctx.fillText('ACTUAL', cx + outerR - outerThickness + 4, cy - outerR - 4)
@@ -140,11 +140,11 @@ export function SocialPortfolio({
 
     // Center content
     ctx.textAlign = 'center'
-    ctx.font = "700 28px 'Inter', sans-serif"
+    ctx.font = `700 ${chartFontSize(28, width)}px 'Inter', sans-serif`
     ctx.fillStyle = CHART_COLORS.textPrimary
     ctx.fillText(`${totalRelationships}`, cx, cy + 4)
 
-    ctx.font = "400 7px 'JetBrains Mono', monospace"
+    ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('RELATIONSHIPS', cx, cy + 18)
 
@@ -201,7 +201,7 @@ export function SocialPortfolio({
       const lx = cx + labelR * Math.cos(midAngle)
       const ly = cy + labelR * Math.sin(midAngle)
 
-      ctx.font = "600 7px 'JetBrains Mono', monospace"
+      ctx.font = `600 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = seg.color
       ctx.textAlign = 'center'
       ctx.globalAlpha = 0.8

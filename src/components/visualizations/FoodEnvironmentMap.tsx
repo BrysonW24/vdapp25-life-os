@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Environment {
   name: string
@@ -39,7 +39,7 @@ export function FoodEnvironmentMap({ environments = DEFAULT_ENVS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -54,7 +54,7 @@ export function FoodEnvironmentMap({ environments = DEFAULT_ENVS }: Props) {
       const y = mt + i * rowH
 
       // Label
-      ctx.font = `600 8px 'JetBrains Mono', monospace`
+      ctx.font = `600 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = env.color
       ctx.textAlign = 'right'
       ctx.fillText(env.name, ml - 8, y + rowH / 2 + 3)
@@ -76,13 +76,13 @@ export function FoodEnvironmentMap({ environments = DEFAULT_ENVS }: Props) {
       ctx.fill()
 
       // Percentage
-      ctx.font = `700 8px 'JetBrains Mono', monospace`
+      ctx.font = `700 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = env.color
       ctx.textAlign = 'left'
       ctx.fillText(`${env.caloriePercent}%`, ml + barMaxW + 6, y + rowH / 2 - 1)
 
       // Spend
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.fillText(`$${env.avgSpend}/wk`, ml + barMaxW + 6, y + rowH / 2 + 9)
     })

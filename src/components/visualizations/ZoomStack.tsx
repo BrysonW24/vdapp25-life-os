@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface TimeLayer {
   label: string
@@ -38,7 +38,7 @@ export function ZoomStack({ layers = DEFAULT_LAYERS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -72,13 +72,13 @@ export function ZoomStack({ layers = DEFAULT_LAYERS }: Props) {
       ctx.fillRect(x + 8, y + layerH - 6, barW, 3)
 
       // Label (left)
-      ctx.font = `500 6px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = layer.color
       ctx.textAlign = 'left'
       ctx.fillText(layer.label, x + 8, y + 14)
 
       // Score (right)
-      ctx.font = `700 10px 'Inter', sans-serif`
+      ctx.font = `700 ${chartFontSize(10, width)}px 'Inter', sans-serif`
       ctx.fillStyle = layer.color
       ctx.textAlign = 'right'
       ctx.fillText(`${layer.score}`, x + w - 8, y + 16)

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Props {
   load?: number[]     // 12 weeks of load scores (0-100)
@@ -34,7 +34,7 @@ export function LoadRecoveryPhase({ load, recovery }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -87,13 +87,13 @@ export function LoadRecoveryPhase({ load, recovery }: Props) {
     const phase = lastLoad > lastRec * 1.2 ? 'OVERLOADED' : lastRec > lastLoad * 1.2 ? 'RECOVERING' : 'BALANCED'
     const phaseColor = phase === 'OVERLOADED' ? '#ef4444' : phase === 'RECOVERING' ? '#22c55e' : '#3b82f6'
 
-    ctx.font = `700 12px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(12, width)}px 'Inter', sans-serif`
     ctx.fillStyle = phaseColor
     ctx.textAlign = 'right'
     ctx.fillText(phase, width - 12, mt + 10)
 
     // Line labels
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.textAlign = 'left'
     ctx.fillStyle = '#ef4444'
     ctx.fillText('LOAD', toX(n - 1) + 4, toY(lastLoad) + 3)

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Goal {
   label: string
@@ -43,7 +43,7 @@ export function WinRateDifficulty({ goals = DEFAULT_GOALS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -72,7 +72,7 @@ export function WinRateDifficulty({ goals = DEFAULT_GOALS }: Props) {
     ctx.setLineDash([])
 
     // Quadrant labels
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.globalAlpha = 0.25
     ctx.textAlign = 'center'
     ctx.fillStyle = '#22c55e'
@@ -110,7 +110,7 @@ export function WinRateDifficulty({ goals = DEFAULT_GOALS }: Props) {
       ctx.stroke()
       ctx.globalAlpha = 1
 
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = g.color
       ctx.textAlign = 'center'
       ctx.fillText(g.label, x, y - 8)

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Life System Dependency Map — weighted directed graph showing how
@@ -95,7 +95,7 @@ export function LifeSystemDependencyMap({ nodes = DEFAULT_NODES, edges = DEFAULT
       ctx.clearRect(0, 0, size, height)
 
       // Title
-      ctx.font = `500 8px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'center'
       ctx.letterSpacing = '2px'
@@ -192,13 +192,13 @@ export function LifeSystemDependencyMap({ nodes = DEFAULT_NODES, edges = DEFAULT
         ctx.globalAlpha = 1
 
         // Health number
-        ctx.font = `700 9px 'JetBrains Mono', monospace`
+        ctx.font = `700 ${chartFontSize(9, width)}px 'JetBrains Mono', monospace`
         ctx.fillStyle = node.color
         ctx.textAlign = 'center'
         ctx.fillText(`${node.health}`, node.x, node.y + 3)
 
         // Label
-        ctx.font = `500 7px 'JetBrains Mono', monospace`
+        ctx.font = `500 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
         ctx.fillStyle = node.color
         ctx.globalAlpha = 0.6
         ctx.fillText(node.label, node.x, node.y + nodeR + 14)

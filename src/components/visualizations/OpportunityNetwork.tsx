@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Opportunity Network — force-directed network graph rendered on Canvas.
@@ -100,7 +100,7 @@ export function OpportunityNetwork({ nodes = DEFAULT_NODES }: Props) {
     const cy = 14 + size / 2
 
     // Title
-    ctx.font = "500 8px 'JetBrains Mono', monospace"
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -129,7 +129,7 @@ export function OpportunityNetwork({ nodes = DEFAULT_NODES }: Props) {
           ctx.setLineDash([])
           ctx.globalAlpha = 1
 
-          ctx.font = "400 6px 'JetBrains Mono', monospace"
+          ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
           ctx.fillStyle = DOMAIN_COLORS[domain as Domain]
           ctx.globalAlpha = 0.3
           ctx.fillText('GAP', gapX, gapY + 2)
@@ -170,7 +170,7 @@ export function OpportunityNetwork({ nodes = DEFAULT_NODES }: Props) {
     ctx.lineWidth = 1.5
     ctx.stroke()
 
-    ctx.font = "700 7px 'JetBrains Mono', monospace"
+    ctx.font = `700 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textPrimary
     ctx.textAlign = 'center'
     ctx.fillText('YOU', cx, cy + 3)
@@ -220,7 +220,7 @@ export function OpportunityNetwork({ nodes = DEFAULT_NODES }: Props) {
       ctx.globalAlpha = 1
 
       // Value inside node
-      ctx.font = "600 7px 'JetBrains Mono', monospace"
+      ctx.font = `600 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = color
       ctx.globalAlpha = 0.8
       ctx.fillText(`${node.opportunityValue}`, node.x, node.y + 3)
@@ -230,7 +230,7 @@ export function OpportunityNetwork({ nodes = DEFAULT_NODES }: Props) {
     // Top leverage label
     const topPositioned = positioned.filter(n => topNodes.includes(n.id))
     if (topPositioned.length > 0) {
-      ctx.font = "400 6px 'JetBrains Mono', monospace"
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'right'
       ctx.fillText('★ = HIGH LEVERAGE', width - 8, totalHeight - 4)

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface DataSource {
   label: string
@@ -44,7 +44,7 @@ export function DataFreshnessMap({ sources = DEFAULT_SOURCES }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -88,13 +88,13 @@ export function DataFreshnessMap({ sources = DEFAULT_SOURCES }: Props) {
       ctx.fillRect(x + 2, y + cellH - barH - 2, (w - 4) * Math.min(1, freshness), barH)
 
       // Label
-      ctx.font = `500 6px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = color
       ctx.textAlign = 'left'
       ctx.fillText(src.label, x + 6, y + 12)
 
       // Staleness info
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.fillText(`${src.daysSinceUpdate}d ago`, x + 6, y + 22)
 
@@ -114,11 +114,11 @@ export function DataFreshnessMap({ sources = DEFAULT_SOURCES }: Props) {
     const pct = Math.round((fresh / total) * 100)
     const sumColor = pct >= 80 ? '#22c55e' : pct >= 50 ? '#eab308' : '#ef4444'
 
-    ctx.font = `700 10px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(10, width)}px 'Inter', sans-serif`
     ctx.fillStyle = sumColor
     ctx.textAlign = 'center'
     ctx.fillText(`${pct}% FRESH`, width / 2, summaryY)
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText(`${fresh}/${total} sources current`, width / 2, summaryY + 12)
 

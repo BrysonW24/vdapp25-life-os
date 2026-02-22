@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Props {
   data?: number[] // 12 weekly integrity scores (0-100)
@@ -38,7 +38,7 @@ export function IntegrityIndex({ data, domains = DEFAULT_DOMAINS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -68,11 +68,11 @@ export function IntegrityIndex({ data, domains = DEFAULT_DOMAINS }: Props) {
     ctx.stroke()
 
     // Current score
-    ctx.font = `700 16px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(16, width)}px 'Inter', sans-serif`
     ctx.fillStyle = trendColor
     ctx.textAlign = 'right'
     ctx.fillText(`${Math.round(current)}`, width - 12, mt + 16)
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('INTEGRITY', width - 12, mt + 24)
 
@@ -86,7 +86,7 @@ export function IntegrityIndex({ data, domains = DEFAULT_DOMAINS }: Props) {
       const barColor = d.score >= 65 ? d.color : d.score >= 40 ? '#eab308' : '#ef4444'
 
       // Label
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textMuted
       ctx.textAlign = 'right'
       ctx.fillText(d.label, ml + 36, y + barH / 2 + 2)
@@ -106,7 +106,7 @@ export function IntegrityIndex({ data, domains = DEFAULT_DOMAINS }: Props) {
       ctx.strokeRect(barX, y, fillW, barH)
 
       // Score
-      ctx.font = `500 6px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = barColor
       ctx.textAlign = 'left'
       ctx.fillText(`${d.score}`, barX + fillW + 4, y + barH / 2 + 2)

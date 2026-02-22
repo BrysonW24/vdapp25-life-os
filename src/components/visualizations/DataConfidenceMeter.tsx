@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface DomainConfidence {
   domain: string
@@ -41,7 +41,7 @@ export function DataConfidenceMeter({ domains = DEFAULT_DOMAINS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -59,7 +59,7 @@ export function DataConfidenceMeter({ domains = DEFAULT_DOMAINS }: Props) {
       const confColor = confidence >= 70 ? d.color : confidence >= 40 ? '#eab308' : '#ef4444'
 
       // Label
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textMuted
       ctx.textAlign = 'right'
       ctx.fillText(d.domain, ml - 6, y + barH / 2 + 2)
@@ -90,7 +90,7 @@ export function DataConfidenceMeter({ domains = DEFAULT_DOMAINS }: Props) {
       ctx.stroke()
 
       // Confidence %
-      ctx.font = `500 6px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = confColor
       ctx.textAlign = 'left'
       ctx.fillText(`${confidence}%`, ml + totalW + 4, y + barH / 2 + 2)
@@ -101,11 +101,11 @@ export function DataConfidenceMeter({ domains = DEFAULT_DOMAINS }: Props) {
       s + (d.freshness * 0.4 + d.consistency * 0.4 + Math.min(d.dataPoints / 300, 1) * 100 * 0.2), 0) / domains.length)
     const overColor = overallConf >= 70 ? '#22c55e' : overallConf >= 40 ? '#eab308' : '#ef4444'
 
-    ctx.font = `700 10px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(10, width)}px 'Inter', sans-serif`
     ctx.fillStyle = overColor
     ctx.textAlign = 'right'
     ctx.fillText(`${overallConf}%`, width - 12, 24)
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('OVERALL', width - 12, 32)
 

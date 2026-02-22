@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Investment {
   label: string
@@ -40,7 +40,7 @@ export function LearningROI({ investments = DEFAULT_INVESTMENTS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -63,7 +63,7 @@ export function LearningROI({ investments = DEFAULT_INVESTMENTS }: Props) {
     ctx.setLineDash([])
 
     // Zone labels
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.globalAlpha = 0.25
     ctx.textAlign = 'center'
     ctx.fillStyle = '#22c55e'
@@ -91,7 +91,7 @@ export function LearningROI({ investments = DEFAULT_INVESTMENTS }: Props) {
       ctx.globalAlpha = 1
 
       // Label
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = inv.color
       ctx.textAlign = 'center'
       ctx.fillText(inv.label, x, y - r - 4)
@@ -100,7 +100,7 @@ export function LearningROI({ investments = DEFAULT_INVESTMENTS }: Props) {
     })
 
     // Axis labels
-    ctx.font = `400 6px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.fillText('Hours invested →', ml + chartW / 2, mt + chartH + 14)

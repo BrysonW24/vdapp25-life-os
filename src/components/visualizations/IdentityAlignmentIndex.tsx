@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Identity Alignment Index — dual overlapping spider webs.
@@ -71,7 +71,7 @@ export function IdentityAlignmentIndex({ axes = DEFAULT_AXES }: Props) {
       ctx.clearRect(0, 0, size, height)
 
       // Title
-      ctx.font = `500 8px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'center'
       ctx.letterSpacing = '2px'
@@ -104,7 +104,7 @@ export function IdentityAlignmentIndex({ axes = DEFAULT_AXES }: Props) {
 
         // Label
         const lp = getPoint(i, 115)
-        ctx.font = `600 8px 'JetBrains Mono', monospace`
+        ctx.font = `600 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
         ctx.fillStyle = CHART_COLORS.textSecondary
         ctx.textAlign = 'center'
         ctx.fillText(a.label, lp.x, lp.y + 3)
@@ -188,12 +188,12 @@ export function IdentityAlignmentIndex({ axes = DEFAULT_AXES }: Props) {
 
       // Center score
       const alignmentScore = Math.max(0, 100 - totalGap)
-      ctx.font = `700 18px 'Inter', sans-serif`
+      ctx.font = `700 ${chartFontSize(18, width)}px 'Inter', sans-serif`
       ctx.fillStyle = alignmentScore > 70 ? CHART_COLORS.aligned : alignmentScore > 40 ? CHART_COLORS.drifting : CHART_COLORS.avoiding
       ctx.textAlign = 'center'
       ctx.fillText(`${alignmentScore}`, cx, cy + 6)
 
-      ctx.font = `400 7px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.fillText('ALIGNMENT', cx, cy + 18)
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Opportunity {
   label: string
@@ -45,7 +45,7 @@ export function OpportunityPipeline({ opportunities = DEFAULT_OPPORTUNITIES }: P
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -63,11 +63,11 @@ export function OpportunityPipeline({ opportunities = DEFAULT_OPPORTUNITIES }: P
       const x = ml + i * colW
       const count = opportunities.filter(o => o.stage === stage).length
 
-      ctx.font = `500 6px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = STAGE_COLORS[stage]
       ctx.textAlign = 'center'
       ctx.fillText(stage.toUpperCase(), x + colW / 2, mt - 8)
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.fillText(`(${count})`, x + colW / 2, mt - 1)
 
@@ -129,7 +129,7 @@ export function OpportunityPipeline({ opportunities = DEFAULT_OPPORTUNITIES }: P
       }
 
       // Label
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = opp.color
       ctx.textAlign = 'left'
       const maxChars = Math.floor(w / 4)
@@ -137,7 +137,7 @@ export function OpportunityPipeline({ opportunities = DEFAULT_OPPORTUNITIES }: P
       ctx.fillText(displayLabel, x + 6, y + 10)
 
       // Potential
-      ctx.font = `500 5px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.fillText(`${opp.potential}p`, x + 6, y + 19)
     })

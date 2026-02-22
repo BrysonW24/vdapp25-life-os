@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface DayPoint {
   mood: number    // 0-100
@@ -41,7 +41,7 @@ export function MoodEnergyStressTriangle({ points }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -70,7 +70,7 @@ export function MoodEnergyStressTriangle({ points }: Props) {
     ctx.fill()
 
     // Axis labels
-    ctx.font = `600 8px 'JetBrains Mono', monospace`
+    ctx.font = `600 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.textAlign = 'center'
     ctx.fillStyle = '#22c55e'
     ctx.fillText('MOOD', top.x, top.y - 8)
@@ -122,7 +122,7 @@ export function MoodEnergyStressTriangle({ points }: Props) {
       ctx.lineWidth = 1.5
       ctx.stroke()
 
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textSecondary
       ctx.textAlign = 'left'
       ctx.fillText('7d center', cx2 + 10, cy2 + 3)

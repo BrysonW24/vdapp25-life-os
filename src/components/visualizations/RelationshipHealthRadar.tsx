@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Relationship {
   name: string
@@ -39,7 +39,7 @@ export function RelationshipHealthRadar({ relationships = DEFAULT_RELATIONSHIPS 
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -81,7 +81,7 @@ export function RelationshipHealthRadar({ relationships = DEFAULT_RELATIONSHIPS 
 
       const lx = cx + Math.cos(angle) * (maxR + 14)
       const ly = cy + Math.sin(angle) * (maxR + 14)
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'center'
       ctx.fillText(axis, lx, ly + 3)

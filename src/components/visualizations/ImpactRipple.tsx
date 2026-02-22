@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 /**
  * Impact Ripple — a stone dropped into still water. You are the stone.
@@ -104,7 +104,7 @@ export function ImpactRipple({ layers = DEFAULT_LAYERS }: Props) {
         ctx.save()
         ctx.translate(lx, ly)
         ctx.rotate(labelAngle + Math.PI / 2)
-        ctx.font = `400 6px 'JetBrains Mono', monospace`
+        ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
         ctx.fillStyle = layer.color
         ctx.globalAlpha = 0.5 + reach * 0.3
         ctx.textAlign = 'center'
@@ -146,13 +146,13 @@ export function ImpactRipple({ layers = DEFAULT_LAYERS }: Props) {
       ctx.fill()
 
       // "YOU" label
-      ctx.font = `700 7px 'JetBrains Mono', monospace`
+      ctx.font = `700 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textMuted
       ctx.textAlign = 'center'
       ctx.fillText('YOU', cx, cy + 16)
 
       // Title
-      ctx.font = `500 8px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.letterSpacing = '2px'
       ctx.fillText('IMPACT RIPPLE', size / 2, 12)

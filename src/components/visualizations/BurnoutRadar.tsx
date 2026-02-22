@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Props {
   scores?: { domain: string; exhaustion: number; cynicism: number; inefficacy: number }[]
@@ -33,7 +33,7 @@ export function BurnoutRadar({ scores = DEFAULT_SCORES }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -91,7 +91,7 @@ export function BurnoutRadar({ scores = DEFAULT_SCORES }: Props) {
 
       const lx = cx + Math.cos(angle) * (maxR + 14)
       const ly = cy + Math.sin(angle) * (maxR + 14)
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'center'
       ctx.fillText(s.domain, lx, ly + 3)
@@ -130,7 +130,7 @@ export function BurnoutRadar({ scores = DEFAULT_SCORES }: Props) {
       const lx = width / 2 - 60 + i * 50
       ctx.fillStyle = dim.color
       ctx.fillRect(lx, legendY - 3, 6, 6)
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textMuted
       ctx.textAlign = 'left'
       ctx.fillText(dim.label, lx + 10, legendY + 2)

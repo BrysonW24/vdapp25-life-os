@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface WeekData {
   week: string
@@ -41,7 +41,7 @@ export function RuminationsVsAction({ data = DEFAULT_DATA }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -60,7 +60,7 @@ export function RuminationsVsAction({ data = DEFAULT_DATA }: Props) {
       const actFrac = d.actionMin / total
 
       // Week label
-      ctx.font = `500 7px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'right'
       ctx.fillText(d.week, ml - 6, y + rowH / 2 + 3)
@@ -89,7 +89,7 @@ export function RuminationsVsAction({ data = DEFAULT_DATA }: Props) {
       // Ratio
       const ratio = Math.round(actFrac * 100)
       const ratioColor = ratio >= 60 ? '#22c55e' : ratio >= 50 ? '#eab308' : '#ef4444'
-      ctx.font = `600 7px 'JetBrains Mono', monospace`
+      ctx.font = `600 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = ratioColor
       ctx.textAlign = 'left'
       ctx.fillText(`${ratio}%`, ml + chartW + 6, y + rowH / 2 + 3)

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useMemo } from 'react'
 import * as d3 from 'd3'
 import { useContainerSize } from '@/components/visualizations/useContainerSize'
-import { CHART_COLORS } from '@/components/visualizations/theme'
+import { CHART_COLORS, chartFontSize } from '@/components/visualizations/theme'
 import { parseISO } from 'date-fns'
 import type { Reflection } from '@/types'
 

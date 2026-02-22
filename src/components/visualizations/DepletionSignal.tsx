@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Deficiency {
   nutrient: string
@@ -41,7 +41,7 @@ export function DepletionSignal({ deficiencies = DEFAULT_DEFICIENCIES }: Props) 
     ctx.scale(dpr, dpr)
 
     // Title
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -133,7 +133,7 @@ export function DepletionSignal({ deficiencies = DEFAULT_DEFICIENCIES }: Props) 
       }
 
       // Nutrient name
-      ctx.font = `600 8px 'JetBrains Mono', monospace`
+      ctx.font = `600 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = d.color
       ctx.textAlign = 'left'
       ctx.fillText(d.nutrient, labelX, y)
@@ -153,13 +153,13 @@ export function DepletionSignal({ deficiencies = DEFAULT_DEFICIENCIES }: Props) 
       ctx.globalAlpha = 1
 
       // Level value
-      ctx.font = `500 7px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(7, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = d.color
       ctx.textAlign = 'right'
       ctx.fillText(`${d.level}%`, width - 12, y + 10)
 
       // Symptom
-      ctx.font = `400 6px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'left'
       ctx.fillText(d.symptom, labelX, y + 22)

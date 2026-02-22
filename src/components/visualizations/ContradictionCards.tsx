@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface CardData {
   belief: string
@@ -38,7 +38,7 @@ export function ContradictionCards({ cards = DEFAULT_CARDS }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -68,18 +68,18 @@ export function ContradictionCards({ cards = DEFAULT_CARDS }: Props) {
       ctx.fillRect(ml + 1, y + cardH - barH, 3, barH)
 
       // Belief
-      ctx.font = `500 6px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textPrimary
       ctx.textAlign = 'left'
       ctx.fillText(`"${card.belief}"`, ml + 12, y + 13)
 
       // Evidence
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = card.color
       ctx.fillText(`↳ ${card.evidence}`, ml + 12, y + 26)
 
       // Confidence badge
-      ctx.font = `500 6px 'JetBrains Mono', monospace`
+      ctx.font = `500 ${chartFontSize(6, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = card.color
       ctx.textAlign = 'right'
       ctx.fillText(`${card.confidence}%`, ml + cardW - 8, y + 20)

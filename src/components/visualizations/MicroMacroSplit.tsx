@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Props {
   micro?: number[] // 30 daily scores
@@ -34,7 +34,7 @@ export function MicroMacroSplit({ micro, macro }: Props) {
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -47,7 +47,7 @@ export function MicroMacroSplit({ micro, macro }: Props) {
 
     // MICRO panel (top — daily noise)
     const microTop = mt
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = '#3b82f6'
     ctx.textAlign = 'left'
     ctx.fillText('DAILY (30d)', ml, microTop + 8)
@@ -92,7 +92,7 @@ export function MicroMacroSplit({ micro, macro }: Props) {
 
     // MACRO panel (bottom — monthly trend)
     const macroTop = divY + 4
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = '#8b5cf6'
     ctx.textAlign = 'left'
     ctx.fillText('MONTHLY (12m)', ml, macroTop + 8)
@@ -129,11 +129,11 @@ export function MicroMacroSplit({ micro, macro }: Props) {
     const divergence = ((microAvg - macroLast) / macroLast * 100).toFixed(0)
     const divColor = Math.abs(microAvg - macroLast) > 15 ? '#eab308' : '#22c55e'
 
-    ctx.font = `700 10px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(10, width)}px 'Inter', sans-serif`
     ctx.fillStyle = divColor
     ctx.textAlign = 'right'
     ctx.fillText(`${Number(divergence) > 0 ? '+' : ''}${divergence}%`, width - 12, mt + 8)
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('DIVERGENCE', width - 12, mt + 16)
 

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useContainerSize } from './useContainerSize'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 interface Contradiction {
   stated: string
@@ -39,7 +39,7 @@ export function ContradictionSurface({ contradictions = DEFAULT_CONTRADICTIONS }
     canvas.style.height = `${height}px`
     ctx.scale(dpr, dpr)
 
-    ctx.font = `500 8px 'JetBrains Mono', monospace`
+    ctx.font = `500 ${chartFontSize(8, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.textAlign = 'center'
     ctx.letterSpacing = '2px'
@@ -73,7 +73,7 @@ export function ContradictionSurface({ contradictions = DEFAULT_CONTRADICTIONS }
 
       // Stated vs actual
       const midX = ml + cardW / 2
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
 
       // Left side — stated
       ctx.fillStyle = '#22c55e'
@@ -91,7 +91,7 @@ export function ContradictionSurface({ contradictions = DEFAULT_CONTRADICTIONS }
       ctx.fillText(c.actual, midX + 8, y + 12)
 
       // Domain + severity
-      ctx.font = `400 5px 'JetBrains Mono', monospace`
+      ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
       ctx.fillStyle = CHART_COLORS.textDim
       ctx.textAlign = 'left'
       ctx.fillText(c.domain, ml + 8, y + 23)
@@ -105,11 +105,11 @@ export function ContradictionSurface({ contradictions = DEFAULT_CONTRADICTIONS }
     const integrity = Math.round(100 - avgSeverity)
     const intColor = integrity >= 60 ? '#22c55e' : integrity >= 35 ? '#eab308' : '#ef4444'
 
-    ctx.font = `700 10px 'Inter', sans-serif`
+    ctx.font = `700 ${chartFontSize(10, width)}px 'Inter', sans-serif`
     ctx.fillStyle = intColor
     ctx.textAlign = 'right'
     ctx.fillText(`${integrity}%`, width - 12, 24)
-    ctx.font = `400 5px 'JetBrains Mono', monospace`
+    ctx.font = `400 ${chartFontSize(5, width)}px 'JetBrains Mono', monospace`
     ctx.fillStyle = CHART_COLORS.textDim
     ctx.fillText('INTEGRITY', width - 12, 32)
 

@@ -1,5 +1,5 @@
 import { useAlignments } from '@/hooks/useIntelligence'
-import { CHART_COLORS } from './theme'
+import { CHART_COLORS, chartFontSize } from './theme'
 
 function getStateColor(state: string): string {
   switch (state) {
