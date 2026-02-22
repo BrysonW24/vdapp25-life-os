@@ -1,3 +1,4 @@
+import { PageHero } from '@/components/illustrations/PageHero'
 import { CompoundingIndex } from '@/components/visualizations/CompoundingIndex'
 import { IntelligenceSpider } from '@/components/visualizations/IntelligenceSpider'
 import { StructuralIntegrity } from '@/components/visualizations/StructuralIntegrity'
@@ -459,6 +460,7 @@ export function VisualizationsPage() {
           </div>
         </div>
       </div>
+      <PageHero variant="visualizations" />
 
       {/* Mobile section jump bar — horizontal pill scroller */}
       <div className="lg:hidden -mx-3 sm:-mx-4">

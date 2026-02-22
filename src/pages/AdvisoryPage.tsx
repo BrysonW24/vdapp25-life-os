@@ -100,6 +100,7 @@ function AdvisoryCanvas() {
   return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} />
 }
 import { Card } from '@/components/ui/Card'
+import { PageHero } from '@/components/illustrations/PageHero'
 import { AlertSeverityBars } from '@/components/visualizations/AlertSeverityBars'
 import { Button } from '@/components/ui/Button'
 import { EmptyState } from '@/components/ui/EmptyState'
@@ -191,6 +192,7 @@ export function AdvisoryPage() {
           {dismissedCount > 0 && <span className="text-[#404060]"> · {dismissedCount} dismissed</span>}
         </p>
       </div>
+      <PageHero variant="advisory" />
 
       {/* Philosophy note */}
       <Card className="border-red-500/20 bg-red-500/5">

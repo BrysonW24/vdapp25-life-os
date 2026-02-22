@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Layout } from '@/components/Layout'
+import { SettingsPage } from '@/pages/SettingsPage'
+import { applyTheme } from '@/lib/theme'
 import { SplashPage } from '@/components/splash/SplashPage'
 import { OnboardingFlow } from '@/components/onboarding/OnboardingFlow'
 import { HubPage } from '@/pages/HubPage'
@@ -20,6 +22,7 @@ export function App() {
 
   useEffect(() => {
     seedResources()
+    applyTheme(useAppStore.getState().theme)
   }, [])
 
   // Show splash on first visit (before onboarding)
@@ -48,6 +51,7 @@ export function App() {
           <Route path="advisory" element={<AdvisoryPage />} />
           <Route path="intelligence" element={<IntelligencePage />} />
           <Route path="visualizations" element={<VisualizationsPage />} />
+          <Route path="settings" element={<SettingsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

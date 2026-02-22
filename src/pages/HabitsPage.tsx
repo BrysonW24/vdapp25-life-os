@@ -87,6 +87,7 @@ function HabitsCanvas() {
   return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} />
 }
 import { Card } from '@/components/ui/Card'
+import { PageHero } from '@/components/illustrations/PageHero'
 import { HabitHeatmap } from '@/components/visualizations/HabitHeatmap'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
@@ -222,6 +223,7 @@ export function HabitsPage() {
           </Button>
         </div>
       </div>
+      <PageHero variant="habits" />
 
       {/* Habit heatmap */}
       {allLogs.length > 0 && habits.length > 0 ? (

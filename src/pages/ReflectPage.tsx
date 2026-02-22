@@ -82,6 +82,7 @@ function ReflectCanvas() {
   return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} />
 }
 import { Card } from '@/components/ui/Card'
+import { PageHero } from '@/components/illustrations/PageHero'
 import { MoodEnergyLine } from '@/components/visualizations/MoodEnergyLine'
 import { Button } from '@/components/ui/Button'
 import { useAppStore } from '@/stores/appStore'
@@ -156,6 +157,7 @@ export function ReflectPage() {
         <h1 className="text-xl font-bold text-[#e8e8f0]">Reflect</h1>
         <p className="text-[#606080] text-sm mt-1">{format(new Date(), 'EEEE, d MMMM yyyy')}</p>
       </div>
+      <PageHero variant="reflect" />
 
       {/* Mode selection */}
       <div className="grid grid-cols-3 gap-3">

@@ -93,6 +93,7 @@ function GoalsCanvas() {
   return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} />
 }
 import { Card } from '@/components/ui/Card'
+import { PageHero } from '@/components/illustrations/PageHero'
 import { GoalTimeline } from '@/components/visualizations/GoalTimeline'
 import { Button } from '@/components/ui/Button'
 import { Modal } from '@/components/ui/Modal'
@@ -236,6 +237,7 @@ export function GoalsPage() {
           </Button>
         </div>
       </div>
+      <PageHero variant="goals" />
 
       {/* Goal timeline */}
       {goals.filter(g => g.status === 'active' || g.status === 'paused').length > 0 ? (

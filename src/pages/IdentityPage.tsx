@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { PageHero } from '@/components/illustrations/PageHero'
 
 function IdentityCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -243,6 +244,7 @@ export function IdentityPage() {
         <h1 className="text-xl font-bold text-[#e8e8f0]">Identity Declaration</h1>
         <p className="text-[#606080] text-sm mt-1">Your constitution. Everything is measured against this.</p>
       </div>
+      <PageHero variant="identity" />
 
       {/* Discovery: Hero CTA when all fields are empty */}
       {fieldsEmpty && !hasInProgressDrafts && (

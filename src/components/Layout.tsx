@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { NavLink, Outlet } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { clsx } from 'clsx'
 import { SeasonSelector } from '@/components/SeasonSelector'
+import { CoachPanel } from '@/components/coach/CoachPanel'
 import { useAppStore } from '@/stores/appStore'
 import {
   Home,
@@ -13,6 +14,7 @@ import {
   Brain,
   Eye,
   ChevronRight,
+  Settings,
 } from 'lucide-react'
 
 const NAV = [
@@ -51,8 +53,11 @@ const MODE_LABELS: Record<string, string> = {
 }
 
 export function Layout() {
-  const { currentSeason, mindsetMode } = useAppStore()
+  const { currentSeason, mindsetMode, userName } = useAppStore()
   const [seasonOpen, setSeasonOpen] = useState(false)
+  const navigate = useNavigate()
+
+  const avatarInitial = (userName || 'U')[0].toUpperCase()
 
   return (
     <div className="min-h-screen flex" style={{ background: '#0f0f1a' }}>
@@ -151,10 +156,29 @@ export function Layout() {
         </nav>
 
         {/* Footer */}
-        <div className="px-5 py-4 border-t border-[#2d2d4e]">
-          <p className="text-[8px] text-[#404060] tracking-widest uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
-            Vivacity Digital · vdapp25
-          </p>
+        <div className="px-4 py-4 border-t border-[#2d2d4e] flex items-center gap-2">
+          <button
+            onClick={() => navigate('/settings')}
+            className="flex items-center gap-2 flex-1 p-2 rounded-lg hover:bg-[#1e1e35] transition-colors group"
+          >
+            <div className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center flex-shrink-0">
+              <span className="text-[10px] font-bold text-white">{avatarInitial}</span>
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] text-[#808090] group-hover:text-[#e8e8f0] transition-colors truncate">
+                {userName || 'Set your name'}
+              </p>
+              <p className="text-[8px] text-[#404060] tracking-widest uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
+                vdapp25
+              </p>
+            </div>
+          </button>
+          <button
+            onClick={() => navigate('/settings')}
+            className="p-1.5 rounded-lg text-[#404060] hover:text-[#e8e8f0] hover:bg-[#1e1e35] transition-colors"
+          >
+            <Settings size={13} />
+          </button>
         </div>
       </aside>
 
@@ -191,6 +215,16 @@ export function Layout() {
           >
             {SEASON_SHORT[currentSeason] ?? currentSeason}
           </button>
+
+          {/* Avatar → Settings */}
+          <button
+            onClick={() => navigate('/settings')}
+            className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center hover:bg-violet-500 transition-colors"
+            style={{ boxShadow: '0 0 10px rgba(124,58,237,0.2)' }}
+            title={userName ? `${userName} · Settings` : 'Settings'}
+          >
+            <span className="text-[10px] font-bold text-white">{avatarInitial}</span>
+          </button>
         </header>
 
         {/* Main content */}
@@ -225,6 +259,7 @@ export function Layout() {
       </nav>
 
       <SeasonSelector open={seasonOpen} onClose={() => setSeasonOpen(false)} />
+      <CoachPanel />
     </div>
   )
 }

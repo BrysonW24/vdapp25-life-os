@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Card } from '@/components/ui/Card'
+import { PageHero } from '@/components/illustrations/PageHero'
 
 function IntelligenceCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -116,6 +117,7 @@ export function IntelligencePage() {
         <h1 className="text-xl font-bold text-[#e8e8f0]">Intelligence</h1>
         <p className="text-[#606080] text-sm mt-1">Gap analysis — declared vs observed</p>
       </div>
+      <PageHero variant="intelligence" />
 
       {alignments.length === 0 ? (
         <EmptyState

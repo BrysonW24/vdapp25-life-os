@@ -1,3 +1,4 @@
+import React from 'react'
 import { clsx } from 'clsx'
 
 type HeroVariant = 'identity' | 'intelligence' | 'goals' | 'reflect' | 'advisory' | 'habits' | 'visualizations'
@@ -423,7 +424,7 @@ function VisualizationsHero() {
   )
 }
 
-const HERO_MAP: Record<HeroVariant, () => JSX.Element> = {
+const HERO_MAP: Record<HeroVariant, () => React.ReactElement> = {
   identity:       IdentityHero,
   intelligence:   IntelligenceHero,
   goals:          GoalsHero,
