@@ -1,4 +1,86 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+
+function ReflectCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    let animId: number
+    let t = 0
+    let w = 0, h = 0
+    const dpr = window.devicePixelRatio || 1
+
+    function resize() {
+      w = window.innerWidth; h = window.innerHeight
+      canvas!.width = w * dpr; canvas!.height = h * dpr
+      canvas!.style.width = `${w}px`; canvas!.style.height = `${h}px`
+      ctx!.scale(dpr, dpr)
+    }
+
+    function animate() {
+      ctx!.clearRect(0, 0, w, h)
+      t += 0.004
+
+      // Soft violet-indigo glow — center
+      const grd = ctx!.createRadialGradient(w * 0.5, h * 0.5, 0, w * 0.5, h * 0.5, w * 0.6)
+      grd.addColorStop(0, 'rgba(99,102,241,0.05)')
+      grd.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx!.fillStyle = grd
+      ctx!.fillRect(0, 0, w, h)
+
+      // Slow concentric ripple rings — breathing orb
+      const cx = w * 0.5, cy = h * 0.42
+      for (let i = 0; i < 5; i++) {
+        const phase = t + i * 0.55
+        const r = 30 + i * 40 + Math.sin(phase) * 8
+        const alpha = 0.08 - i * 0.012
+        ctx!.beginPath()
+        ctx!.arc(cx, cy, r, 0, Math.PI * 2)
+        ctx!.strokeStyle = `rgba(139,92,246,${Math.max(0, alpha)})`
+        ctx!.lineWidth = 1
+        ctx!.stroke()
+      }
+
+      // Slow horizontal sine waves across bottom — water / calm
+      for (let wave = 0; wave < 3; wave++) {
+        ctx!.beginPath()
+        const baseY = h * (0.72 + wave * 0.08)
+        const amp = 6 - wave * 1.5
+        const freq = 0.012 - wave * 0.002
+        const speed = t * (0.6 - wave * 0.15)
+        for (let x = 0; x <= w; x += 4) {
+          const y = baseY + Math.sin(x * freq + speed) * amp
+          if (x === 0) ctx!.moveTo(x, y)
+          else ctx!.lineTo(x, y)
+        }
+        ctx!.strokeStyle = `rgba(124,58,237,${0.07 - wave * 0.02})`
+        ctx!.lineWidth = 1
+        ctx!.stroke()
+      }
+
+      // Floating dust motes (slow, random)
+      for (let i = 0; i < 12; i++) {
+        const angle = (i / 12) * Math.PI * 2 + t * 0.12
+        const r = 80 + Math.sin(t * 0.5 + i) * 30
+        const px = cx + Math.cos(angle) * r
+        const py = cy + Math.sin(angle) * r * 0.4
+        ctx!.beginPath()
+        ctx!.arc(px, py, 1.2, 0, Math.PI * 2)
+        ctx!.fillStyle = `rgba(167,139,250,${0.12 + Math.sin(t + i) * 0.06})`
+        ctx!.fill()
+      }
+
+      animId = requestAnimationFrame(animate)
+    }
+
+    resize(); animate()
+    window.addEventListener('resize', resize)
+    return () => { window.removeEventListener('resize', resize); cancelAnimationFrame(animId) }
+  }, [])
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} />
+}
 import { Card } from '@/components/ui/Card'
 import { MoodEnergyLine } from '@/components/visualizations/MoodEnergyLine'
 import { Button } from '@/components/ui/Button'
@@ -67,7 +149,9 @@ export function ReflectPage() {
   const hasContent = Object.values(responses).some(v => v.trim().length > 0)
 
   return (
-    <div className="space-y-6">
+    <>
+    <ReflectCanvas />
+    <div className="relative space-y-6" style={{ zIndex: 1 }}>
       <div>
         <h1 className="text-xl font-bold text-[#e8e8f0]">Reflect</h1>
         <p className="text-[#606080] text-sm mt-1">{format(new Date(), 'EEEE, d MMMM yyyy')}</p>
@@ -204,5 +288,6 @@ export function ReflectPage() {
         </div>
       </Card>
     </div>
+    </>
   )
 }

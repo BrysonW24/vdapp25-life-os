@@ -1,4 +1,91 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
+
+function HabitsCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    let animId: number
+    let t = 0
+    let w = 0, h = 0
+    const dpr = window.devicePixelRatio || 1
+
+    function resize() {
+      w = window.innerWidth; h = window.innerHeight
+      canvas!.width = w * dpr; canvas!.height = h * dpr
+      canvas!.style.width = `${w}px`; canvas!.style.height = `${h}px`
+      ctx!.scale(dpr, dpr)
+    }
+
+    function animate() {
+      ctx!.clearRect(0, 0, w, h)
+      t += 0.006
+
+      // Emerald glow — bottom left (chains anchor)
+      const grd = ctx!.createRadialGradient(w * 0.15, h * 0.75, 0, w * 0.15, h * 0.75, w * 0.45)
+      grd.addColorStop(0, 'rgba(5,150,105,0.06)')
+      grd.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx!.fillStyle = grd
+      ctx!.fillRect(0, 0, w, h)
+
+      // Rhythmic bar columns — like a habit heatmap grid
+      const cols = 12, rows = 7
+      const cellW = w * 0.7 / cols
+      const cellH = 10
+      const gridX = w * 0.15, gridY = h * 0.55
+
+      for (let c = 0; c < cols; c++) {
+        for (let r = 0; r < rows; r++) {
+          const wave = Math.sin(t * 1.2 + c * 0.4 + r * 0.3)
+          const filled = wave > -0.2
+          const alpha = filled ? 0.12 + wave * 0.06 : 0.03
+          const x = gridX + c * (cellW + 2)
+          const y = gridY + r * (cellH + 2)
+          ctx!.fillStyle = `rgba(5,150,105,${alpha})`
+          ctx!.fillRect(x, y, cellW - 2, cellH - 2)
+        }
+      }
+
+      // Chain link strand — left side
+      const chainX = w * 0.06
+      const chainTop = h * 0.1
+      const linkH = 24
+      const numLinks = Math.floor((h * 0.8) / linkH)
+
+      for (let i = 0; i < numLinks; i++) {
+        const y = chainTop + i * linkH
+        const pulse = Math.sin(t * 1.5 + i * 0.4) * 0.5 + 0.5
+        const alpha = 0.06 + pulse * 0.08
+        ctx!.beginPath()
+        ctx!.ellipse(chainX, y + linkH / 2, 6, 10, 0, 0, Math.PI * 2)
+        ctx!.strokeStyle = `rgba(52,211,153,${alpha})`
+        ctx!.lineWidth = 1.2
+        ctx!.stroke()
+      }
+
+      // Streak counter arcs — top right
+      const arcCx = w * 0.82, arcCy = h * 0.22
+      for (let i = 0; i < 4; i++) {
+        const r = 20 + i * 18
+        const endAngle = ((-Math.PI / 2) + (t * 0.3 + i * 0.5) % (Math.PI * 2))
+        ctx!.beginPath()
+        ctx!.arc(arcCx, arcCy, r, -Math.PI / 2, endAngle)
+        ctx!.strokeStyle = `rgba(52,211,153,${0.15 - i * 0.03})`
+        ctx!.lineWidth = 1.5
+        ctx!.stroke()
+      }
+
+      animId = requestAnimationFrame(animate)
+    }
+
+    resize(); animate()
+    window.addEventListener('resize', resize)
+    return () => { window.removeEventListener('resize', resize); cancelAnimationFrame(animId) }
+  }, [])
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} />
+}
 import { Card } from '@/components/ui/Card'
 import { HabitHeatmap } from '@/components/visualizations/HabitHeatmap'
 import { Button } from '@/components/ui/Button'
@@ -102,7 +189,9 @@ export function HabitsPage() {
   const completedToday = todayLogs.filter(l => l.completed).length
 
   return (
-    <div className="space-y-6">
+    <>
+    <HabitsCanvas />
+    <div className="relative space-y-6" style={{ zIndex: 1 }}>
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-[#e8e8f0]">Habits</h1>
@@ -323,5 +412,6 @@ export function HabitsPage() {
         onToggle={toggleHabitLog}
       />
     </div>
+    </>
   )
 }

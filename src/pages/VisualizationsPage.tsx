@@ -110,7 +110,101 @@ import { useActiveHabits, useAllHabitLogs } from '@/hooks/useHabits'
 import { useReflections } from '@/hooks/useReflections'
 import { useAdvisoryAlerts } from '@/hooks/useAdvisory'
 import { Eye, ChevronDown } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
+
+function VisualizationsCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    let animId: number
+    let t = 0
+    let w = 0, h = 0
+    const dpr = window.devicePixelRatio || 1
+
+    // Data scatter points
+    const points = Array.from({ length: 40 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: 1 + Math.random() * 2,
+      hue: Math.random() > 0.5 ? '#3b82f6' : Math.random() > 0.5 ? '#8b5cf6' : '#22c55e',
+    }))
+
+    function resize() {
+      w = window.innerWidth; h = window.innerHeight
+      canvas!.width = w * dpr; canvas!.height = h * dpr
+      canvas!.style.width = `${w}px`; canvas!.style.height = `${h}px`
+      ctx!.scale(dpr, dpr)
+    }
+
+    function animate() {
+      ctx!.clearRect(0, 0, w, h)
+      t += 0.005
+
+      // Orange data glow — top right
+      const grd = ctx!.createRadialGradient(w * 0.85, h * 0.12, 0, w * 0.85, h * 0.12, w * 0.45)
+      grd.addColorStop(0, 'rgba(255,107,53,0.06)')
+      grd.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx!.fillStyle = grd
+      ctx!.fillRect(0, 0, w, h)
+
+      // Flowing chart lines — horizontal data streams
+      for (let line = 0; line < 4; line++) {
+        ctx!.beginPath()
+        const baseY = h * (0.2 + line * 0.18)
+        for (let x = 0; x <= w; x += 8) {
+          const y = baseY + Math.sin(x * 0.015 + t * 0.8 + line * 1.2) * 12
+                         + Math.sin(x * 0.03 + t * 0.5 + line) * 6
+          if (x === 0) ctx!.moveTo(x, y)
+          else ctx!.lineTo(x, y)
+        }
+        const colors = ['#3b82f6', '#8b5cf6', '#FF6B35', '#22c55e']
+        ctx!.strokeStyle = `${colors[line]}10`
+        ctx!.lineWidth = 1
+        ctx!.stroke()
+      }
+
+      // Moving scatter points
+      points.forEach(p => {
+        p.x += p.vx; p.y += p.vy
+        if (p.x < 0 || p.x > w) p.vx *= -1
+        if (p.y < 0 || p.y > h) p.vy *= -1
+        ctx!.beginPath()
+        ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx!.fillStyle = `${p.hue}28`
+        ctx!.fill()
+      })
+
+      // Connect nearby scatter points
+      for (let i = 0; i < points.length; i++) {
+        for (let j = i + 1; j < points.length; j++) {
+          const dx = points[i].x - points[j].x
+          const dy = points[i].y - points[j].y
+          const d = Math.sqrt(dx * dx + dy * dy)
+          if (d < 100) {
+            ctx!.beginPath()
+            ctx!.moveTo(points[i].x, points[i].y)
+            ctx!.lineTo(points[j].x, points[j].y)
+            ctx!.strokeStyle = `rgba(99,102,241,${0.05 * (1 - d / 100)})`
+            ctx!.lineWidth = 0.5
+            ctx!.stroke()
+          }
+        }
+      }
+
+      animId = requestAnimationFrame(animate)
+    }
+
+    resize(); animate()
+    window.addEventListener('resize', resize)
+    return () => { window.removeEventListener('resize', resize); cancelAnimationFrame(animId) }
+  }, [])
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} />
+}
 
 const GALLERY_SECTIONS = [
   {
@@ -342,7 +436,9 @@ export function VisualizationsPage() {
   const alerts = useAdvisoryAlerts()
 
   return (
-    <div className="space-y-8">
+    <>
+    <VisualizationsCanvas />
+    <div className="relative space-y-8" style={{ zIndex: 1 }}>
       {/* Header */}
       <div className="space-y-1">
         <div className="flex items-center gap-3">
@@ -726,6 +822,7 @@ export function VisualizationsPage() {
         </div>
       </section>
     </div>
+    </>
   )
 }
 

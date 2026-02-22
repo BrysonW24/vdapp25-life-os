@@ -1,4 +1,104 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
+
+function AdvisoryCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    let animId: number
+    let t = 0
+    let w = 0, h = 0
+    const dpr = window.devicePixelRatio || 1
+
+    function resize() {
+      w = window.innerWidth; h = window.innerHeight
+      canvas!.width = w * dpr; canvas!.height = h * dpr
+      canvas!.style.width = `${w}px`; canvas!.style.height = `${h}px`
+      ctx!.scale(dpr, dpr)
+    }
+
+    function animate() {
+      ctx!.clearRect(0, 0, w, h)
+      t += 0.009
+
+      // Red warning glow — top left
+      const grd = ctx!.createRadialGradient(w * 0.2, h * 0.25, 0, w * 0.2, h * 0.25, w * 0.5)
+      grd.addColorStop(0, 'rgba(220,38,38,0.06)')
+      grd.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx!.fillStyle = grd
+      ctx!.fillRect(0, 0, w, h)
+
+      // Radar sweep — top right
+      const cx = w * 0.78, cy = h * 0.28
+      const radarR = 80
+      const sweepAngle = (t * 1.2) % (Math.PI * 2)
+
+      // Radar rings
+      for (let i = 1; i <= 3; i++) {
+        ctx!.beginPath()
+        ctx!.arc(cx, cy, radarR * (i / 3), 0, Math.PI * 2)
+        ctx!.strokeStyle = 'rgba(220,38,38,0.10)'
+        ctx!.lineWidth = 1
+        ctx!.stroke()
+      }
+      // Radar crosshairs
+      ctx!.beginPath()
+      ctx!.moveTo(cx - radarR, cy); ctx!.lineTo(cx + radarR, cy)
+      ctx!.moveTo(cx, cy - radarR); ctx!.lineTo(cx, cy + radarR)
+      ctx!.strokeStyle = 'rgba(220,38,38,0.08)'
+      ctx!.lineWidth = 0.5
+      ctx!.stroke()
+
+      // Sweep fill
+      ctx!.beginPath()
+      ctx!.moveTo(cx, cy)
+      ctx!.arc(cx, cy, radarR, sweepAngle - 0.5, sweepAngle)
+      ctx!.closePath()
+      ctx!.fillStyle = 'rgba(220,38,38,0.12)'
+      ctx!.fill()
+
+      // Sweep line
+      ctx!.beginPath()
+      ctx!.moveTo(cx, cy)
+      ctx!.lineTo(cx + Math.cos(sweepAngle) * radarR, cy + Math.sin(sweepAngle) * radarR)
+      ctx!.strokeStyle = 'rgba(248,113,113,0.35)'
+      ctx!.lineWidth = 1.5
+      ctx!.stroke()
+
+      // Alert pulse rings — scattered
+      const alerts = [
+        { x: 0.15, y: 0.55, phase: 0 },
+        { x: 0.6,  y: 0.7,  phase: 1.2 },
+        { x: 0.85, y: 0.6,  phase: 2.4 },
+      ]
+      alerts.forEach(a => {
+        const px = a.x * w, py = a.y * h
+        const pulse = ((t * 0.8 + a.phase) % 1)
+        const r = pulse * 35
+        const alpha = (1 - pulse) * 0.15
+        ctx!.beginPath()
+        ctx!.arc(px, py, r, 0, Math.PI * 2)
+        ctx!.strokeStyle = `rgba(239,68,68,${alpha})`
+        ctx!.lineWidth = 1
+        ctx!.stroke()
+        // Core dot
+        ctx!.beginPath()
+        ctx!.arc(px, py, 2.5, 0, Math.PI * 2)
+        ctx!.fillStyle = 'rgba(239,68,68,0.25)'
+        ctx!.fill()
+      })
+
+      animId = requestAnimationFrame(animate)
+    }
+
+    resize(); animate()
+    window.addEventListener('resize', resize)
+    return () => { window.removeEventListener('resize', resize); cancelAnimationFrame(animId) }
+  }, [])
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} />
+}
 import { Card } from '@/components/ui/Card'
 import { AlertSeverityBars } from '@/components/visualizations/AlertSeverityBars'
 import { Button } from '@/components/ui/Button'
@@ -81,7 +181,9 @@ export function AdvisoryPage() {
   const dismissedCount = allAlerts.length - activeAlerts.length
 
   return (
-    <div className="space-y-6">
+    <>
+    <AdvisoryCanvas />
+    <div className="relative space-y-6" style={{ zIndex: 1 }}>
       <div>
         <h1 className="text-xl font-bold text-[#e8e8f0]">Advisory</h1>
         <p className="text-[#606080] text-sm mt-1">
@@ -191,5 +293,6 @@ export function AdvisoryPage() {
         </div>
       )}
     </div>
+    </>
   )
 }

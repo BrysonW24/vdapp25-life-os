@@ -1,4 +1,97 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
+
+function GoalsCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    let animId: number
+    let t = 0
+    let w = 0, h = 0
+    const dpr = window.devicePixelRatio || 1
+
+    const particles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      speed: 0.3 + Math.random() * 0.6,
+      size: 1 + Math.random() * 2,
+      alpha: 0.1 + Math.random() * 0.2,
+    }))
+
+    const trajectories = [
+      { sx: 0.05, sy: 0.95, ex: 0.55, ey: 0.05, color: '#8b5cf6' },
+      { sx: 0.1,  sy: 0.9,  ex: 0.7,  ey: 0.1,  color: '#3b82f6' },
+      { sx: 0.15, sy: 0.85, ex: 0.85, ey: 0.15, color: '#22c55e' },
+    ]
+
+    function resize() {
+      w = window.innerWidth; h = window.innerHeight
+      canvas!.width = w * dpr; canvas!.height = h * dpr
+      canvas!.style.width = `${w}px`; canvas!.style.height = `${h}px`
+      ctx!.scale(dpr, dpr)
+    }
+
+    function animate() {
+      ctx!.clearRect(0, 0, w, h)
+      t += 0.007
+
+      const grd = ctx!.createRadialGradient(w * 0.8, h * 0.15, 0, w * 0.8, h * 0.15, w * 0.4)
+      grd.addColorStop(0, 'rgba(34,197,94,0.06)')
+      grd.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx!.fillStyle = grd
+      ctx!.fillRect(0, 0, w, h)
+
+      trajectories.forEach((tr, i) => {
+        const sx = tr.sx * w, sy = tr.sy * h
+        const ex = tr.ex * w, ey = tr.ey * h
+        const cpx = (sx + ex) / 2 - 40, cpy = (sy + ey) / 2 - 60
+        ctx!.beginPath()
+        ctx!.moveTo(sx, sy)
+        ctx!.quadraticCurveTo(cpx, cpy, ex, ey)
+        ctx!.strokeStyle = `${tr.color}14`
+        ctx!.lineWidth = 1
+        ctx!.stroke()
+
+        const progress = ((t * 0.35 + i * 0.33) % 1 + 1) % 1
+        const bx = (1 - progress) * (1 - progress) * sx + 2 * (1 - progress) * progress * cpx + progress * progress * ex
+        const by = (1 - progress) * (1 - progress) * sy + 2 * (1 - progress) * progress * cpy + progress * progress * ey
+        ctx!.beginPath()
+        ctx!.arc(bx, by, 3, 0, Math.PI * 2)
+        ctx!.fillStyle = `${tr.color}60`
+        ctx!.fill()
+
+        for (let m = 0.25; m < 1; m += 0.25) {
+          const bxm = (1 - m) * (1 - m) * sx + 2 * (1 - m) * m * cpx + m * m * ex
+          const bym = (1 - m) * (1 - m) * sy + 2 * (1 - m) * m * cpy + m * m * ey
+          const pulse = 1 + Math.sin(t * 1.5 + i + m * 10) * 0.3
+          ctx!.beginPath()
+          ctx!.arc(bxm, bym, 2.5 * pulse, 0, Math.PI * 2)
+          ctx!.strokeStyle = `${tr.color}30`
+          ctx!.lineWidth = 1
+          ctx!.stroke()
+        }
+      })
+
+      particles.forEach(p => {
+        p.y -= p.speed
+        if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w }
+        ctx!.beginPath()
+        ctx!.arc(p.x, p.y, p.size, 0, Math.PI * 2)
+        ctx!.fillStyle = `rgba(139,92,246,${p.alpha})`
+        ctx!.fill()
+      })
+
+      animId = requestAnimationFrame(animate)
+    }
+
+    resize(); animate()
+    window.addEventListener('resize', resize)
+    return () => { window.removeEventListener('resize', resize); cancelAnimationFrame(animId) }
+  }, [])
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} />
+}
 import { Card } from '@/components/ui/Card'
 import { GoalTimeline } from '@/components/visualizations/GoalTimeline'
 import { Button } from '@/components/ui/Button'
@@ -122,7 +215,9 @@ export function GoalsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <>
+    <GoalsCanvas />
+    <div className="relative space-y-6" style={{ zIndex: 1 }}>
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-bold text-[#e8e8f0]">Goals</h1>
@@ -369,5 +464,6 @@ export function GoalsPage() {
         pillars={pillars}
       />
     </div>
+    </>
   )
 }

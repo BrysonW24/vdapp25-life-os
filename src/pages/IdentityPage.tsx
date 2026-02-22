@@ -1,4 +1,106 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+
+function IdentityCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+    let animId: number
+    let t = 0
+    let w = 0, h = 0
+    const dpr = window.devicePixelRatio || 1
+
+    function resize() {
+      w = window.innerWidth; h = window.innerHeight
+      canvas!.width = w * dpr; canvas!.height = h * dpr
+      canvas!.style.width = `${w}px`; canvas!.style.height = `${h}px`
+      ctx!.scale(dpr, dpr)
+    }
+
+    function animate() {
+      ctx!.clearRect(0, 0, w, h)
+      t += 0.008
+
+      // Radial identity glow — violet, centered
+      const grd = ctx!.createRadialGradient(w * 0.5, h * 0.4, 0, w * 0.5, h * 0.4, w * 0.5)
+      grd.addColorStop(0, 'rgba(124,58,237,0.07)')
+      grd.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx!.fillStyle = grd
+      ctx!.fillRect(0, 0, w, h)
+
+      // Double helix strands — sweeping across left side
+      const helixX = w * 0.15
+      const helixH = h * 0.7
+      const helixTop = h * 0.15
+      const amp = 18
+      const freq = 0.045
+
+      for (let strand = 0; strand < 2; strand++) {
+        ctx!.beginPath()
+        const phase = strand === 0 ? 0 : Math.PI
+        for (let y = helixTop; y < helixTop + helixH; y += 3) {
+          const x = helixX + Math.sin(y * freq + t + phase) * amp
+          if (y === helixTop) ctx!.moveTo(x, y)
+          else ctx!.lineTo(x, y)
+        }
+        ctx!.strokeStyle = `rgba(124,58,237,${strand === 0 ? 0.18 : 0.10})`
+        ctx!.lineWidth = 1
+        ctx!.stroke()
+      }
+
+      // Helix rungs
+      for (let y = helixTop; y < helixTop + helixH; y += 18) {
+        const x1 = helixX + Math.sin(y * freq + t) * amp
+        const x2 = helixX + Math.sin(y * freq + t + Math.PI) * amp
+        ctx!.beginPath()
+        ctx!.moveTo(x1, y)
+        ctx!.lineTo(x2, y)
+        ctx!.strokeStyle = 'rgba(124,58,237,0.12)'
+        ctx!.lineWidth = 0.8
+        ctx!.stroke()
+      }
+
+      // Concentric identity rings — right side
+      const cx = w * 0.82, cy = h * 0.38
+      const rings = [50, 90, 130, 170]
+      rings.forEach((r, i) => {
+        const pulse = 1 + Math.sin(t * 0.7 + i * 0.8) * 0.06
+        ctx!.beginPath()
+        ctx!.arc(cx, cy, r * pulse, 0, Math.PI * 2)
+        ctx!.strokeStyle = `rgba(139,92,246,${0.12 - i * 0.02})`
+        ctx!.lineWidth = 1
+        ctx!.stroke()
+      })
+
+      // Core dot
+      ctx!.beginPath()
+      ctx!.arc(cx, cy, 4, 0, Math.PI * 2)
+      ctx!.fillStyle = 'rgba(139,92,246,0.4)'
+      ctx!.fill()
+
+      // Value particles orbiting the core
+      for (let i = 0; i < 7; i++) {
+        const angle = t * 0.4 + (i / 7) * Math.PI * 2
+        const r = 55 + Math.sin(t + i) * 8
+        const px = cx + Math.cos(angle) * r
+        const py = cy + Math.sin(angle) * r
+        ctx!.beginPath()
+        ctx!.arc(px, py, 2, 0, Math.PI * 2)
+        ctx!.fillStyle = `rgba(167,139,250,${0.25 + Math.sin(t + i) * 0.1})`
+        ctx!.fill()
+      }
+
+      animId = requestAnimationFrame(animate)
+    }
+
+    resize(); animate()
+    window.addEventListener('resize', resize)
+    return () => { window.removeEventListener('resize', resize); cancelAnimationFrame(animId) }
+  }, [])
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} />
+}
 import { Card } from '@/components/ui/Card'
 import { ValuesRadar } from '@/components/visualizations/ValuesRadar'
 import { Button } from '@/components/ui/Button'
@@ -134,7 +236,9 @@ export function IdentityPage() {
   const hasInProgressDrafts = currentStep > 0 && !discoveryOpen
 
   return (
-    <div className="space-y-6">
+    <>
+    <IdentityCanvas />
+    <div className="relative space-y-6" style={{ zIndex: 1 }}>
       <div>
         <h1 className="text-xl font-bold text-[#e8e8f0]">Identity Declaration</h1>
         <p className="text-[#606080] text-sm mt-1">Your constitution. Everything is measured against this.</p>
@@ -415,5 +519,6 @@ export function IdentityPage() {
         />
       )}
     </div>
+    </>
   )
 }
