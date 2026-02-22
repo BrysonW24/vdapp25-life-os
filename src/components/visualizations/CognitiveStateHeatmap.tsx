@@ -24,7 +24,7 @@ interface Props {
   data?: DayState[]
 }
 
-const ROWS = [
+const ROWS: { key: string; label: string; color: string; invert?: boolean }[] = [
   { key: 'focus',      label: 'Focus',      color: '#3b82f6' },
   { key: 'mood',       label: 'Mood',       color: '#22c55e' },
   { key: 'stress',     label: 'Stress',     color: '#ef4444', invert: true },

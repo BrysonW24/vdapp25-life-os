@@ -48,7 +48,7 @@ export function HabitHeatmap({ logs, habitCount, weeks = 12 }: HabitHeatmapProps
   const height = topPad + 7 * (cellSize + gap)
 
   const colorScale = useMemo(() =>
-    d3.scaleSequential(d3.interpolateRgb(CHART_COLORS.surfaceLight, CHART_COLORS.emerald)).domain([0, 1]),
+    d3.scaleSequential(d3.interpolateRgb(CHART_COLORS.surfaceLight, '#22c55e')).domain([0, 1]),
     [],
   )
 
@@ -87,7 +87,7 @@ export function HabitHeatmap({ logs, habitCount, weeks = 12 }: HabitHeatmapProps
         .attr('rx', 2)
         .attr('fill', isFuture ? CHART_COLORS.surface : ratio > 0 ? colorScale(ratio) : CHART_COLORS.surfaceLight)
         .attr('opacity', isFuture ? 0.3 : 1)
-        .attr('stroke', isToday ? CHART_COLORS.violet : 'none')
+        .attr('stroke', isToday ? '#7c3aed' : 'none')
         .attr('stroke-width', isToday ? 1.5 : 0)
     })
 

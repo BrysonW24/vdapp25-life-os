@@ -68,7 +68,7 @@ export function FreedomMeter({ passiveIncome = 2400, lifestyleCost = 4200 }: Pro
       .attr('transform', `translate(${cx},${cy})`)
       .attr('fill', fillColor)
       .attr('opacity', isFree ? 0.9 : 0.7)
-      .style('filter', isFree ? 'url(#freedom-glow)' : null)
+      .style('filter', isFree ? 'url(#freedom-glow)' : '')
 
     // Inner subtle ring
     svg.append('circle').attr('cx', cx).attr('cy', cy).attr('r', innerR - 8)

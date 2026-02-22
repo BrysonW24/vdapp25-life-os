@@ -36,7 +36,7 @@ export const useAppStore = create<AppStore>()(
       mindsetMode: 'arena',
       setMindsetMode: (mode) => set({ mindsetMode: mode }),
 
-      compassMappings: [],
+      compassMappings: [] as CompassMapping[],
       setCompassMappings: (mappings) => set({ compassMappings: mappings }),
 
       activeReflectionType: 'daily-am',

@@ -57,9 +57,9 @@ export function ValuesRadar({ values }: ValuesRadarProps) {
 
     g.append('path')
       .attr('d', pathData)
-      .attr('fill', CHART_COLORS.violet)
+      .attr('fill', '#7c3aed')
       .attr('fill-opacity', 0.15)
-      .attr('stroke', CHART_COLORS.violet)
+      .attr('stroke', '#7c3aed')
       .attr('stroke-width', 2)
 
     // Vertex dots
@@ -67,7 +67,7 @@ export function ValuesRadar({ values }: ValuesRadarProps) {
       g.append('circle')
         .attr('cx', pt[0]).attr('cy', pt[1])
         .attr('r', 3)
-        .attr('fill', CHART_COLORS.violet)
+        .attr('fill', '#7c3aed')
     })
 
     // Labels

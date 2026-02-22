@@ -57,7 +57,7 @@ export function GoalTimeline({ goals, milestones, pillars }: GoalTimelineProps) 
     g.append('line')
       .attr('x1', todayX).attr('x2', todayX)
       .attr('y1', 0).attr('y2', activeGoals.length * rowH)
-      .attr('stroke', CHART_COLORS.violet)
+      .attr('stroke', '#7c3aed')
       .attr('stroke-width', 1)
       .attr('stroke-dasharray', '3,3')
       .attr('opacity', 0.5)
@@ -71,7 +71,7 @@ export function GoalTimeline({ goals, milestones, pillars }: GoalTimelineProps) 
       const x1 = Math.max(0, xScale(start))
       const x2 = Math.min(w, xScale(end))
       const pillar = pillars.find(p => p.id === goal.pillarId)
-      const color = pillar?.color ?? CHART_COLORS.violet
+      const color = pillar?.color ?? '#7c3aed'
 
       // Bar
       g.append('rect')
@@ -105,7 +105,7 @@ export function GoalTimeline({ goals, milestones, pillars }: GoalTimelineProps) 
           .attr('width', 6)
           .attr('height', 6)
           .attr('transform', `rotate(45, ${msX}, ${y + barH / 2})`)
-          .attr('fill', ms.completed ? CHART_COLORS.emerald : CHART_COLORS.textDim)
+          .attr('fill', ms.completed ? '#22c55e' : CHART_COLORS.textDim)
       })
     })
 

@@ -99,13 +99,13 @@ export function MoodEnergyLine({ reflections }: MoodEnergyLineProps) {
 
     g.append('path').datum(data)
       .attr('d', energyArea)
-      .attr('fill', CHART_COLORS.amber)
+      .attr('fill', '#eab308')
       .attr('opacity', 0.1)
 
     g.append('path').datum(data)
       .attr('d', energyLine)
       .attr('fill', 'none')
-      .attr('stroke', CHART_COLORS.amber)
+      .attr('stroke', '#eab308')
       .attr('stroke-width', 2)
 
     // Mood area + line
@@ -122,13 +122,13 @@ export function MoodEnergyLine({ reflections }: MoodEnergyLineProps) {
 
     g.append('path').datum(data)
       .attr('d', moodArea)
-      .attr('fill', CHART_COLORS.violet)
+      .attr('fill', '#7c3aed')
       .attr('opacity', 0.1)
 
     g.append('path').datum(data)
       .attr('d', moodLine)
       .attr('fill', 'none')
-      .attr('stroke', CHART_COLORS.violet)
+      .attr('stroke', '#7c3aed')
       .attr('stroke-width', 2)
 
     // Data point dots
@@ -138,7 +138,7 @@ export function MoodEnergyLine({ reflections }: MoodEnergyLineProps) {
       .attr('cx', d => xScale(d.date))
       .attr('cy', d => yScale(d.energy))
       .attr('r', 2.5)
-      .attr('fill', CHART_COLORS.amber)
+      .attr('fill', '#eab308')
 
     g.selectAll('.mood-dot')
       .data(data)
@@ -146,13 +146,13 @@ export function MoodEnergyLine({ reflections }: MoodEnergyLineProps) {
       .attr('cx', d => xScale(d.date))
       .attr('cy', d => yScale(d.mood))
       .attr('r', 2.5)
-      .attr('fill', CHART_COLORS.violet)
+      .attr('fill', '#7c3aed')
 
     // Legend
     const legend = svg.append('g').attr('transform', `translate(${width - 120}, 6)`)
-    legend.append('circle').attr('cx', 0).attr('cy', 0).attr('r', 3).attr('fill', CHART_COLORS.amber)
+    legend.append('circle').attr('cx', 0).attr('cy', 0).attr('r', 3).attr('fill', '#eab308')
     legend.append('text').attr('x', 8).attr('y', 3).attr('fill', CHART_COLORS.textMuted).attr('font-size', '9px').text('Energy')
-    legend.append('circle').attr('cx', 55).attr('cy', 0).attr('r', 3).attr('fill', CHART_COLORS.violet)
+    legend.append('circle').attr('cx', 55).attr('cy', 0).attr('r', 3).attr('fill', '#7c3aed')
     legend.append('text').attr('x', 63).attr('y', 3).attr('fill', CHART_COLORS.textMuted).attr('font-size', '9px').text('Mood')
 
   }, [data, width, height, margin.left, margin.right, margin.top, margin.bottom])

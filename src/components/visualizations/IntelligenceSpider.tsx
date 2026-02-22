@@ -72,9 +72,9 @@ export function IntelligenceSpider({ alignments, overallScore }: IntelligenceSpi
 
     g.append('path')
       .attr('d', pathData)
-      .attr('fill', CHART_COLORS.violet)
+      .attr('fill', '#7c3aed')
       .attr('fill-opacity', 0.15)
-      .attr('stroke', CHART_COLORS.violet)
+      .attr('stroke', '#7c3aed')
       .attr('stroke-width', 2)
 
     // Vertex dots
