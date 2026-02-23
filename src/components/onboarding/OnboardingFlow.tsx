@@ -60,7 +60,7 @@ export function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0a0f] flex flex-col items-center justify-center px-4 py-8">
+    <div className="min-h-screen bg-[#0a0a0f] flex flex-col items-center justify-center px-4 py-8" data-theme="dark">
       {/* Progress bar */}
       <div className="w-full max-w-sm mb-8">
         <div className="h-1 rounded-full bg-[#1e1e35] overflow-hidden">

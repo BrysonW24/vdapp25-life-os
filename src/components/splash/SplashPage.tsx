@@ -165,7 +165,7 @@ interface SplashPageProps {
 
 export function SplashPage({ onGetStarted, onSkip }: SplashPageProps) {
   return (
-    <div className="min-h-screen overflow-hidden relative" style={{ background: '#0a0a0f' }}>
+    <div className="min-h-screen overflow-hidden relative" data-theme="dark" style={{ background: '#0a0a0f' }}>
       <SplashBackground />
 
       <div className="relative z-10 min-h-screen flex flex-col">
