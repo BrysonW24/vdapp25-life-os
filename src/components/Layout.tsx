@@ -27,6 +27,15 @@ const NAV = [
   { to: '/intelligence', label: 'Intel',   icon: Brain,    desc: 'Gap detection' },
 ]
 
+// Items shown in the mobile bottom nav (subset — Visualizations replaces Intel on mobile)
+const MOBILE_NAV = [
+  { to: '/',           label: 'Hub',     icon: Home },
+  { to: '/goals',      label: 'Goals',   icon: Target },
+  { to: '/habits',     label: 'Habits',  icon: Repeat2 },
+  { to: '/reflect',    label: 'Reflect', icon: BookOpen },
+  { to: '/advisory',   label: 'Mirror',  icon: Sparkles },
+]
+
 const SEASON_LABELS: Record<string, string> = {
   foundation: 'Foundation',
   expansion: 'Expansion',
@@ -146,7 +155,7 @@ export function Layout() {
                 <div className="flex items-center gap-2">
                   <p className="text-[11px] font-semibold text-[#e8e8f0]">Visualizations</p>
                   <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-violet-500/20 text-violet-400" style={{ fontFamily: 'var(--font-mono)' }}>
-                    75
+                    94
                   </span>
                 </div>
                 <p className="text-[8px] text-[#606080]">Life intelligence gallery</p>
@@ -234,25 +243,81 @@ export function Layout() {
       </div>
 
       {/* ═══ Mobile Bottom Nav ═══ */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-[#2d2d4e] flex justify-around px-1 py-1.5 safe-pb"
-        style={{ background: 'rgba(15,15,26,0.95)', backdropFilter: 'blur(12px)' }}
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-[#2d2d4e] flex items-end justify-around px-1 pb-safe safe-pb"
+        style={{ background: 'rgba(15,15,26,0.97)', backdropFilter: 'blur(16px)' }}
       >
-        {NAV.map(({ to, label, icon: Icon }) => (
+        {/* Left 2 items */}
+        {MOBILE_NAV.slice(0, 2).map(({ to, label, icon: Icon }) => (
           <NavLink
             key={to}
             to={to}
             end={to === '/'}
             className={({ isActive }) =>
               clsx(
-                'flex flex-col items-center gap-0.5 px-2 py-2 text-[9px] font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] justify-center',
-                isActive
-                  ? 'text-violet-500'
-                  : 'text-[#606080] hover:text-[#808090]',
+                'flex flex-col items-center gap-0.5 px-2 py-2.5 text-[9px] font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] justify-center',
+                isActive ? 'text-violet-400' : 'text-[#505070] hover:text-[#808090]',
               )
             }
             style={{ fontFamily: 'var(--font-mono)' }}
           >
-            <Icon size={18} strokeWidth={1.5} />
+            <Icon size={17} strokeWidth={1.5} />
+            {label}
+          </NavLink>
+        ))}
+
+        {/* Centre — Visualizations FAB */}
+        <NavLink
+          to="/visualizations"
+          className={({ isActive }) =>
+            clsx(
+              'relative flex flex-col items-center gap-1 -mt-4 transition-all duration-200',
+              isActive ? 'opacity-100' : 'opacity-90 hover:opacity-100',
+            )
+          }
+        >
+          {({ isActive }) => (
+            <>
+              <div
+                className={clsx(
+                  'w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-200',
+                  isActive
+                    ? 'scale-105'
+                    : 'hover:scale-105',
+                )}
+                style={{
+                  background: 'linear-gradient(135deg, #7c3aed, #FF6B35)',
+                  boxShadow: isActive
+                    ? '0 0 24px rgba(124,58,237,0.55), 0 0 12px rgba(255,107,53,0.3)'
+                    : '0 0 16px rgba(124,58,237,0.35), 0 4px 12px rgba(0,0,0,0.4)',
+                }}
+              >
+                <Eye size={22} className="text-white" strokeWidth={1.5} />
+              </div>
+              <span
+                className={clsx('text-[8px] font-semibold pb-1', isActive ? 'text-violet-400' : 'text-[#606080]')}
+                style={{ fontFamily: 'var(--font-mono)' }}
+              >
+                CHARTS
+              </span>
+            </>
+          )}
+        </NavLink>
+
+        {/* Right 3 items */}
+        {MOBILE_NAV.slice(2).map(({ to, label, icon: Icon }) => (
+          <NavLink
+            key={to}
+            to={to}
+            end={to === '/'}
+            className={({ isActive }) =>
+              clsx(
+                'flex flex-col items-center gap-0.5 px-2 py-2.5 text-[9px] font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] justify-center',
+                isActive ? 'text-violet-400' : 'text-[#505070] hover:text-[#808090]',
+              )
+            }
+            style={{ fontFamily: 'var(--font-mono)' }}
+          >
+            <Icon size={17} strokeWidth={1.5} />
             {label}
           </NavLink>
         ))}
