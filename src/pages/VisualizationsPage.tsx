@@ -226,7 +226,7 @@ function VisualizationsCanvas() {
     window.addEventListener('resize', resize)
     return () => { window.removeEventListener('resize', resize); cancelAnimationFrame(animId) }
   }, [])
-  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none" style={{ zIndex: 0 }} />
+  return <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none hidden lg:block" style={{ zIndex: 0 }} />
 }
 
 const GALLERY_SECTIONS = [
@@ -518,9 +518,9 @@ export function VisualizationsPage() {
       </div>
       <PageHero variant="visualizations" />
 
-      {/* Mobile section jump bar — horizontal pill scroller */}
-      <div className="lg:hidden -mx-3 sm:-mx-4">
-        <div className="scroll-x-hide flex gap-2 px-3 sm:px-4 pb-1">
+      {/* Section jump bar — horizontal pill scroller */}
+      <div className="-mx-3 sm:-mx-4">
+        <div className="scroll-x-hide flex gap-2 px-3 sm:px-4 pb-2">
           {GALLERY_SECTIONS.map(({ label }) => (
             <button
               key={label}
@@ -528,8 +528,10 @@ export function VisualizationsPage() {
                 const el = document.getElementById(`section-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`)
                 el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
               }}
-              className="flex-shrink-0 px-3 py-1.5 rounded-full text-[9px] font-medium tracking-[0.1em] uppercase border border-[#2d2d4e] text-[#606080] hover:text-[#e8e8f0] hover:border-violet-500/40 transition-colors whitespace-nowrap"
-              style={{ fontFamily: 'var(--font-mono)' }}
+              className="flex-shrink-0 px-3 py-1.5 rounded-full text-[9px] font-semibold tracking-[0.08em] uppercase border border-[#2d2d4e] transition-colors whitespace-nowrap min-h-[32px] flex items-center"
+              style={{ fontFamily: 'var(--font-mono)', color: '#6060a0' }}
+              onMouseEnter={e => { (e.target as HTMLElement).style.color = '#e8e8f0'; (e.target as HTMLElement).style.borderColor = 'rgba(139,92,246,0.4)' }}
+              onMouseLeave={e => { (e.target as HTMLElement).style.color = '#6060a0'; (e.target as HTMLElement).style.borderColor = '#2d2d4e' }}
             >
               {label}
             </button>
@@ -959,14 +961,14 @@ export function VisualizationsPage() {
 function SectionLabel({ label }: { label: string }) {
   const id = `section-${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
   return (
-    <div id={id} className="flex items-center gap-3 mb-3 scroll-mt-16">
+    <div id={id} className="flex items-center gap-3 mb-3 scroll-mt-20">
       <p
-        className="text-[9px] tracking-[0.2em] uppercase text-[#404060] font-medium"
-        style={{ fontFamily: 'var(--font-mono)' }}
+        className="text-[9px] tracking-[0.2em] uppercase font-semibold whitespace-nowrap"
+        style={{ fontFamily: 'var(--font-mono)', color: '#8080a8' }}
       >
         {label}
       </p>
-      <div className="flex-1 h-px bg-[#2d2d4e]" />
+      <div className="flex-1 h-px" style={{ background: 'linear-gradient(to right, #3d3d60, transparent)' }} />
     </div>
   )
 }

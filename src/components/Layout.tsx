@@ -15,7 +15,6 @@ import {
   Eye,
   ChevronRight,
   Settings,
-  Zap,
 } from 'lucide-react'
 
 const NAV = [
@@ -28,13 +27,14 @@ const NAV = [
   { to: '/intelligence', label: 'Intel',    icon: Brain,    desc: 'Gap detection' },
 ]
 
-// Items shown in the mobile bottom nav (subset — Visualizations is the centre FAB)
+// Mobile bottom nav — 6 items including Visualizations
 const MOBILE_NAV = [
-  { to: '/',           label: 'Hub',     icon: Home },
-  { to: '/goals',      label: 'Goals',   icon: Target },
-  { to: '/habits',     label: 'Habits',  icon: Repeat2 },
-  { to: '/reflect',    label: 'Reflect', icon: BookOpen },
-  { to: '/advisory',   label: 'Mirror',  icon: Sparkles },
+  { to: '/',              label: 'Hub',     icon: Home,     accent: false },
+  { to: '/goals',         label: 'Goals',   icon: Target,   accent: false },
+  { to: '/habits',        label: 'Habits',  icon: Repeat2,  accent: false },
+  { to: '/reflect',       label: 'Reflect', icon: BookOpen, accent: false },
+  { to: '/visualizations',label: 'Charts',  icon: Eye,      accent: true  },
+  { to: '/advisory',      label: 'Mirror',  icon: Sparkles, accent: false },
 ]
 
 const SEASON_LABELS: Record<string, string> = {
@@ -218,10 +218,9 @@ export function Layout() {
               className="w-1.5 h-1.5 rounded-full flex-shrink-0"
               style={{ background: modeColor, boxShadow: `0 0 5px ${modeColor}` }}
             />
-            <span className="text-[9px] font-medium nav-text-secondary hidden sm:block" style={{ fontFamily: 'var(--font-mono)' }}>
+            <span className="text-[9px] font-medium nav-text-secondary" style={{ fontFamily: 'var(--font-mono)' }}>
               {MODE_LABELS[mindsetMode]}
             </span>
-            <Zap size={10} className="sm:hidden" style={{ color: modeColor }} />
           </div>
 
           {/* Season badge — opens season selector */}
@@ -256,84 +255,39 @@ export function Layout() {
         </header>
 
         {/* Main content */}
-        <main className="flex-1 px-3 sm:px-4 py-5 sm:py-6 max-w-2xl mx-auto w-full pb-24 lg:pb-8">
+        <main className="flex-1 px-3 sm:px-4 py-5 sm:py-6 max-w-2xl mx-auto w-full pb-20 lg:pb-8">
           <Outlet />
         </main>
       </div>
 
       {/* ═══ Mobile Bottom Nav ═══ */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 mobile-nav flex items-end justify-around px-1 safe-pb">
-        {/* Left 2 items */}
-        {MOBILE_NAV.slice(0, 2).map(({ to, label, icon: Icon }) => (
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 mobile-nav flex items-center justify-around px-1 safe-pb" style={{ height: 58 }}>
+        {MOBILE_NAV.map(({ to, label, icon: Icon, accent }) => (
           <NavLink
             key={to}
             to={to}
             end={to === '/'}
             className={({ isActive }) =>
               clsx(
-                'flex flex-col items-center gap-0.5 px-2 py-2.5 text-[9px] font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] justify-center',
-                isActive ? 'text-violet-400' : 'mobile-nav-item',
+                'flex flex-col items-center gap-0.5 px-1.5 py-2 text-[9px] font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] justify-center rounded-lg',
+                isActive
+                  ? accent ? 'text-violet-400' : 'text-violet-400'
+                  : accent ? 'text-violet-500/70 hover:text-violet-400' : 'mobile-nav-item',
               )
             }
             style={{ fontFamily: 'var(--font-mono)' }}
           >
-            <Icon size={17} strokeWidth={1.5} />
-            {label}
-          </NavLink>
-        ))}
-
-        {/* Centre — Visualizations FAB */}
-        <NavLink
-          to="/visualizations"
-          className={({ isActive }) =>
-            clsx(
-              'relative flex flex-col items-center gap-1 -mt-4 transition-all duration-200',
-              isActive ? 'opacity-100' : 'opacity-90 hover:opacity-100',
-            )
-          }
-        >
-          {({ isActive }) => (
-            <>
-              <div
-                className={clsx(
-                  'w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-200',
-                  isActive ? 'scale-105' : 'hover:scale-105',
-                )}
-                style={{
-                  background: 'linear-gradient(135deg, #7c3aed, #FF6B35)',
-                  boxShadow: isActive
-                    ? '0 0 24px rgba(124,58,237,0.55), 0 0 12px rgba(255,107,53,0.3)'
-                    : '0 0 16px rgba(124,58,237,0.35), 0 4px 12px rgba(0,0,0,0.4)',
-                }}
-              >
-                <Eye size={22} className="text-white" strokeWidth={1.5} />
-              </div>
-              <span
-                className={clsx('text-[8px] font-semibold pb-1', isActive ? 'text-violet-400' : 'mobile-nav-item')}
-                style={{ fontFamily: 'var(--font-mono)' }}
-              >
-                CHARTS
-              </span>
-            </>
-          )}
-        </NavLink>
-
-        {/* Right 3 items */}
-        {MOBILE_NAV.slice(2).map(({ to, label, icon: Icon }) => (
-          <NavLink
-            key={to}
-            to={to}
-            end={to === '/'}
-            className={({ isActive }) =>
-              clsx(
-                'flex flex-col items-center gap-0.5 px-2 py-2.5 text-[9px] font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] justify-center',
-                isActive ? 'text-violet-400' : 'mobile-nav-item',
-              )
-            }
-            style={{ fontFamily: 'var(--font-mono)' }}
-          >
-            <Icon size={17} strokeWidth={1.5} />
-            {label}
+            {({ isActive }) => (
+              <>
+                {accent && !isActive
+                  ? <Eye size={17} strokeWidth={1.5} style={{ color: '#8b5cf6' }} />
+                  : <Icon size={17} strokeWidth={1.5} />
+                }
+                <span className={accent && !isActive ? 'text-violet-500/80 italic' : ''}>
+                  {label}
+                </span>
+              </>
+            )}
           </NavLink>
         ))}
       </nav>
