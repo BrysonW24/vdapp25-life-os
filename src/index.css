@@ -59,6 +59,49 @@ body {
 }
 .scroll-x-hide::-webkit-scrollbar { display: none; }
 
+/* ─── Layout semantic classes (theme-aware) ────────────────────────────────── */
+
+/* Root background */
+.layout-root {
+  background: #0f0f1a;
+  color: #e8e8f0;
+}
+
+/* Sidebar */
+.sidebar {
+  background: rgba(15,15,26,0.97);
+  border-right: 1px solid #2d2d4e;
+}
+
+/* Header bar */
+.header-bar {
+  background: rgba(15,15,26,0.93);
+  border-bottom: 1px solid #2d2d4e;
+  backdrop-filter: blur(14px);
+}
+
+/* Header pill buttons */
+.header-pill {
+  border: 1px solid #2d2d4e;
+  border-radius: 0.5rem;
+}
+
+/* Mobile nav bar */
+.mobile-nav {
+  background: rgba(15,15,26,0.97);
+  border-top: 1px solid #2d2d4e;
+  backdrop-filter: blur(16px);
+}
+
+/* Nav text utilities */
+.nav-text        { color: #e8e8f0; }
+.nav-text-secondary { color: #808090; }
+.nav-text-dim    { color: #404060; }
+.nav-border      { border: 1px solid #2d2d4e; }
+.nav-border-top  { border-top: 1px solid #2d2d4e; }
+.nav-hover:hover { background: #1e1e35; }
+.mobile-nav-item { color: #505070; }
+
 /* ─── Theme overrides ──────────────────────────────────────────────────────── */
 
 /* Light theme */
@@ -77,6 +120,54 @@ body {
   color: #1a1a2e;
 }
 
+[data-theme="light"] .layout-root {
+  background: #f0f0f8;
+  color: #1a1a2e;
+}
+
+[data-theme="light"] .sidebar {
+  background: rgba(244,244,250,0.97);
+  border-right-color: #c8c8e0;
+}
+
+[data-theme="light"] .header-bar {
+  background: rgba(244,244,250,0.93);
+  border-bottom-color: #c8c8e0;
+}
+
+[data-theme="light"] .header-pill {
+  border-color: #c8c8e0;
+}
+
+[data-theme="light"] .header-pill:hover {
+  background: #e4e4f0;
+}
+
+[data-theme="light"] .mobile-nav {
+  background: rgba(244,244,250,0.97);
+  border-top-color: #c8c8e0;
+}
+
+[data-theme="light"] .nav-text        { color: #1a1a2e; }
+[data-theme="light"] .nav-text-secondary { color: #4a4a6a; }
+[data-theme="light"] .nav-text-dim    { color: #8888a8; }
+[data-theme="light"] .nav-border      { border-color: #c8c8e0; }
+[data-theme="light"] .nav-border-top  { border-top-color: #c8c8e0; }
+[data-theme="light"] .nav-hover:hover { background: #e4e4f0; }
+[data-theme="light"] .mobile-nav-item { color: #6a6a8a; }
+
+/* Card and common surfaces in light mode */
+[data-theme="light"] .rounded-xl.border.border-\[\#2d2d4e\] { border-color: #c8c8e0; }
+[data-theme="light"] .bg-\[\#0f0f1a\]   { background-color: #f4f4fa; }
+[data-theme="light"] .bg-\[\#16162a\]   { background-color: #eaeaf5; }
+[data-theme="light"] .bg-\[\#1e1e35\]   { background-color: #ddddf0; }
+[data-theme="light"] .border-\[\#2d2d4e\] { border-color: #c8c8e0; }
+[data-theme="light"] .text-\[\#e8e8f0\] { color: #1a1a2e; }
+[data-theme="light"] .text-\[\#808090\] { color: #4a4a6a; }
+[data-theme="light"] .text-\[\#606080\] { color: #6a6a8a; }
+[data-theme="light"] .text-\[\#404060\] { color: #8888a8; }
+[data-theme="light"] .hover\:bg-\[\#1e1e35\]:hover { background-color: #ddddf0; }
+
 /* Midnight theme */
 [data-theme="midnight"] {
   --color-surface: #050510;
@@ -92,6 +183,36 @@ body {
   background-color: #050510;
   color: #c8c8f0;
 }
+
+[data-theme="midnight"] .layout-root {
+  background: #050510;
+  color: #c8c8f0;
+}
+
+[data-theme="midnight"] .sidebar {
+  background: rgba(5,5,16,0.98);
+  border-right-color: #1a1a35;
+}
+
+[data-theme="midnight"] .header-bar {
+  background: rgba(5,5,16,0.95);
+  border-bottom-color: #1a1a35;
+}
+
+[data-theme="midnight"] .header-pill { border-color: #1a1a35; }
+
+[data-theme="midnight"] .mobile-nav {
+  background: rgba(5,5,16,0.98);
+  border-top-color: #1a1a35;
+}
+
+[data-theme="midnight"] .nav-text           { color: #c8c8f0; }
+[data-theme="midnight"] .nav-text-secondary { color: #6060a0; }
+[data-theme="midnight"] .nav-text-dim       { color: #303060; }
+[data-theme="midnight"] .nav-border         { border-color: #1a1a35; }
+[data-theme="midnight"] .nav-border-top     { border-top-color: #1a1a35; }
+[data-theme="midnight"] .nav-hover:hover    { background: #0a0a1a; }
+[data-theme="midnight"] .mobile-nav-item    { color: #404070; }
 
 /* SVG hero animations */
 @keyframes heroFadeIn {

@@ -10,7 +10,7 @@ import { db } from '@/lib/db'
 import {
   User, Palette, Brain, Database, Key,
   Download, Trash2, CheckCircle2, Moon, Sun, Zap,
-  Shield, ChevronRight,
+  Shield, ChevronRight, Sparkles, ExternalLink,
 } from 'lucide-react'
 import { clsx } from 'clsx'
 import type { Theme } from '@/stores/appStore'
@@ -282,38 +282,77 @@ export function SettingsPage() {
       <Card>
         <SectionHeader icon={Brain} label="AI Coach" />
 
-        <div className="flex items-center gap-3 p-3 rounded-xl border border-violet-500/20 bg-violet-500/5 mb-4">
+        <div className="flex items-center gap-3 p-3 rounded-xl border border-violet-500/20 bg-violet-500/5 mb-5">
           <Brain size={16} className="text-violet-400 flex-shrink-0" />
           <div>
             <p className="text-xs font-semibold text-violet-400">claude-sonnet-4-6</p>
-            <p className="text-[10px] text-[#606080]">Your coach has full context of your identity, goals, habits, and reflections.</p>
+            <p className="text-[10px] text-[#606080]">Full context of your identity, goals, habits, and reflections.</p>
           </div>
         </div>
 
-        <div className="space-y-3">
-          <div>
-            <label className="block text-xs text-[#808090] mb-1.5">Anthropic API Key</label>
-            <div className="relative">
+        {/* Two paths */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-5">
+          {/* Path A — Just works */}
+          <div className="p-4 rounded-xl border border-[#FF6B35]/30 bg-[#FF6B35]/5 flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                style={{ background: 'linear-gradient(135deg, #FF6B35, #f97316)' }}>
+                <Sparkles size={13} className="text-white" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-[#e8e8f0]">Just make it work</p>
+                <p className="text-[9px] text-[#606080]">No setup needed</p>
+              </div>
+            </div>
+            <p className="text-[10px] text-[#808090] leading-relaxed">
+              Contact Vivacity Digital and we'll set up a managed AI key for you. Works instantly, nothing technical required.
+            </p>
+            <a
+              href="mailto:hello@vivacitydigital.com.au?subject=Life OS — AI Coach Access"
+              className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-[10px] font-semibold text-white transition-all hover:opacity-90 active:scale-95"
+              style={{ background: 'linear-gradient(135deg, #FF6B35, #f97316)' }}
+            >
+              <ExternalLink size={11} />
+              Get access
+            </a>
+          </div>
+
+          {/* Path B — Bring your own key */}
+          <div className="p-4 rounded-xl border border-[#2d2d4e] flex flex-col gap-3">
+            <div className="flex items-center gap-2">
+              <div className="w-7 h-7 rounded-lg bg-violet-500/10 flex items-center justify-center flex-shrink-0">
+                <Key size={13} className="text-violet-400" />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-[#e8e8f0]">Bring your own key</p>
+                <p className="text-[9px] text-[#606080]">Developer / self-hosted</p>
+              </div>
+            </div>
+            <div className="relative flex-1">
               <input
                 type={keyVisible ? 'text' : 'password'}
                 value={apiKey}
                 onChange={e => setApiKey(e.target.value)}
-                placeholder="sk-ant-..."
-                className="w-full rounded-xl border border-[#2d2d4e] bg-[#0f0f1a] px-3 py-2 pr-10 text-xs text-[#e8e8f0] placeholder:text-[#404060] focus:outline-none focus:ring-2 focus:ring-violet-500/30 font-mono"
+                placeholder="sk-ant-api03-..."
+                className="w-full rounded-lg border border-[#2d2d4e] bg-[#0f0f1a] px-3 py-2 pr-9 text-[10px] text-[#e8e8f0] placeholder:text-[#404060] focus:outline-none focus:ring-1 focus:ring-violet-500/40 font-mono"
               />
               <button
                 onClick={() => setKeyVisible(!keyVisible)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-[#404060] hover:text-violet-400 transition-colors"
+                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#404060] hover:text-violet-400 transition-colors"
               >
-                <Key size={14} />
+                <Key size={12} />
               </button>
             </div>
-            <p className="text-[9px] text-[#404060] mt-1.5">Stored locally in your browser only. Never sent to any server.</p>
+            <Button size="sm" onClick={handleSaveKey} disabled={!apiKey.trim()}>
+              {keySaved ? <span className="flex items-center gap-2"><CheckCircle2 size={13} /> Saved</span> : 'Save key'}
+            </Button>
           </div>
-          <Button size="sm" onClick={handleSaveKey} disabled={!apiKey.trim()}>
-            {keySaved ? <span className="flex items-center gap-2"><CheckCircle2 size={14} /> Saved</span> : 'Save API Key'}
-          </Button>
         </div>
+
+        <p className="text-[9px] text-[#404060]">
+          API keys are stored only in your browser. Never sent to any server.
+          Get a key at <span className="text-violet-400">console.anthropic.com</span>
+        </p>
       </Card>
 
       {/* ── Data ──────────────────────────────────────────────── */}

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom'
 import { clsx } from 'clsx'
 import { SeasonSelector } from '@/components/SeasonSelector'
 import { CoachPanel } from '@/components/coach/CoachPanel'
@@ -15,6 +15,7 @@ import {
   Eye,
   ChevronRight,
   Settings,
+  Zap,
 } from 'lucide-react'
 
 const NAV = [
@@ -22,12 +23,12 @@ const NAV = [
   { to: '/identity',   label: 'Identity',   icon: User,     desc: 'Who you are' },
   { to: '/goals',      label: 'Goals',      icon: Target,   desc: 'What you pursue' },
   { to: '/habits',     label: 'Habits',     icon: Repeat2,  desc: 'Daily execution' },
-  { to: '/reflect',    label: 'Reflect',    icon: BookOpen,  desc: 'Self-review' },
+  { to: '/reflect',    label: 'Reflect',    icon: BookOpen, desc: 'Self-review' },
   { to: '/advisory',   label: 'Advisory',   icon: Sparkles, desc: 'Your mirror' },
-  { to: '/intelligence', label: 'Intel',   icon: Brain,    desc: 'Gap detection' },
+  { to: '/intelligence', label: 'Intel',    icon: Brain,    desc: 'Gap detection' },
 ]
 
-// Items shown in the mobile bottom nav (subset — Visualizations replaces Intel on mobile)
+// Items shown in the mobile bottom nav (subset — Visualizations is the centre FAB)
 const MOBILE_NAV = [
   { to: '/',           label: 'Hub',     icon: Home },
   { to: '/goals',      label: 'Goals',   icon: Target },
@@ -61,53 +62,59 @@ const MODE_LABELS: Record<string, string> = {
   'command-center': 'Command',
 }
 
+const MODE_COLORS: Record<string, string> = {
+  arena: '#FF6B35',
+  terminal: '#22c55e',
+  alignment: '#3b82f6',
+  'command-center': '#8b5cf6',
+}
+
 export function Layout() {
   const { currentSeason, mindsetMode, userName } = useAppStore()
   const [seasonOpen, setSeasonOpen] = useState(false)
   const navigate = useNavigate()
 
   const avatarInitial = (userName || 'U')[0].toUpperCase()
+  const modeColor = MODE_COLORS[mindsetMode] ?? '#8b5cf6'
 
   return (
-    <div className="min-h-screen flex" style={{ background: '#0f0f1a' }}>
+    <div className="min-h-screen flex layout-root">
       {/* ═══ Desktop Sidebar ═══ */}
-      <aside className="hidden lg:flex flex-col w-60 fixed inset-y-0 left-0 z-40 border-r border-[#2d2d4e]"
-        style={{ background: 'rgba(15,15,26,0.97)' }}
-      >
-        {/* Logo */}
-        <div className="px-5 py-5 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center"
+      <aside className="hidden lg:flex flex-col w-60 fixed inset-y-0 left-0 z-40 sidebar">
+        {/* Logo — click to go home */}
+        <Link to="/" className="px-5 py-5 flex items-center gap-3 group">
+          <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center transition-transform group-hover:scale-105"
             style={{ boxShadow: '0 0 16px rgba(124,58,237,0.25)' }}
           >
             <span className="text-xs font-bold text-white" style={{ fontFamily: 'var(--font-mono)' }}>L</span>
           </div>
           <div>
-            <span className="text-sm font-semibold text-[#e8e8f0] tracking-tight">Life OS</span>
-            <p className="text-[8px] text-[#404060] tracking-widest uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
+            <span className="text-sm font-semibold tracking-tight nav-text">Life OS</span>
+            <p className="text-[8px] nav-text-dim tracking-widest uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
               v0.1
             </p>
           </div>
-        </div>
+        </Link>
 
         {/* Season + Mode badge */}
         <div className="px-4 mb-4">
           <button
             onClick={() => setSeasonOpen(true)}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg border border-[#2d2d4e] hover:border-violet-500/30 transition-colors"
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg nav-border hover:border-violet-500/30 transition-colors"
           >
-            <div className="w-2 h-2 rounded-full bg-violet-500" style={{ boxShadow: '0 0 8px rgba(124,58,237,0.5)' }} />
+            <div className="w-2 h-2 rounded-full" style={{ background: modeColor, boxShadow: `0 0 8px ${modeColor}80` }} />
             <div className="flex-1 text-left">
-              <p className="text-[10px] text-[#808090]" style={{ fontFamily: 'var(--font-mono)' }}>
+              <p className="text-[10px] nav-text-secondary" style={{ fontFamily: 'var(--font-mono)' }}>
                 {SEASON_LABELS[currentSeason]} · {MODE_LABELS[mindsetMode]}
               </p>
             </div>
-            <ChevronRight size={10} className="text-[#404060]" />
+            <ChevronRight size={10} className="nav-text-dim" />
           </button>
         </div>
 
         {/* Navigation */}
         <nav className="flex-1 px-3 space-y-0.5">
-          <p className="text-[8px] tracking-[0.2em] uppercase text-[#404060] px-3 mb-2" style={{ fontFamily: 'var(--font-mono)' }}>
+          <p className="text-[8px] tracking-[0.2em] uppercase nav-text-dim px-3 mb-2" style={{ fontFamily: 'var(--font-mono)' }}>
             System
           </p>
           {NAV.map(({ to, label, icon: Icon, desc }) => (
@@ -120,20 +127,20 @@ export function Layout() {
                   'flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group',
                   isActive
                     ? 'bg-violet-500/10 text-violet-400'
-                    : 'text-[#808090] hover:text-[#e8e8f0] hover:bg-[#1e1e35]',
+                    : 'nav-text-secondary hover:nav-text nav-hover',
                 )
               }
             >
               <Icon size={15} strokeWidth={1.5} className="flex-shrink-0" />
               <div className="flex-1 min-w-0">
                 <p className="text-[11px] font-medium">{label}</p>
-                <p className="text-[8px] text-[#404060] group-hover:text-[#606080] transition-colors truncate">{desc}</p>
+                <p className="text-[8px] nav-text-dim group-hover:nav-text-secondary transition-colors truncate">{desc}</p>
               </div>
             </NavLink>
           ))}
 
           {/* Visualizations — standout card */}
-          <div className="pt-3 mt-3" style={{ borderTop: '1px solid #2d2d4e' }}>
+          <div className="pt-3 mt-3 nav-border-top">
             <NavLink
               to="/visualizations"
               className={({ isActive }) =>
@@ -141,7 +148,7 @@ export function Layout() {
                   'flex items-center gap-3 px-3 py-3 rounded-xl transition-all duration-200 group relative overflow-hidden',
                   isActive
                     ? 'bg-violet-600/15 border border-violet-500/30'
-                    : 'border border-[#2d2d4e] hover:border-violet-500/30',
+                    : 'nav-border hover:border-violet-500/30',
                 )
               }
             >
@@ -153,38 +160,38 @@ export function Layout() {
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <p className="text-[11px] font-semibold text-[#e8e8f0]">Visualizations</p>
+                  <p className="text-[11px] font-semibold nav-text">Visualizations</p>
                   <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-violet-500/20 text-violet-400" style={{ fontFamily: 'var(--font-mono)' }}>
                     94
                   </span>
                 </div>
-                <p className="text-[8px] text-[#606080]">Life intelligence gallery</p>
+                <p className="text-[8px] nav-text-dim">Life intelligence gallery</p>
               </div>
             </NavLink>
           </div>
         </nav>
 
         {/* Footer */}
-        <div className="px-4 py-4 border-t border-[#2d2d4e] flex items-center gap-2">
+        <div className="px-4 py-4 nav-border-top flex items-center gap-2">
           <button
             onClick={() => navigate('/settings')}
-            className="flex items-center gap-2 flex-1 p-2 rounded-lg hover:bg-[#1e1e35] transition-colors group"
+            className="flex items-center gap-2 flex-1 p-2 rounded-lg nav-hover transition-colors group"
           >
             <div className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center flex-shrink-0">
               <span className="text-[10px] font-bold text-white">{avatarInitial}</span>
             </div>
             <div className="min-w-0">
-              <p className="text-[10px] text-[#808090] group-hover:text-[#e8e8f0] transition-colors truncate">
+              <p className="text-[10px] nav-text-secondary group-hover:nav-text transition-colors truncate">
                 {userName || 'Set your name'}
               </p>
-              <p className="text-[8px] text-[#404060] tracking-widest uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
+              <p className="text-[8px] nav-text-dim tracking-widest uppercase" style={{ fontFamily: 'var(--font-mono)' }}>
                 vdapp25
               </p>
             </div>
           </button>
           <button
             onClick={() => navigate('/settings')}
-            className="p-1.5 rounded-lg text-[#404060] hover:text-[#e8e8f0] hover:bg-[#1e1e35] transition-colors"
+            className="p-1.5 rounded-lg nav-text-dim hover:nav-text nav-hover transition-colors"
           >
             <Settings size={13} />
           </button>
@@ -194,45 +201,57 @@ export function Layout() {
       {/* ═══ Main Content ═══ */}
       <div className="flex-1 lg:ml-60 flex flex-col min-h-screen">
         {/* Header */}
-        <header className="sticky top-0 z-30 border-b border-[#2d2d4e] px-4 py-3 flex items-center gap-3"
-          style={{ background: 'rgba(15,15,26,0.92)', backdropFilter: 'blur(12px)' }}
-        >
-          {/* Mobile logo */}
-          <div className="lg:hidden flex items-center gap-2">
-            <div className="w-6 h-6 rounded-lg bg-violet-600 flex items-center justify-center">
+        <header className="sticky top-0 z-30 header-bar px-4 flex items-center gap-2.5" style={{ height: 52 }}>
+          {/* Mobile logo — click to go home */}
+          <Link to="/" className="lg:hidden flex items-center gap-2 group">
+            <div className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center transition-transform group-hover:scale-105">
               <span className="text-[10px] font-bold text-white" style={{ fontFamily: 'var(--font-mono)' }}>L</span>
             </div>
-            <span className="text-sm font-semibold text-[#e8e8f0] tracking-tight">Life OS</span>
-          </div>
+            <span className="text-sm font-semibold nav-text tracking-tight">Life OS</span>
+          </Link>
 
           <div className="flex-1" />
 
-          {/* Mindset mode badge — desktop only */}
-          <div className="hidden lg:flex items-center gap-2 text-[10px] text-[#606080]" style={{ fontFamily: 'var(--font-mono)' }}>
-            <div className="w-1.5 h-1.5 rounded-full" style={{
-              background: mindsetMode === 'arena' ? '#FF6B35' : mindsetMode === 'terminal' ? '#22c55e' : mindsetMode === 'alignment' ? '#3b82f6' : '#8b5cf6',
-              boxShadow: `0 0 6px ${mindsetMode === 'arena' ? 'rgba(255,107,53,0.5)' : 'rgba(124,58,237,0.5)'}`,
-            }} />
-            {MODE_LABELS[mindsetMode]} Mode
+          {/* Mode pill */}
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg header-pill">
+            <div
+              className="w-1.5 h-1.5 rounded-full flex-shrink-0"
+              style={{ background: modeColor, boxShadow: `0 0 5px ${modeColor}` }}
+            />
+            <span className="text-[9px] font-medium nav-text-secondary hidden sm:block" style={{ fontFamily: 'var(--font-mono)' }}>
+              {MODE_LABELS[mindsetMode]}
+            </span>
+            <Zap size={10} className="sm:hidden" style={{ color: modeColor }} />
           </div>
 
-          {/* Season badge */}
+          {/* Season badge — opens season selector */}
           <button
             onClick={() => setSeasonOpen(true)}
-            className="text-[10px] font-medium text-[#808090] border border-[#2d2d4e] px-2 py-0.5 rounded-lg hover:text-[#e8e8f0] hover:border-violet-500/30 transition-colors duration-200"
-            style={{ fontFamily: 'var(--font-mono)' }}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg header-pill hover:border-violet-500/40 transition-colors duration-200"
           >
-            {SEASON_SHORT[currentSeason] ?? currentSeason}
+            <span className="text-[9px] font-medium nav-text-secondary" style={{ fontFamily: 'var(--font-mono)' }}>
+              {SEASON_SHORT[currentSeason] ?? currentSeason}
+            </span>
+            <ChevronRight size={9} className="nav-text-dim" />
           </button>
 
-          {/* Avatar → Settings */}
+          {/* Avatar pill → Settings */}
           <button
             onClick={() => navigate('/settings')}
-            className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center hover:bg-violet-500 transition-colors"
-            style={{ boxShadow: '0 0 10px rgba(124,58,237,0.2)' }}
+            className="flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-lg header-pill hover:border-violet-500/40 transition-colors duration-200 group"
             title={userName ? `${userName} · Settings` : 'Settings'}
           >
-            <span className="text-[10px] font-bold text-white">{avatarInitial}</span>
+            <div className="w-6 h-6 rounded-md bg-violet-600 flex items-center justify-center flex-shrink-0 group-hover:bg-violet-500 transition-colors"
+              style={{ boxShadow: '0 0 8px rgba(124,58,237,0.3)' }}
+            >
+              <span className="text-[9px] font-bold text-white">{avatarInitial}</span>
+            </div>
+            {userName && (
+              <span className="text-[9px] font-medium nav-text-secondary hidden md:block truncate max-w-[80px]">
+                {userName}
+              </span>
+            )}
+            <Settings size={11} className="nav-text-dim group-hover:text-violet-400 transition-colors" />
           </button>
         </header>
 
@@ -243,9 +262,7 @@ export function Layout() {
       </div>
 
       {/* ═══ Mobile Bottom Nav ═══ */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-[#2d2d4e] flex items-end justify-around px-1 pb-safe safe-pb"
-        style={{ background: 'rgba(15,15,26,0.97)', backdropFilter: 'blur(16px)' }}
-      >
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-30 mobile-nav flex items-end justify-around px-1 safe-pb">
         {/* Left 2 items */}
         {MOBILE_NAV.slice(0, 2).map(({ to, label, icon: Icon }) => (
           <NavLink
@@ -255,7 +272,7 @@ export function Layout() {
             className={({ isActive }) =>
               clsx(
                 'flex flex-col items-center gap-0.5 px-2 py-2.5 text-[9px] font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] justify-center',
-                isActive ? 'text-violet-400' : 'text-[#505070] hover:text-[#808090]',
+                isActive ? 'text-violet-400' : 'mobile-nav-item',
               )
             }
             style={{ fontFamily: 'var(--font-mono)' }}
@@ -280,9 +297,7 @@ export function Layout() {
               <div
                 className={clsx(
                   'w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg transition-all duration-200',
-                  isActive
-                    ? 'scale-105'
-                    : 'hover:scale-105',
+                  isActive ? 'scale-105' : 'hover:scale-105',
                 )}
                 style={{
                   background: 'linear-gradient(135deg, #7c3aed, #FF6B35)',
@@ -294,7 +309,7 @@ export function Layout() {
                 <Eye size={22} className="text-white" strokeWidth={1.5} />
               </div>
               <span
-                className={clsx('text-[8px] font-semibold pb-1', isActive ? 'text-violet-400' : 'text-[#606080]')}
+                className={clsx('text-[8px] font-semibold pb-1', isActive ? 'text-violet-400' : 'mobile-nav-item')}
                 style={{ fontFamily: 'var(--font-mono)' }}
               >
                 CHARTS
@@ -312,7 +327,7 @@ export function Layout() {
             className={({ isActive }) =>
               clsx(
                 'flex flex-col items-center gap-0.5 px-2 py-2.5 text-[9px] font-medium transition-colors duration-200 min-w-[44px] min-h-[44px] justify-center',
-                isActive ? 'text-violet-400' : 'text-[#505070] hover:text-[#808090]',
+                isActive ? 'text-violet-400' : 'mobile-nav-item',
               )
             }
             style={{ fontFamily: 'var(--font-mono)' }}
